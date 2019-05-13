@@ -1,7 +1,7 @@
 <template>
     <div class="user-dropdown">
         <div class="user-button">
-            <span class="d-none d-sm-block">{{user.nomeUsuario}}</span>
+            <span class="d-none d-sm-block">{{user.user.nomeUsuario}}</span>
             <div class="user-dropdown-img">
                 <Gravatar :email="user.email" alt="user" />
             </div>
@@ -17,22 +17,19 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import {mapGetters} from 'vuex'
 import Gravatar from 'vue-gravatar'
-import {userKey, baseApiUrl} from '@/global'
-import axios from 'axios'
 export default {
     name: 'UserDropdown',
     components: {Gravatar},
-    computed: mapState(['user']),
+    computed: mapGetters(['user']),
     methods: {
         logout(){
-            axios.post(`${baseApiUrl}/logout`)
-            .then(() => {})
-            .catch(() => {})
-            localStorage.removeItem(userKey)
-            this.$store.commit('setUser', null)
-            this.$router.push('/')
+            this.$store.dispatch('LOGOUT')
+            .then(() => {
+                this.$router.push('/')
+            })
+            .catch(() => {})  
         }   
     }
 }

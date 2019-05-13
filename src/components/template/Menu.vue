@@ -11,13 +11,13 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 import Tree from 'liquor-tree'
 
 export default {
     name: 'Menu',
     components: {Tree},
-    computed: mapState(['isMenuVisible']),
+    computed: mapGetters(['isMenuVisible']),
     data(){
         return {
             treeFilter: '',

@@ -4,10 +4,12 @@
             <img src="@/assets/logo.png" width="200" alt="logo">
             <hr>
             <div class="auth-title">Login</div>
-            <input type="text" v-model="user.loginUsuario" placeholder="Login">
-            <input type="password" v-model="user.senhaUsuario" placeholder="Senha">
+            <b-form @submit.prevent="signIn()">
+                <input type="text" v-model="user.loginUsuario" placeholder="Login">
+                <input type="password" v-model="user.senhaUsuario" placeholder="Senha">
 
-            <button @click="signIn()">Entrar</button>
+                <button type="submit">Entrar</button>
+            </b-form>
         </div>
     </div>
 </template>

@@ -105,31 +105,31 @@
 
 <script>
 import axios from 'axios';
-import {showError} from '@/global';
+import {showError, baseApiUrl} from '@/global';
+import {mapGetters} from 'vuex'
 export default {
     name: 'CadastroUsuario',
     data(){
         return {
             user: {},
-            estados: [],
-            cidades: [],
             confirmSenha: '',
             estadoSelecionado: null
         }
     },
+    computed: mapGetters(['estados', 'cidades']),
     mounted(){
-        this.loadEstados();   
+        this.$store.dispatch('GETALL')
+        .then(() => {})
+            .catch(() => {})
     },
     methods:{
-        loadEstados(){
-            axios.get('http://localhost:3000/estados').then(res => this.estados = res.data).catch(err => console.log(err))
-        },
         loadCidades(idEstado){
-            const url = `http://localhost:3000/cidades/${idEstado}`
-            axios.get(url).then(res => this.cidades = res.data);
+            this.$store.dispatch('GETCIDADES', {id: this.estadoSelecionado})
+            .then(() => {})
+            .catch(() => {})
         },
         save(){
-            const url = 'http://localhost:3000/usuarios';
+            const url = `${baseApiUrl}/usuarios`;
             axios.post(url, this.user).then(() => {
                 this.reset();
                 this.$toasted.global.defaultSuccess();

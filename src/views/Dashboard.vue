@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import { mapGetters} from 'vuex'
 import Header from '../components/template/Header';
 import Menu from '../components/template/Menu';
 import Content from '../components/template/Content';
@@ -18,7 +18,7 @@ import Footer from '../components/template/Footer';
 export default {
     name: 'Dashboard',
     components: {Header, Menu, Content, Footer},
-    computed: mapState(['isMenuVisible', 'user'])
+    computed: mapGetters(['isMenuVisible', 'user'])
 }
 </script>
 
