@@ -139,6 +139,7 @@ export default {
             this.user = {};
             this.estadoSelecionado = null;
             this.confirmSenha=  '';
+            this.$store.dispatch('RESET_CIDADES')
         }
         
     }

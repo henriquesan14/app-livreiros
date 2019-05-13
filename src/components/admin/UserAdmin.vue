@@ -16,6 +16,9 @@
                 <b-button variant="warning" @click="loadUser(data.item)" class="mr-2">
                     <i class="fa fa-pencil"></i>
                 </b-button>
+                <b-button variant="dark" @click="loadUser(data.item)" class="mr-2">
+                    <i class="fa fa-users"></i>
+                </b-button>
                 <b-button variant="danger" @click="loadUser(data.item)" class="mr-2">
                     <i class="fa fa-arrow-circle-up"></i>
                 </b-button>

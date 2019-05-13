@@ -25,6 +25,9 @@ const actions = {
     const url = `${baseApiUrl}/cidades/${params.id}`;
     const { data } = await axios.get(url);
     commit('RECEIVE_CIDADES',{ cidades: data});
+  },
+  RESET_CIDADES({commit}){
+    commit('RECEIVE_CIDADES', {cidades: []})
   }
 },
 
