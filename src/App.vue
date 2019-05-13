@@ -12,4 +12,9 @@
     body{
         margin: 0;
     }
+
+    #app{
+      height: 100vh;
+      background-color: #efefef;
+    }
 </style>

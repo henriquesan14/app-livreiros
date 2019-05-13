@@ -18,7 +18,7 @@ import Footer from '../components/template/Footer';
 export default {
     name: 'Dashboard',
     components: {Header, Menu, Content, Footer},
-    computed: mapState(['isMenuVisible'])
+    computed: mapState(['isMenuVisible', 'user'])
 }
 </script>
 

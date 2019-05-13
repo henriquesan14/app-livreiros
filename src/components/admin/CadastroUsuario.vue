@@ -99,7 +99,6 @@
             </b-row>
             <b-button  @click="save()" variant="success mr-2">Cadastrar</b-button>
             <b-button variant="danger mr-2" @click="reset()">Limpar</b-button>
-            <b-button variant="light">Voltar</b-button>
         </b-form>
     </div>
 </template>

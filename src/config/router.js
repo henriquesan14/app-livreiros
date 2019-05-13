@@ -22,18 +22,30 @@ export default new Router({
       component: Dashboard,
       children: [
         {
-          path: '',
+          path: 'home',
           name: 'home',
           component: Home
         },
         {
-          path: 'admin',
+          path: 'usuarios',
           name: 'admin',
           component: AdminPages
+        },
+        {
+          path: '',
+          redirect: '/dashboard/home'
+        },
+        {
+          path: '*',
+          redirect: '/dashboard/home'
         }
       ],
       
     },
+    {
+      path: '*',
+      redirect: '/'
+    }
     
   ]
 })
