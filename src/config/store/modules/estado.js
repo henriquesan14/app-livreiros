@@ -16,12 +16,12 @@ const mutations = {
 }
 
 const actions = {
-  async GETALL ({commit}) {
+  async GET_ESTADOS ({commit}) {
     const url = `${baseApiUrl}/estados`;
     const { data } = await axios.get(url);
     commit('RECEIVE_ESTADOS',{ estados: data});
   },
-  async GETCIDADES({commit}, params){
+  async GET_CIDADES({commit}, params){
     const url = `${baseApiUrl}/cidades/${params.id}`;
     const { data } = await axios.get(url);
     commit('RECEIVE_CIDADES',{ cidades: data});

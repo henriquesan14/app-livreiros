@@ -118,13 +118,13 @@ export default {
     },
     computed: mapGetters(['estados', 'cidades']),
     mounted(){
-        this.$store.dispatch('GETALL')
+        this.$store.dispatch('GET_ESTADOS')
         .then(() => {})
             .catch(() => {})
     },
     methods:{
-        loadCidades(idEstado){
-            this.$store.dispatch('GETCIDADES', {id: this.estadoSelecionado})
+        loadCidades(){
+            this.$store.dispatch('GET_CIDADES', {id: this.estadoSelecionado})
             .then(() => {})
             .catch(() => {})
         },

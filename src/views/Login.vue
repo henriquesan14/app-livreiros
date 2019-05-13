@@ -16,7 +16,6 @@
 
 <script>
 import {baseApiUrl, showError, userKey} from '@/global'
-import axios from 'axios';
 export default {
     name: 'Login',
     data(){
@@ -26,9 +25,10 @@ export default {
     },
     methods: {
         signIn(){
-            axios.post(`${baseApiUrl}/login`, this.user)
+            
+            this.$store.dispatch('LOGIN', this.user)
             .then(res => {
-                this.$store.commit('setUser', res.data.auth.user)
+                
                 localStorage.setItem(userKey, JSON.stringify(res.data.auth))
                 this.$router.push('/dashboard/home')
             })

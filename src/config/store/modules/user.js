@@ -2,7 +2,7 @@ import axios from 'axios';
 import {baseApiUrl} from '@/global'
 
 const state = {
-  pageUsers: {}
+  pageUsers: {rows: []}
 }
 
 const mutations = {
@@ -12,7 +12,7 @@ const mutations = {
 }
 
 const actions = {
-  async GETALL ({commit}, params) {
+  async GET_USERS ({commit}, params) {
     const url = `${baseApiUrl}/usuarios?nome=${params.nome}&pagina=${params.page}`;
     const { data } = await axios.get(url);
     commit('RECEIVE_USERS',{ pageUsers: data});

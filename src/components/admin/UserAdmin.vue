@@ -4,14 +4,14 @@
         <b-row>
             <b-col md="10" sm="12" class="mb-3">
                 <b-input-group>
-                    <b-form-input v-model="nome" @keydown.enter="loadUsers()" type="text" placeholder="Pesquise o nome do usuário..." />
+                    <b-form-input v-model="nome" @keydown.enter="getUsers()" type="text" placeholder="Pesquise o nome do usuário..." />
                     <b-input-group-append>
-                        <b-button @click="loadUsers()" variant="primary"><i class="fa fa-search"></i></b-button>
+                        <b-button @click="getUsers()" variant="primary"><i class="fa fa-search"></i></b-button>
                     </b-input-group-append>
                 </b-input-group>
             </b-col>
         </b-row>
-        <b-table hover striped :items="pageUsers.rows" :fields="fields">
+        <b-table v-if="!loader" hover striped :items="pageUsers.rows" :fields="fields">
             <template slot="actions" slot-scope="data">
                 <b-button variant="warning" @click="loadUser(data.item)" class="mr-2">
                     <i class="fa fa-pencil"></i>
@@ -21,20 +21,27 @@
                 </b-button>
             </template>
         </b-table>
+        <div v-if="!loader && pageUsers.rows.length < 1" class="mb-2">
+            <span>Nenhum resultado...</span>
+        </div>
+        <Loading :loader="loader" />
         <b-pagination size="md" v-model="page" :total-rows="pageUsers.count" :per-page="10"></b-pagination>
     </div>
 </template>
 
 <script>
-import axios from 'axios';
+import { mapGetters}  from 'vuex'
+import Loading from '../shared/Loading'
+
 export default {
     name: 'UserAdmin',
+    components: Loading,
     data(){
         return {
             user: {},
-            pageUsers: {},
             page: 1,
             nome: '',
+            loader: false,
             fields: [
                 {key: 'idUsuario', label: 'Cód.', sortable: true},
                 {key: 'nomeUsuario', label: 'Nome', sortable: true},
@@ -45,18 +52,23 @@ export default {
     },
     watch:{
         page(){
-            this.loadUsers()
+            this.getUsers()
         }
     },
+    computed: mapGetters(['pageUsers']),
     mounted(){
-        this.loadUsers();
+        this.getUsers();
     },
     methods:{
-        loadUsers(){
-            const url = `http://localhost:3000/usuarios?pagina=${this.page -1}&nome=${this.nome}`;
-            axios.get(url).then(res => {
-                this.pageUsers = res.data;
-                }).catch(err => console.log(err))
+        async getUsers(){
+            this.loader = true;
+        try{
+            await this.$store.dispatch('GET_USERS', {nome: this.nome, page: this.page -1});
+        }catch(err){
+            () => {}
+        }finally{
+            this.loader = false;
+        }     
         },
         loadUser(user){
             this.user = {...user};
