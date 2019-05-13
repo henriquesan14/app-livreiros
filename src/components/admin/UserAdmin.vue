@@ -2,7 +2,7 @@
     <div class="user-admin">
 
         <b-row>
-            <b-col md="10" sm="12" class="mb-3">
+            <b-col md="12" sm="12" class="mb-3">
                 <b-input-group>
                     <b-form-input v-model="nome" @keydown.enter="getUsers()" type="text" placeholder="Pesquise o nome do usuário..." />
                     <b-input-group-append>
@@ -11,7 +11,7 @@
                 </b-input-group>
             </b-col>
         </b-row>
-        <b-table v-if="!loader" hover striped :items="pageUsers.rows" :fields="fields">
+        <b-table v-if="!loader && pageUsers.rows.length > 0" hover striped :items="pageUsers.rows" :fields="fields">
             <template slot="actions" slot-scope="data">
                 <b-button variant="warning" @click="loadUser(data.item)" class="mr-2">
                     <i class="fa fa-pencil"></i>
@@ -35,7 +35,7 @@ import Loading from '../shared/Loading'
 
 export default {
     name: 'UserAdmin',
-    components: Loading,
+    components: {Loading},
     data(){
         return {
             user: {},

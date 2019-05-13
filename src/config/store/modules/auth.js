@@ -17,21 +17,19 @@ import axios from 'axios'
     },
     setUser(state, res){
       localStorage.setItem(userKey, res)
-      state.user = res
+      state.user = JSON.parse(res)
     },
     removeUser(state){
         localStorage.removeItem(userKey)
-        state.user = null
     }
   }
 
   const actions = {
     
     async LOGIN ({commit}, user) {
-      console.log('login')
         const url = `${baseApiUrl}/login`;
-        const { data } = await axios.post(url, user);
-        commit('setUser', JSON.stringify(data.auth));
+          const { data } = await axios.post(url, user);
+          commit('setUser', JSON.stringify(data.auth));
       },
       async LOGOUT ({commit}) {
         const url = `${baseApiUrl}/logout`;

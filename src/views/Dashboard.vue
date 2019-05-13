@@ -18,7 +18,41 @@ import Footer from '../components/template/Footer';
 export default {
     name: 'Dashboard',
     components: {Header, Menu, Content, Footer},
-    computed: mapGetters(['isMenuVisible', 'user'])
+    data(){
+        return {
+            windowWidth: 0
+        }
+    },
+    computed: mapGetters(['isMenuVisible', 'user']),
+    mounted(){
+        this.$nextTick(() => {
+         window.addEventListener('resize', () => {
+            this.windowWidth = window.innerWidth
+        });
+        })
+    },
+    watch: {
+        windowWidth(newWidth){
+            this.handleResize(newWidth);
+        }
+    },
+    created(){
+        let largura = window.innerWidth;
+        if (largura < 900) {
+        this.$store.dispatch('toggleMenu', false);
+        }else{
+            this.$store.dispatch('toggleMenu', true);
+        }  
+    },
+    methods:{
+        handleResize(largura) {
+            if (largura < 900) {
+                this.$store.dispatch('toggleMenu', false);
+            } else {
+                this.$store.dispatch('toggleMenu', true);
+            }
+        }
+    }
 }
 </script>
 

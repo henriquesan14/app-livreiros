@@ -9,6 +9,7 @@
                 <input type="password" v-model="user.senhaUsuario" placeholder="Senha">
 
                 <button type="submit">Entrar</button>
+                <Loading :loader="loader" />
             </b-form>
         </div>
     </div>
@@ -16,23 +17,25 @@
 
 <script>
 import {baseApiUrl, showError, userKey} from '@/global'
+import Loading from '../components/shared/Loading'
 export default {
     name: 'Login',
+    components: {Loading},
     data(){
         return {
-            user: {}
+            user: {},
+            loader: false
         }
     },
     methods: {
         signIn(){
-            
+            this.loader = true;
             this.$store.dispatch('LOGIN', this.user)
             .then(res => {
-                
-                localStorage.setItem(userKey, JSON.stringify(res.data.auth))
                 this.$router.push('/dashboard/home')
             })
             .catch(showError)
+            .finally(() => this.loader = false)
         }
     }
 }
@@ -72,6 +75,7 @@ export default {
         margin-bottom: 15px;
         padding: 3px 8px;
     }
+    
 
     .auth-modal button {
         align-self:flex-end;
