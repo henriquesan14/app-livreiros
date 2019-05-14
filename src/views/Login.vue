@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import {baseApiUrl, showError, userKey} from '@/global'
+import {showError} from '@/global'
 import Loading from '../components/shared/Loading'
 export default {
     name: 'Login',
@@ -31,7 +31,7 @@ export default {
         signIn(){
             this.loader = true;
             this.$store.dispatch('LOGIN', this.user)
-            .then(res => {
+            .then(() => {
                 this.$router.push('/dashboard/home')
             })
             .catch(showError)

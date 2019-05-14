@@ -36,6 +36,7 @@
 import { mapGetters}  from 'vuex'
 import Loading from '../shared/Loading'
 
+
 export default {
     name: 'UserAdmin',
     components: {Loading},
@@ -53,6 +54,7 @@ export default {
             ]
         }
     },
+
     watch:{
         page(){
             this.getUsers()

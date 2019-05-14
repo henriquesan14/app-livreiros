@@ -4,7 +4,8 @@
             <b-row>
                 <b-col md="6" sm="12">
                     <b-form-group label="Nome: " label-for="nome">
-                        <b-form-input id="nome" v-model="user.nomeUsuario" required placeholder="Informe o nome do usuário" />
+                        <b-form-input  name="nomeUsuario"
+                         id="nome" :state="!$v.user.nomeUsuario.invalid && !$v.user.nomeUsuario.dirty ? null : false" v-model="user.nomeUsuario" placeholder="Informe o nome do usuário" />
                     </b-form-group>
                 </b-col>
                 <b-col md="6" sm="12">
@@ -107,6 +108,7 @@
 import axios from 'axios';
 import {showError, baseApiUrl} from '@/global';
 import {mapGetters} from 'vuex'
+import { required} from "vuelidate/lib/validators";
 export default {
     name: 'CadastroUsuario',
     data(){
@@ -117,6 +119,13 @@ export default {
         }
     },
     computed: mapGetters(['estados', 'cidades']),
+    validations: {
+        user: {
+            nomeUsuario: {
+                required
+            }
+        }
+    },
     mounted(){
         this.$store.dispatch('GET_ESTADOS')
         .then(() => {})
@@ -129,6 +138,7 @@ export default {
             .catch(() => {})
         },
         save(){
+            console.log(this.$v.user.nomeUsuario)
             const url = `${baseApiUrl}/usuarios`;
             axios.post(url, this.user).then(() => {
                 this.reset();

@@ -19,7 +19,7 @@ import axios from 'axios'
       localStorage.setItem(userKey, res)
       state.user = JSON.parse(res)
     },
-    removeUser(state){
+    removeUser(){
         localStorage.removeItem(userKey)
     }
   }

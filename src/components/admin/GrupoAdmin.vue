@@ -72,9 +72,7 @@ export default {
         }     
         },
         loadGrupo(grupo){
-            console.log(grupo)
             this.grupo = {...grupo};
-            console.log(this.grupo)
         }
     }
 }
