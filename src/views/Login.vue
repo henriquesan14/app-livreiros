@@ -4,9 +4,14 @@
             <img src="@/assets/logo.png" width="200" alt="logo">
             <hr>
             <div class="auth-title">Login</div>
-            <b-form @submit.prevent="signIn()">
-                <input type="text" v-model="user.loginUsuario" placeholder="Login">
-                <input type="password" v-model="user.senhaUsuario" placeholder="Senha">
+            <b-form @submit.prevent="handleSubmit()">
+                <b-form-input 
+                :class="{'is-invalid': submitted && $v.user.loginUsuario.$invalid, 'is-valid': submitted && !$v.user.loginUsuario.$invalid}"
+                  type="text" v-model="user.loginUsuario" placeholder="Login" />
+                
+                <b-form-input
+                :class="{'is-invalid': submitted && $v.user.senhaUsuario.$invalid, 'is-valid': submitted && !$v.user.senhaUsuario.$invalid}"
+                 type="password" v-model="user.senhaUsuario" placeholder="Senha" />
 
                 <button type="submit">Entrar</button>
                 <Loading :loader="loader" />
@@ -18,13 +23,15 @@
 <script>
 import {showError} from '@/global'
 import Loading from '../components/shared/Loading'
+import { required, minLength } from "vuelidate/lib/validators";
 export default {
     name: 'Login',
     components: {Loading},
     data(){
         return {
             user: {},
-            loader: false
+            loader: false,
+            submitted: false,
         }
     },
     methods: {
@@ -36,6 +43,23 @@ export default {
             })
             .catch(showError)
             .finally(() => this.loader = false)
+        },
+        handleSubmit() {
+                this.submitted = true;
+
+                // stop here if form is invalid
+                this.$v.$touch();
+                if (this.$v.$invalid) {
+                    return;
+                }
+                this.submitted = false;
+                this.signIn();
+        }
+    },
+    validations: {
+        user: {
+            loginUsuario: {required},
+            senhaUsuario: {required, minLength: minLength(6)}
         }
     }
 }
@@ -54,8 +78,6 @@ export default {
         width: 350px;
         padding: 35px;
         box-shadow: 0 1px 5px rgba(0,0,0,0.15);
-
-
         display: flex;
         flex-direction: column;
         align-items: center;

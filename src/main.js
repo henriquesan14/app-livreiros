@@ -7,7 +7,8 @@ import './config/bootstrap'
 import './config/msgs'
 import './config/mq'
 import store from './config/store/store'
-
+import VueMask from 'v-mask'
+Vue.use(VueMask);
 
 Vue.use(Vuelidate)
 

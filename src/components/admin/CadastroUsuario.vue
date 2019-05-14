@@ -4,14 +4,14 @@
             <b-row>
                 <b-col md="6" sm="12">
                     <b-form-group label="Nome: " label-for="nome">
-                        <b-form-input 
+                        <b-form-input maxlength="100"
                         :class="{'is-invalid': submitted && $v.user.nomeUsuario.$invalid, 'is-valid': submitted && !$v.user.nomeUsuario.$invalid}"  
                          id="nome" v-model="user.nomeUsuario" placeholder="Informe o nome do usuário" />
                     </b-form-group>
                 </b-col>
                 <b-col md="6" sm="12">
                     <b-form-group label="Login: " label-for="login">
-                        <b-form-input id="login" 
+                        <b-form-input id="login" maxlength="30" 
                         :class="{'is-invalid': submitted && $v.user.loginUsuario.$invalid, 'is-valid': submitted && !$v.user.loginUsuario.$invalid}" 
                         v-model="user.loginUsuario"  placeholder="Informe o login do usuário" />
                     </b-form-group>
@@ -21,14 +21,14 @@
             <b-row>
                 <b-col md="6" sm="12">
                     <b-form-group label="Senha: " label-for="senha">
-                        <b-form-input
+                        <b-form-input maxlength="100"
                         :class="{'is-invalid': submitted && $v.user.senhaUsuario.$invalid, 'is-valid': submitted && !$v.user.senhaUsuario.$invalid}"
                          type="password" id="senha" v-model="user.senhaUsuario"  placeholder="Informe a senha do usuário" />
                     </b-form-group>
                 </b-col>
                 <b-col md="6" sm="12">
                     <b-form-group label="Confirmação de senha: " label-for="confirmSenha">
-                        <b-form-input
+                        <b-form-input maxlength="100"
                         :class="{'is-invalid': submitted && $v.user.confirmSenha.$invalid, 'is-valid': submitted && !$v.user.confirmSenha.$invalid}"
                          v-model="user.confirmSenha" type="password" id="confirmSenha"   placeholder="Confirme a senha do usuário" />
                     </b-form-group>
@@ -38,14 +38,14 @@
             <b-row>
                 <b-col md="6" sm="12">
                     <b-form-group label="RG: " label-for="rg">
-                        <b-form-input
+                        <b-form-input maxlength="25"
                         :class="{'is-invalid': submitted && $v.user.rgUsuario.$invalid, 'is-valid': submitted && !$v.user.rgUsuario.$invalid}"
                          type="text" id="rg" v-model="user.rgUsuario"  placeholder="Informe o RG do usuário" />
                     </b-form-group>
                 </b-col>
                 <b-col md="6" sm="12">
                     <b-form-group label="CPF: " label-for="cpf">
-                        <b-form-input
+                        <b-form-input v-mask="'###.###.###-##'"
                         :class="{'is-invalid': submitted && $v.user.cpfUsuario.$invalid, 'is-valid': submitted && !$v.user.cpfUsuario.$invalid}"
                          type="text" id="cpf" v-model="user.cpfUsuario"   placeholder="Informe o CPF do usuário" />
                     </b-form-group>
@@ -55,14 +55,14 @@
             <b-row>
                 <b-col md="6" sm="12">
                     <b-form-group label="E-mail: " label-for="email">
-                        <b-form-input
+                        <b-form-input maxlength="100"
                         :class="{'is-invalid': submitted && $v.user.emailUsuario.$invalid, 'is-valid': submitted && !$v.user.emailUsuario.$invalid}"
                          type="email" id="email" v-model="user.emailUsuario"  placeholder="Informe o e-mail do usuário" />
                     </b-form-group>
                 </b-col>
                 <b-col md="6" sm="12">
                     <b-form-group label="CEP: " label-for="cep">
-                        <b-form-input
+                        <b-form-input v-mask="'#####-###'"
                         :class="{'is-invalid': submitted && $v.user.cepUsuario.$invalid, 'is-valid': submitted && !$v.user.cepUsuario.$invalid}"
                          type="text" id="cep" v-model="user.cepUsuario"   placeholder="Informe o CEP do usuário" />
                     </b-form-group>
@@ -72,13 +72,13 @@
             <b-row>
                 <b-col md="9" sm="9">
                     <b-form-group label="Logradouro: " label-for="logradouro">
-                        <b-form-input
+                        <b-form-input maxlength="100"
                         :class="{'is-invalid': submitted && $v.user.ruaUsuario.$invalid, 'is-valid': submitted && !$v.user.ruaUsuario.$invalid}" type="text" id="logradouro" v-model="user.ruaUsuario"  placeholder="Informe o logradouro do usuário" />
                     </b-form-group>
                 </b-col>
                 <b-col md="3" sm="3">
                     <b-form-group label="Número: " label-for="numero">
-                        <b-form-input
+                        <b-form-input 
                         :class="{'is-invalid': submitted && $v.user.numeroUsuario.$invalid, 'is-valid': submitted && !$v.user.numeroUsuario.$invalid}"
                          type="number" id="numero" v-model.number="user.numeroUsuario"   placeholder="Número" />
                     </b-form-group>
@@ -88,14 +88,14 @@
             <b-row>
                 <b-col md="6" sm="12">
                     <b-form-group label="Bairro: " label-for="bairro">
-                        <b-form-input
+                        <b-form-input maxlength="50"
                         :class="{'is-invalid': submitted && $v.user.bairroUsuario.$invalid, 'is-valid': submitted && !$v.user.bairroUsuario.$invalid}"
                          type="text" id="bairro" v-model="user.bairroUsuario"  placeholder="Informe o bairro do usuário" />
                     </b-form-group>
                 </b-col>
                 <b-col md="6" sm="12">
                     <b-form-group label="Complemento: " label-for="complemento">
-                        <b-form-input
+                        <b-form-input maxlength="50"
                          type="text" id="complemento" v-model="user.complementoUsuario"   placeholder="Informe o complemento do usuário" />
                     </b-form-group>
                 </b-col>
@@ -129,7 +129,7 @@
 import axios from 'axios';
 import {showError, baseApiUrl} from '@/global';
 import {mapGetters} from 'vuex'
-import { required, minLength, maxLength, email, sameAs } from "vuelidate/lib/validators";
+import { required, minLength, email, sameAs } from "vuelidate/lib/validators";
 export default {
     name: 'CadastroUsuario',
     data(){
@@ -144,25 +144,20 @@ export default {
         user: {
             nomeUsuario: {
                 required,
-                maxLength: maxLength(50)
             },
             loginUsuario: {
                 required,
-                maxLength: maxLength(50)
             },
             senhaUsuario: {
                 required,
-                minLength: minLength(6),
-                maxLength: maxLength(50)
+                minLength: minLength(6)
             },
-            confirmSenha: {required, maxLength: maxLength(50), sameAsPassword: sameAs('senhaUsuario')},
+            confirmSenha: {required, sameAsPassword: sameAs('senhaUsuario')},
             rgUsuario: {
                 required,
-                maxLength: maxLength(15)
             },
             cpfUsuario: {
                 required,
-                maxLength: maxLength(14),
                 minLength: minLength(14)
             },
             emailUsuario: {
@@ -171,7 +166,6 @@ export default {
             },
             cepUsuario: {
                 required,
-                maxLength: maxLength(9),
                 minLength: minLength(9)
             },
             ruaUsuario: {
