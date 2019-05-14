@@ -156,9 +156,6 @@ export default {
                 maxLength: maxLength(50)
             },
             confirmSenha: {required, maxLength: maxLength(50), sameAsPassword: sameAs('senhaUsuario')},
-            cidadeUsuario: {
-                required
-            },
             rgUsuario: {
                 required,
                 maxLength: maxLength(15)
@@ -216,9 +213,10 @@ export default {
         },
         reset(){
             this.user = {};
+            this.submitted = false;
             this.$store.dispatch('RESET_CIDADES')
         },
-        handleSubmit(e) {
+        handleSubmit() {
                 this.submitted = true;
 
                 // stop here if form is invalid
