@@ -19,8 +19,8 @@
                 <b-button variant="dark" @click="loadUser(data.item)" class="mr-2">
                     <i class="fa fa-users"></i>
                 </b-button>
-                <b-button variant="danger" @click="loadUser(data.item)" class="mr-2">
-                    <i class="fa fa-arrow-circle-up"></i>
+                <b-button :variant="data.item.statusUsuario == true ? 'danger': 'success'" @click="showMsgBoxTwo(data.item);" class="mr-2">
+                    <i class="fas":class="data.item.statusUsuario == true ? 'fa-lock':'fa-lock-open'" ></i>
                 </b-button>
             </template>
         </b-table>
@@ -35,7 +35,8 @@
 <script>
 import { mapGetters}  from 'vuex'
 import Loading from '../shared/Loading'
-
+import axios from 'axios'
+import {baseApiUrl} from '@/global'
 
 export default {
     name: 'UserAdmin',
@@ -51,7 +52,8 @@ export default {
                 {key: 'nomeUsuario', label: 'Nome', sortable: true},
                 {key: 'loginUsuario', label: 'Login', sortable: true},
                 {key: 'actions', label: 'Ações'}
-            ]
+            ],
+            boxTwo: ''
         }
     },
 
@@ -77,7 +79,36 @@ export default {
         },
         loadUser(user){
             this.user = {...user};
-        }
+        },
+        showMsgBoxTwo(user) {
+        this.boxTwo = ''
+        this.$bvModal.msgBoxConfirm(`Tem certeza que deseja ativar/desativar o usuário ${user.idUsuario}?` , {
+          title: 'Por favor confirme',
+          size: 'sm',
+          buttonSize: 'sm',
+          okVariant: 'danger',
+          okTitle: 'YES',
+          cancelTitle: 'NO',
+          footerClass: 'p-2',
+          hideHeaderClose: false,
+          centered: true
+        })
+          .then((res) => {
+              if(res){
+                  this.statusUser(user.idUsuario);
+              }
+          })
+          .catch(err => {
+            
+          })
+      },
+      statusUser(idUsuario){
+          const url = `${baseApiUrl}/usuarios/${idUsuario}/status`;
+          axios.put(url).then(res => {
+              this.getUsers();
+              this.$toasted.global.defaultSuccess();
+          }).catch(showError)
+      }
     }
 }
 </script>
