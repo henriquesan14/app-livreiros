@@ -13,14 +13,17 @@
         </b-row>
         <b-table v-if="!loader && pageUsers.rows.length > 0" hover striped :items="pageUsers.rows" :fields="fields">
             <template slot="actions" slot-scope="data">
-                <b-button variant="warning" @click="loadUser(data.item)" class="mr-2">
+                <b-button variant="warning" @click="loadUser(data.item)" class="mr-2"
+                v-b-tooltip.hover title="Alterar">
                     <i class="fa fa-pencil"></i>
                 </b-button>
-                <b-button variant="dark" @click="loadUser(data.item)" class="mr-2">
+                <b-button variant="dark" @click="loadUser(data.item)" class="mr-2"
+                v-b-tooltip.hover title="Associar grupos">
                     <i class="fa fa-users"></i>
                 </b-button>
-                <b-button :variant="data.item.statusUsuario == true ? 'danger': 'success'" @click="showMsgBoxTwo(data.item);" class="mr-2">
-                    <i class="fas":class="data.item.statusUsuario == true ? 'fa-lock':'fa-lock-open'" ></i>
+                <b-button v-b-tooltip.hover :title="data.item.statusUsuario == true ? 'Desativar': 'Ativar'"
+                :variant="data.item.statusUsuario == true ? 'danger': 'success'" @click="showMsgBoxTwo(data.item);" class="mr-2">
+                    <i class="fas" :class="data.item.statusUsuario == true ? 'fa-lock':'fa-lock-open'" ></i>
                 </b-button>
             </template>
         </b-table>
@@ -36,7 +39,7 @@
 import { mapGetters}  from 'vuex'
 import Loading from '../shared/Loading'
 import axios from 'axios'
-import {baseApiUrl} from '@/global'
+import {baseApiUrl, showError} from '@/global'
 
 export default {
     name: 'UserAdmin',
@@ -82,13 +85,13 @@ export default {
         },
         showMsgBoxTwo(user) {
         this.boxTwo = ''
-        this.$bvModal.msgBoxConfirm(`Tem certeza que deseja ativar/desativar o usuário ${user.idUsuario}?` , {
-          title: 'Por favor confirme',
-          size: 'sm',
-          buttonSize: 'sm',
+        this.$bvModal.msgBoxConfirm(`Tem certeza que deseja ativar/desativar o usuário de Cód. ${user.idUsuario}?` , {
+          title: 'Confirmação',
+          size: 'md',
+          buttonSize: 'md',
           okVariant: 'danger',
-          okTitle: 'YES',
-          cancelTitle: 'NO',
+          okTitle: 'SIM',
+          cancelTitle: 'NÃO',
           footerClass: 'p-2',
           hideHeaderClose: false,
           centered: true
@@ -98,13 +101,13 @@ export default {
                   this.statusUser(user.idUsuario);
               }
           })
-          .catch(err => {
+          .catch(() => {
             
           })
       },
       statusUser(idUsuario){
           const url = `${baseApiUrl}/usuarios/${idUsuario}/status`;
-          axios.put(url).then(res => {
+          axios.put(url).then(() => {
               this.getUsers();
               this.$toasted.global.defaultSuccess();
           }).catch(showError)

@@ -1,33 +1,19 @@
 <template>
     <div class="grupo-admin">
-        <b-row>
-            <b-col md="12" sm="12" class="mb-3">
-                <b-input-group>
-                    <b-form-input v-model="nome" @keydown.enter="getGrupos()" type="text" placeholder="Pesquise o nome do grupo..." />
-                    <b-input-group-append>
-                        <b-button @click="getGrupos()" variant="primary"><i class="fa fa-search"></i></b-button>
-                    </b-input-group-append>
-                </b-input-group>
-            </b-col>
-        </b-row>
-        <b-table v-if="!loader && pageGrupos.rows.length > 0" hover striped :items="pageGrupos.rows" :fields="fields">
+        <b-button class="mb-3" variant="dark">Novo grupo</b-button>
+        <b-table v-if="!loader && grupos.rows.length > 0" hover striped :items="grupos.rows" :fields="fields">
             <template slot="actions" slot-scope="data">
-                <b-button variant="warning" @click="loadGrupo(data.item)" class="mr-2">
+                <b-button variant="warning" @click="loadGrupo(data.item)" class="mr-2"
+                v-b-tooltip.hover title="Alterar">
                     <i class="fa fa-pencil"></i>
                 </b-button>
-                <b-button variant="dark" @click="loadGrupo(data.item)" class="mr-2">
+                <b-button variant="dark" @click="loadGrupo(data.item)" class="mr-2"
+                v-b-tooltip.hover title="Associar permissões">
                     <i class="fa fa-cogs"></i>
-                </b-button>
-                <b-button variant="danger" @click="loadGrupo(data.item)" class="mr-2">
-                    <i class="fa fa-trash"></i>
                 </b-button>
             </template>
         </b-table>
-        <div v-if="!loader && pageGrupos.rows.length < 1" class="mb-2">
-            <span>Nenhum resultado...</span>
-        </div>
         <Loading :loader="loader" />
-        <b-pagination size="md" v-model="page" :total-rows="pageGrupos.count" :per-page="10"></b-pagination>
     </div>
 </template>
 
@@ -56,7 +42,7 @@ export default {
             this.getGrupos()
         }
     },
-    computed: mapGetters(['pageGrupos']),
+    computed: mapGetters(['grupos']),
     mounted(){
         this.getGrupos();
     },

@@ -3,16 +3,15 @@ import {baseApiUrl} from '@/global'
 
 const state = {
   pageUsers: {rows: []},
-  pageGrupos: {rows: []}
-  
+  grupos: {rows: []} 
 }
 
 const mutations = {
   RECEIVE_USERS (state, {pageUsers}) {
     state.pageUsers = pageUsers
   },
-  RECEIVE_GRUPOS(state, {pageGrupos}){
-    state.pageGrupos = pageGrupos
+  RECEIVE_GRUPOS(state, {grupos}){
+    state.grupos = grupos
   }
 }
 
@@ -22,16 +21,16 @@ const actions = {
     const { data } = await axios.get(url);
     commit('RECEIVE_USERS',{ pageUsers: data});
   },
-  async GET_GRUPOS ({commit}, params) {
-    const url = `${baseApiUrl}/grupos?nome=${params.nome}&pagina=${params.page}`;
+  async GET_GRUPOS ({commit}) {
+    const url = `${baseApiUrl}/grupos`;
     const { data } = await axios.get(url);
-    commit('RECEIVE_GRUPOS',{ pageGrupos: data});
+    commit('RECEIVE_GRUPOS',{ grupos: data});
   }
 },
 
 getters =  {
     pageUsers: state => state.pageUsers,
-    pageGrupos: state => state.pageGrupos
+    grupos: state => state.grupos
 }
 
 export default {
