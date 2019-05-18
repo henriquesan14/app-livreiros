@@ -3,7 +3,8 @@ import {baseApiUrl} from '@/global'
 
 const state = {
   pageUsers: {rows: []},
-  grupos: {rows: []} 
+  grupos: {rows: []},
+  permissoes: [] 
 }
 
 const mutations = {
@@ -12,6 +13,9 @@ const mutations = {
   },
   RECEIVE_GRUPOS(state, {grupos}){
     state.grupos = grupos
+  },
+  RECEIVE_PERMISSOES(state, {permissoes}){
+    state.permissoes = permissoes
   }
 }
 
@@ -25,12 +29,19 @@ const actions = {
     const url = `${baseApiUrl}/grupos`;
     const { data } = await axios.get(url);
     commit('RECEIVE_GRUPOS',{ grupos: data});
+  },
+  async GET_PERMISSOES ({commit}, categoria) {
+    
+    const url = `${baseApiUrl}/permissoes?categoria=${categoria}`;
+    const { data } = await axios.get(url);
+    commit('RECEIVE_PERMISSOES',{ permissoes: data});
   }
 },
 
 getters =  {
     pageUsers: state => state.pageUsers,
-    grupos: state => state.grupos
+    grupos: state => state.grupos,
+    permissoes: state => state.permissoes
 }
 
 export default {
