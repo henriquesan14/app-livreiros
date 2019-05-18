@@ -1,6 +1,6 @@
 <template>
     <div class="cadastro-user">
-        <b-form @submit.prevent="handleSubmit">
+        <b-form @submit.prevent="submitUser()">
             <b-row>
                 <b-col md="6" sm="12">
                     <b-form-group label="Nome: " label-for="nome">
@@ -130,7 +130,7 @@
                 </b-col>
             </b-row>
             <b-button type="submit" variant="success mr-2">Cadastrar</b-button>
-            <b-button variant="danger mr-2" @click="reset()">Limpar</b-button>
+            <b-button variant="danger mr-2" @click="zeraUser()">Limpar</b-button>
         </b-form>
     </div>
 </template>
@@ -208,19 +208,19 @@ export default {
             .then(() => {})
             .catch(() => {})
         },
-        save(){
+        saveUser(){
             const url = `${baseApiUrl}/usuarios`;
             axios.post(url, this.user).then(() => {
-                this.reset();
+                this.zeraUser();
                 this.$toasted.global.defaultSuccess();
             }).catch(showError)
         },
-        reset(){
+        zeraUser(){
             this.user = {};
             this.submitted = false;
             this.$store.dispatch('RESET_CIDADES')
         },
-        handleSubmit() {
+        submitUser() {
                 this.submitted = true;
                 // stop here if form is invalid
                 this.$v.$touch();
@@ -228,9 +228,7 @@ export default {
                     return;
                 }
                 this.submitted = false;
-                delete this.user.estadoUsuario
-                delete this.user.confirmSenha
-                this.save();
+                this.saveUser();
         }
     }
 }
