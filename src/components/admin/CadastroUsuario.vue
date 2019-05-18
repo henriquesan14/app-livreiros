@@ -119,6 +119,16 @@
                     </b-form-group>
                 </b-col>
             </b-row>
+            
+            <b-row>
+                <b-col md="12" sm="12">
+                    <b-form-group label="Grupos">
+                        <b-form-checkbox-group v-model="user.gruposUsuario" name="grupos">
+                            <b-form-checkbox v-for="grupo in grupos.rows" :key="grupo.idGrupo" :value="grupo.idGrupo">{{grupo.nomeGrupo}}</b-form-checkbox>
+                        </b-form-checkbox-group>
+                    </b-form-group>
+                </b-col>
+            </b-row>
             <b-button type="submit" variant="success mr-2">Cadastrar</b-button>
             <b-button variant="danger mr-2" @click="reset()">Limpar</b-button>
         </b-form>
@@ -139,7 +149,7 @@ export default {
             submitted: false,
         }
     },
-    computed: mapGetters(['estados', 'cidades']),
+    computed: mapGetters(['estados', 'cidades', 'grupos']),
     validations: {
         user: {
             nomeUsuario: {
@@ -212,7 +222,6 @@ export default {
         },
         handleSubmit() {
                 this.submitted = true;
-
                 // stop here if form is invalid
                 this.$v.$touch();
                 if (this.$v.$invalid) {
