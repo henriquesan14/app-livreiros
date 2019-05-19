@@ -123,9 +123,11 @@
             <b-row>
                 <b-col md="12" sm="12">
                     <b-form-group label="Grupos">
-                        <b-form-checkbox-group v-model="user.gruposUsuario" name="grupos">
+                        <span class="text-danger" v-if="submitted && $v.user.grupos.$invalid">Selecione pelo menos um grupo</span>
+                        <b-form-checkbox-group class="is-invalid" v-model="user.grupos" name="grupos">
                             <b-form-checkbox v-for="grupo in grupos.rows" :key="grupo.idGrupo" :value="grupo.idGrupo">{{grupo.nomeGrupo}}</b-form-checkbox>
                         </b-form-checkbox-group>
+                        
                     </b-form-group>
                 </b-col>
             </b-row>
@@ -144,8 +146,11 @@ export default {
     name: 'CadastroUsuario',
     data(){
         return {
-            user: {},
-            confirmSenha: '',
+            user: {
+                estadoUsuario: null,
+                cidadeUsuario: null,
+                grupos: []
+            },
             submitted: false,
         }
     },
@@ -192,7 +197,8 @@ export default {
             },
             cidadeUsuario: {
                 required
-            }
+            },
+            grupos: {required}
         },
         
         
@@ -216,7 +222,7 @@ export default {
             }).catch(showError)
         },
         zeraUser(){
-            this.user = {};
+            this.user = {grupos: []};
             this.submitted = false;
             this.$store.dispatch('RESET_CIDADES')
         },

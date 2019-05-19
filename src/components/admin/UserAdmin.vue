@@ -17,10 +17,6 @@
                 v-b-tooltip.hover title="Alterar">
                     <i class="fa fa-pencil"></i>
                 </b-button>
-                <b-button variant="dark" @click="loadUser(data.item)" class="mr-2"
-                v-b-tooltip.hover title="Associar grupos">
-                    <i class="fa fa-users"></i>
-                </b-button>
                 <b-button v-b-tooltip.hover :title="data.item.statusUsuario == true ? 'Desativar': 'Ativar'"
                 :variant="data.item.statusUsuario == true ? 'danger': 'success'" @click="showMsgBoxTwo(data.item);" class="mr-2">
                     <i class="fas" :class="data.item.statusUsuario == true ? 'fa-lock':'fa-lock-open'" ></i>

@@ -27,8 +27,8 @@
                    </b-col>
 
                    <b-col md="6" sm="12">
-                    <b-form-group label="Categoria de grupo: " label-for="categoriaGrupo">
-                        <b-form-select @change="getPermissoes(categoriaSelecionada)" v-model="categoriaSelecionada" :options="options">
+                    <b-form-group label="Categoria da permissão: " label-for="categoriaPermissao">
+                        <b-form-select id="categoriaPermissao" @change="getPermissoes(categoriaSelecionada)" v-model="categoriaSelecionada" :options="options">
                         </b-form-select>
                     </b-form-group>
                 </b-col>
@@ -37,7 +37,7 @@
                 <b-col md="12" sm="12">
                         <div class="perm-group">
                             <h5>Adicione permissões:</h5>
-                            <span class="mr-2"  v-for="permissao in permissoes" :key="permissao.idPermissao">{{permissao.nomePermissao}}
+                            <span class="mr-2 perms"  v-for="permissao in permissoes" :key="permissao.idPermissao">{{permissao.nomePermissao}}
                                 <button :disabled="verificaPermissao(permissao.idPermissao)" type="button" @click="addPermissao(permissao)"  class="primary ml-1" >
                                     <i class="fa"  :class="verificaPermissao(permissao.idPermissao) === true ? 'fa-ban':'fa-plus'"></i>
                                 </button>
@@ -45,11 +45,18 @@
                         </div>
                 </b-col>
                </b-row>
-               <b-row>
-                <b-col md="12" sm="12">
+               
+               <b-row >
+                <b-col md="12" sm="12">  
                     <div class="perm-group">
                         <h5>Permissões do grupo:</h5>
-                        <span class="mr-2" v-for="perm in grupo.permissoes" :key="perm.idPermissao">{{perm.nomePermissao}}<button :disabled="grupo.permissoes.length <= 1" type="button" @click="removePermissao()" class="ml-1 danger"><i class="fa fa-trash"></i></button></span>      
+                        <h6 v-if="submitted && $v.grupo.permissoes.$invalid" class="alert-perm">Adicione pelo menos uma permissão</h6>
+                        
+                        <span class="mr-2 perms" v-for="perm in grupo.permissoes" :key="perm.idPermissao">{{perm.nomePermissao}}
+                            <button type="button" @click="removePermissao()" class="ml-1 danger">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </span>      
                         <span v-if="grupo.permissoes.length < 1">Nenhuma permissão...</span>
                     </div>
                 </b-col>
@@ -95,7 +102,8 @@ export default {
     },
     validations: {
         grupo: {
-            nomeGrupo: {required}
+            nomeGrupo: {required},
+            permissoes: {required}
         }
     },
     computed: mapGetters(['grupos', 'permissoes']),
@@ -126,6 +134,7 @@ export default {
             
         },
         zeraGrupo(){
+            this.submitted = false;
             this.grupo = {permissoes: []};
         },
         addPermissao(permissao){
@@ -157,6 +166,7 @@ export default {
                 
         },
         saveGrupo(){
+            this.loaderGrupo = true;
             this.convertPermissoes();
             const url = `${baseApiUrl}/grupos`;
             axios.post(url, this.grupo).then(() => {
@@ -164,9 +174,13 @@ export default {
                 this.getGrupos();
                 this.zeraGrupo();
                 this.$toasted.global.defaultSuccess();
-            }).catch(showError)
+            }).catch((err) => {
+                showError(err);
+                this.$bvModal.hide('modal-grupo');
+            })
         },
         editGrupo(){
+            this.loader = true;
             this.convertPermissoes();
             const url = `${baseApiUrl}/grupos/${this.grupo.idGrupo}`;
             axios.put(url, this.grupo).then(() => {
@@ -174,7 +188,10 @@ export default {
                 this.getGrupos();
                 this.zeraGrupo();
                 this.$toasted.global.defaultSuccess();
-            }).catch(showError)
+            }).catch((err) => {
+                showError(err);
+                this.$bvModal.hide('modal-grupo');
+            })
         }
     }
 }
@@ -185,10 +202,32 @@ export default {
         padding: 8px;
         border: 1px solid #ccc;
         margin-bottom: 8px;
+
+        display:flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
     }
+    .perm-group h5{
+        width:100%;
+        text-align: center;
+    }
+
+    .perm-group h6{
+        width: 100%;
+        color: red;
+        text-align: center;
+    }
+
     .perm-group span{
+        
+        padding:2px;
         font-size: 15px;
         margin: 2px;
+    }
+
+    .perm-group span.perms{
+        border:1px solid #ccc;
     }
 
     .perm-group span button{
