@@ -6,6 +6,7 @@ import Home from '../components/home/Home.vue'
 import AdminPages from '../components/admin/AdminPages.vue'
 import CadastroUsuario from'../components/admin/CadastroUsuario.vue'
 import EdicaoUsuario from '../components/admin/EdicaoUsuario.vue'
+import CadastroLivro from '../components/livro/CadastroLivro.vue'
 import Livros from '../components/livro/Livros.vue'
 import {userKey} from '@/global'
 
@@ -63,6 +64,11 @@ export default new Router({
           path: 'livros',
           name: 'livro',
           component: Livros
+        },
+        {
+          path: 'livros/cadastro',
+          name: 'cadastro-livro',
+          component: CadastroLivro
         },
         {
           path: '',

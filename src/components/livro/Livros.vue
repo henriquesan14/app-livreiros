@@ -3,7 +3,7 @@
        <PageTitle icon="fa fa-book" main="Administração de livros" sub="Gerenciar livros"/>
             
             <b-card header="Livros">
-                <b-button size="sm" class="mb-2" variant="dark">Novo Livro</b-button>
+                <router-link to="/dashboard/livros/cadastro" tag="b-button" class="mb-2 btn-dark btn-sm">Novo Livro</router-link>
                 <b-row>
                     <b-col md="12" sm="12" class="mb-3">
                         <b-input-group>
