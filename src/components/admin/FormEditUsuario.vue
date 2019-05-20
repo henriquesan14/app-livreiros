@@ -37,7 +37,7 @@
                 </b-col>
                 <b-col md="6" sm="12">
                     <b-form-group label="CPF: " label-for="cpf">
-                        <b-form-input maxLength="11"
+                        <the-mask class="form-control" :mask="'###.###.###-##'" :masked="false"
                         :class="{'is-invalid': submitted && $v.user.cpfUsuario.$invalid, 'is-valid': submitted && !$v.user.cpfUsuario.$invalid}"
                          type="text" id="cpf" v-model="user.cpfUsuario"   placeholder="Informe o CPF do usuário" />
                     </b-form-group>
@@ -54,7 +54,7 @@
                 </b-col>
                 <b-col md="6" sm="12">
                     <b-form-group label="CEP: " label-for="cep">
-                        <b-form-input maxLength="8"
+                        <the-mask class="form-control" :mask="'#####-###'" :masked="false"
                         :class="{'is-invalid': submitted && $v.user.cepUsuario.$invalid, 'is-valid': submitted && !$v.user.cepUsuario.$invalid}"
                          type="text" id="cep" v-model="user.cepUsuario"   placeholder="Informe o CEP do usuário" />
                     </b-form-group>
