@@ -25,31 +25,38 @@
                     <div class="box-livro mb-2" v-for="livro in pageLivros.rows" :key="livro.idLivro">
                         <div class="img-livro">
                             <img :src="'https://imagens-capas-1.s3.amazonaws.com/'+ livro.imagemLivro" alt="">
-                            <h4>{{'R$' + livro.precoLivro}}</h4>
+                            
                         </div>
                         <div class="info-livro">
                             <div class="title-livro">
-                                <h4>{{livro.tituloLivro}}</h4>
+                                <h4><strong>{{livro.tituloLivro}}</strong></h4>
                                 <h4>{{livro.autor.nomeAutor}}</h4>
                             </div>
                             <div class="desc-livro">
                                 <div class="desc1">
-                                    <span>{{livro.anoLivro}}</span>
-                                    <span>{{livro.condicaoLivro}}</span>
-                                    <span>Qtd.: 1</span>
+                                    <span><strong>Ano: </strong>{{livro.anoLivro}}</span>
+                                    <span><strong>Tipo:</strong> {{livro.condicaoLivro}}</span>
+                                    <span><strong>Qtd.:</strong> 1</span>
                                 </div>
                                 <div class="desc2">
-                                    <span>Editora: {{livro.editora.nomeEditora}}</span>
-                                    <span>Assunto: {{livro.assunto.nomeAssunto}}</span>
-                                    <span>ID: {{livro.idLivro}}</span>
+                                    <span><strong>Editora:</strong> {{livro.editora.nomeEditora}}</span>
+                                    <span><strong>Assunto:</strong> {{livro.assunto.nomeAssunto}}</span>
+                                    <span><strong>ID:</strong> {{livro.idLivro}}</span>
                                 </div>
                             </div>  
                         </div><!--info-->
 
-                        <div class="btns-livro">
-                            <b-button size="sm" variant="primary" class="mb-2">Adicionar</b-button>
-                            <b-button size="sm" variant="warning" class="mb-2">Editar</b-button>
-                            <b-button size="sm" variant="dark">Visualizar</b-button>
+                        <div class="info2-livro">
+                            <h4>{{'R$' + livro.precoLivro}}</h4>
+                            <div class="btns-livro">
+                                <b-button v-b-tooltip.hover title="Adicionar" 
+                                  variant="primary" class="mr-2"><i class="fa fa-plus"></i></b-button>
+                                <b-button v-b-tooltip.hover title="Alterar" 
+                                  variant="warning" class="mr-2"><i class="fa fa-pencil"></i></b-button>
+                                <b-button v-b-tooltip.hover title="Detalhes" 
+                                  variant="dark"><i class="fa fa-search-plus"></i></b-button>
+                            </div>
+                            <b-button class="mt-2" variant="secondary">Descrição<i class="fa fa-caret-down ml-2"></i></b-button>
                         </div><!--btn-->
                     </div><!--box-->
                 </div> <!--scroll-->
@@ -99,10 +106,10 @@ export default {
 </script>
 
 <style>
-
     
     .box-livro{
         border:1px solid #ccc;
+        border-radius: 5px;
         display:flex;
         height: auto;
         padding:5px;
@@ -148,20 +155,30 @@ export default {
         margin-right: 10px;
     }
    
-    .btns-livro{
+    .info2-livro{
         flex:1;
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
     }
-    @media (max-width: 800px) {
+
+    .btns-livros{
+        display: flex;
+    }
+
+    @media (max-width: 500px) {
         .scroll-table{
             overflow-x: auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            
         }
 
         .box-livro{
             border: none;
-        }
+        }        
+
+        
     }
 </style>
