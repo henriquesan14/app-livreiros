@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import auth from './modules/auth'
 import user from './modules/user'
 import estado from './modules/estado'
+import livro from './modules/livro'
 import axios from 'axios'
 import router from '../router'
 import {userKey} from '@/global'
@@ -34,6 +35,7 @@ export default new Vuex.Store({
     modules: {
         auth,
         user,
-        estado
+        estado,
+        livro
     }
 })

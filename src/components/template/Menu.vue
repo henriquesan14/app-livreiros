@@ -24,10 +24,7 @@ export default {
             items: [
             {text: 'Home'},
             {text: 'Usuarios'},
-            {text: 'Livros', children: [
-              {text: 'Listar'},
-              {text: 'Cadastrar'}
-            ]}
+            {text: 'Livros'}
           ],
           options: {
             filter: {

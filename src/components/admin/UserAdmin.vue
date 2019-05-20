@@ -1,6 +1,6 @@
 <template>
     <div class="user-admin">
-
+        <router-link class="btn-dark mb-2" tag="b-button" to="/dashboard/usuarios/cadastro" >Novo usuário</router-link>
         <b-row>
             <b-col md="12" sm="12" class="mb-3">
                 <b-input-group>
@@ -11,9 +11,9 @@
                 </b-input-group>
             </b-col>
         </b-row>
-        <b-table v-if="!loader && pageUsers.rows.length > 0" hover striped :items="pageUsers.rows" :fields="fields">
+        <b-table :responsive="true" v-if="!loader && pageUsers.rows.length > 0" hover striped :items="pageUsers.rows" :fields="fields">
             <template slot="actions" slot-scope="data">
-                <b-button variant="warning" @click="loadUser(data.item)" class="mr-2"
+                <b-button variant="warning" class="mr-2" @click="navigate(data.item.idUsuario)"
                 v-b-tooltip.hover title="Alterar">
                     <i class="fa fa-pencil"></i>
                 </b-button>
@@ -28,6 +28,7 @@
         </div>
         <Loading :loader="loader" />
         <b-pagination size="md" v-model="page" :total-rows="pageUsers.count" :per-page="10"></b-pagination>
+    
     </div>
 </template>
 
@@ -107,6 +108,9 @@ export default {
               this.getUsers();
               this.$toasted.global.defaultSuccess();
           }).catch(showError)
+      },
+      navigate(id){
+          this.$router.push({name: 'edicao-user', params: {id}})
       }
     }
 }

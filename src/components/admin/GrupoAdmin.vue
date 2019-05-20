@@ -166,7 +166,6 @@ export default {
                 
         },
         saveGrupo(){
-            this.loaderGrupo = true;
             this.convertPermissoes();
             const url = `${baseApiUrl}/grupos`;
             axios.post(url, this.grupo).then(() => {
@@ -180,7 +179,6 @@ export default {
             })
         },
         editGrupo(){
-            this.loader = true;
             this.convertPermissoes();
             const url = `${baseApiUrl}/grupos/${this.grupo.idGrupo}`;
             axios.put(url, this.grupo).then(() => {

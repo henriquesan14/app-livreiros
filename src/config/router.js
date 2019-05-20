@@ -4,6 +4,9 @@ import Dashboard from '../views/Dashboard.vue'
 import Login from '../views/Login.vue'
 import Home from '../components/home/Home.vue'
 import AdminPages from '../components/admin/AdminPages.vue'
+import CadastroUsuario from'../components/admin/CadastroUsuario.vue'
+import EdicaoUsuario from '../components/admin/EdicaoUsuario.vue'
+import Livros from '../components/livro/Livros.vue'
 import {userKey} from '@/global'
 
 Vue.use(Router)
@@ -44,7 +47,22 @@ export default new Router({
         {
           path: 'usuarios',
           name: 'admin',
-          component: AdminPages
+          component: AdminPages,
+        },
+        {
+          path: 'usuarios/cadastro',
+          name: 'cadastro-user',
+          component: CadastroUsuario
+        },
+        {
+          path: 'usuarios/:id',
+          name: 'edicao-user',
+          component: EdicaoUsuario
+        },
+        {
+          path: 'livros',
+          name: 'livro',
+          component: Livros
         },
         {
           path: '',

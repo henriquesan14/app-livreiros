@@ -10,9 +10,6 @@
                     <b-tab title="Grupos">
                         <GrupoAdmin />
                     </b-tab>  
-                    <b-tab title="Cadastro Usuário">
-                        <CadastroUsuario />
-                    </b-tab> 
                 </b-tabs>
             </b-card>
         </div>
@@ -23,10 +20,10 @@
 import PageTitle from '../template/PageTitle'
 import UserAdmin from './UserAdmin'
 import GrupoAdmin from './GrupoAdmin'
-import CadastroUsuario from './CadastroUsuario'
+
 export default {
     name: 'AdminPages',
-    components: {PageTitle, UserAdmin, GrupoAdmin, CadastroUsuario}
+    components: {PageTitle, UserAdmin, GrupoAdmin}
 }
 </script>
 
