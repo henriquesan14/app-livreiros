@@ -38,7 +38,7 @@ export default {
             this.$router.push(`/dashboard/${node.text.toLowerCase()}`)
 
             if(this.$mq === 'xs' || this.$mq === 'sm'){
-                this.$store.commit('toggleMenu', false)
+                this.$store.dispatch('toggleMenu', false)
             }
         }
     },
