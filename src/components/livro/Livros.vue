@@ -87,7 +87,7 @@ export default {
     },
     watch:{
         page(){
-            this.getUsers()
+            this.getLivros()
         }
     },
     methods:{

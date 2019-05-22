@@ -70,9 +70,9 @@
                 </b-col>
                 <b-col md="3" sm="3">
                     <b-form-group label="Número: " label-for="numero">
-                        <b-form-input 
+                        <the-mask 
                         :class="{'is-invalid': submitted && $v.user.numeroUsuario.$invalid, 'is-valid': submitted && !$v.user.numeroUsuario.$invalid}"
-                         type="number" id="numero" v-model="user.numeroUsuario"   placeholder="Número" />
+                         class="form-control" :mask="'######'" id="numero" v-model="user.numeroUsuario"   placeholder="Número" />
                     </b-form-group>
                 </b-col>
             </b-row>

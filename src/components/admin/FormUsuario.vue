@@ -78,9 +78,9 @@
                 </b-col>
                 <b-col md="3" sm="3">
                     <b-form-group label="Número: " label-for="numero">
-                        <b-form-input 
+                        <the-mask 
                         :class="{'is-invalid': submitted && $v.user.numeroUsuario.$invalid, 'is-valid': submitted && !$v.user.numeroUsuario.$invalid}"
-                         type="number" id="numero" v-model="user.numeroUsuario"   placeholder="Número" />
+                         class="form-control" :mask="'######'" id="numero" v-model="user.numeroUsuario"   placeholder="Número" />
                     </b-form-group>
                 </b-col>
             </b-row>
@@ -222,8 +222,6 @@ export default {
             this.$store.dispatch('RESET_CIDADES')
         },
         submitUser() {
-                console.log(this.user.cepUsuario)
-                console.log(this.user.cpfUsuario)
                 this.submitted = true;
                 this.$v.$touch();
                 if(this.$v.$invalid){
