@@ -3,18 +3,34 @@
         <div class="auth-modal">
             <img src="@/assets/logo.png" width="200" alt="logo">
             <hr>
-            <div class="auth-title">Login</div>
-            <b-form @submit.prevent="handleSubmit()">
-                <b-form-input 
-                :class="{'is-invalid': submitted && $v.user.loginUsuario.$invalid, 'is-valid': submitted && !$v.user.loginUsuario.$invalid}"
-                  type="text" v-model="user.loginUsuario" placeholder="Login" />
-                
-                <b-form-input
-                :class="{'is-invalid': submitted && $v.user.senhaUsuario.$invalid, 'is-valid': submitted && !$v.user.senhaUsuario.$invalid}"
-                 type="password" v-model="user.senhaUsuario" placeholder="Senha" />
+            <b-form @submit.prevent="handleSubmit()" class="login-form">
+                <b-row class="mb-2">
+                    <b-col>
+                        <b-input-group>
+                            <b-input-group-prepend is-text><i class="fa fa-user"></i></b-input-group-prepend>
+                         <b-form-input 
+                            :class="{'is-invalid': submitted && $v.user.loginUsuario.$invalid, 'is-valid': submitted && !$v.user.loginUsuario.$invalid}"
+                            type="text" v-model="user.loginUsuario" placeholder="Login" />
+                        </b-input-group>
+                    </b-col>
+                </b-row>
 
-                <button type="submit">Entrar</button>
-                <Loading :loader="loader" />
+                <b-row class="mb-2">
+                    <b-col>
+                        <b-input-group>
+                            <b-input-group-prepend is-text><i class="fa fa-lock"></i></b-input-group-prepend>
+                            <b-form-input
+                            :class="{'is-invalid': submitted && $v.user.senhaUsuario.$invalid, 'is-valid': submitted && !$v.user.senhaUsuario.$invalid}"
+                            type="password" v-model="user.senhaUsuario" placeholder="Senha"
+                             />
+                        </b-input-group>
+                    </b-col>
+                </b-row>
+
+                <b-button block type="submit" variant="primary">Entrar
+                    <b-spinner v-if="loader" small class="ml-1"></b-spinner>
+                    <span class="sr-only">Loading...</span>
+                </b-button>
             </b-form>
         </div>
     </div>
@@ -22,11 +38,9 @@
 
 <script>
 import {showError} from '@/global'
-import Loading from '../components/shared/Loading'
 import { required, minLength } from "vuelidate/lib/validators";
 export default {
     name: 'Login',
-    components: {Loading},
     data(){
         return {
             user: {},
@@ -75,37 +89,18 @@ export default {
 
     .auth-modal{
         background-color: #fff;
-        width: 350px;
-        padding: 35px;
-        box-shadow: 0 1px 5px rgba(0,0,0,0.15);
+        width: 400px;
+        padding: 50px;
+        box-shadow: 0 1px 5px rgba(0,0,0,0.5);
         display: flex;
         flex-direction: column;
         align-items: center;
     }
 
-    .auth-title{
-        font-size: 1.2rem;
-        font-weight: 100;
-        margin-top:10px;
-        margin-bottom: 15px;
-
-    }
-
-    .auth-modal input{
-        border: 1px solid #bbb;
+    .login-form{
         width: 100%;
-        margin-bottom: 15px;
-        padding: 3px 8px;
     }
-    
-
-    .auth-modal button {
-        align-self:flex-end;
-        background-color: #2460ae;
-        color: #fff;
-        padding: 5px 15px;
-    }
-
+   
     .auth-modal hr{
         border: 0;
         width: 100%;

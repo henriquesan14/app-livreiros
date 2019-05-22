@@ -24,7 +24,9 @@
                 <div class="scroll-table" v-if="!loader">
                     <div class="box-livro mb-2" v-for="livro in pageLivros.rows" :key="livro.idLivro">
                         <div class="img-livro">
-                            <img :src="'https://imagens-capas-1.s3.amazonaws.com/'+ livro.imagemLivro" alt="">
+                            <img 
+                            :src="'https://imagens-capas-1.s3.amazonaws.com/'+ (livro.imagemLivro == null ? '1557681051638': livro.imagemLivro)" 
+                            alt="capa-livro">
                             
                         </div>
                         <div class="info-livro">

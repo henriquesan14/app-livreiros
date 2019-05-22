@@ -127,7 +127,7 @@
                 <b-row>
                     <b-col md="6">
                         <b-form-group  label="Edição" class="mb-3">
-                            <b-form-input maxLength="50" v-model="livro.edicaoLivro" type="text" placeholder="Edição..." />
+                            <b-form-input maxLength="5" v-model="livro.edicaoLivro" type="text" placeholder="Edição..." />
                         </b-form-group>
                     </b-col>
 
