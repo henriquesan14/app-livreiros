@@ -49,8 +49,8 @@
                         </b-input-group>
                         
                     </b-col>
-                    
                 </b-row>
+                <span class="text-primary" v-if="subAutor && autores.length < 1">Nenhum resultado...</span>
 
                 
 
@@ -75,6 +75,7 @@
                         </b-input-group>
                     </b-col>
                 </b-row>
+                <span class="text-primary" v-if="subAssunto && assuntos.length < 1">Nenhum resultado...</span>
 
                 <Loading class="mb-2" :loader="loaderAssunto"/>
                 <b-row v-if="!loaderAssunto && assuntos.length > 0">
@@ -97,6 +98,7 @@
                         </b-input-group>
                     </b-col>
                 </b-row>
+                <span class="text-primary" v-if="subEditora && editoras.length < 1">Nenhum resultado...</span>
 
                 <Loading class="mb-2" :loader="loaderEditora"/>
                 <b-row v-if="!loaderEditora && editoras.length > 0">
@@ -224,6 +226,7 @@
                 <b-button @click="reset()" variant="danger" class="mr-2">Limpar</b-button>
                 <router-link tag="b-button" to="/dashboard/livros" class="btn-dark">Voltar</router-link>
             </b-form>
+            <Loading :loader="loaderLivro" />
         </b-card>
 
         <FormAutor :autor="autor"/>
@@ -267,13 +270,17 @@ export default {
             loaderEditora: false,
             loaderAssunto: false,
             loaderIsbn: false,
+            loaderLivro: false,
             submitted: false,
             money: {
                 decimal: '.',
                 thousands: '',
                 precision: 2,
                 masked: false
-            }
+            },
+            subAutor: false,
+            subEditora: false,
+            subAssunto: false,
         }
     },
     validations: {
@@ -319,6 +326,7 @@ export default {
             this.getEditoras(this.editora.nomeEditora);
         },
         searchAssuntos(){
+
             this.getAssuntos(this.assunto.nomeAssunto);
         },
         async getAutores(nome){
@@ -330,6 +338,7 @@ export default {
             }
             finally{
                 this.loaderAutor = false;
+                this.subAutor = true;
             }
         },
         async getEditoras(nome){
@@ -341,6 +350,7 @@ export default {
             }
             finally{
                 this.loaderEditora = false;
+                this.subEditora = true;
             }
         },
         async getAssuntos(nome){
@@ -352,29 +362,33 @@ export default {
             }
             finally{
                 this.loaderAssunto = false;
+                this.subAssunto = true;
             }
         },
-        saveLivro(){
+        async saveLivro(){
             const url = `${baseApiUrl}/livros`
-            axios.post(url, this.livro).then(
-                () => {
-                    this.reset();
+            try{
+                await axios.post(url, this.livro);
+                this.reset();
                     this.$toasted.global.defaultSuccess();
-                }
-            )
-            .catch((err) => {
-                showError(err)})
+            }catch(err){
+                showError(err);
+            }
         },
-        upload(){
+        async upload(){
+            this.loaderLivro = true;
             const fd = new FormData();
             fd.append('image', this.image)
-            axios.post(`${baseApiUrl}/livros/capa`, fd, {
-            }).then((res) => {
+            try{
+                const res = await axios.post(`${baseApiUrl}/livros/capa`, fd, {
+                });
                 this.livro.imagemLivro = res.data.imagemLivro;
                 this.saveLivro();
-            })
-            .catch((err) =>{
-                showError(err)})
+            }catch(err){
+                showError(err);
+            }finally{
+                this.loaderLivro = false;
+            }
         },
         submitLivro() {
                 this.submitted = true;
