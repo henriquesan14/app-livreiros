@@ -41,10 +41,10 @@
                     <b-col md="12">
                         <b-input-group prepend="Autor" class="mb-3">
                             <b-form-input maxLength="100"
-                             v-model="nomeAutor"  placeholder="Autor..."></b-form-input>
+                             v-model="autor.nomeAutor"  placeholder="Autor..."></b-form-input>
                             <b-input-group-append>
                                 <b-button @click.prevent="searchAutores()" class="mr-2" variant="primary"><i class="fa fa-search"></i></b-button>
-                                <b-button variant="primary"><i class="fa fa-plus"></i></b-button>
+                                <b-button variant="primary" @click.prevent="$bvModal.show('modal-autor')"><i class="fa fa-plus"></i></b-button>
                             </b-input-group-append>
                         </b-input-group>
                         
@@ -67,10 +67,10 @@
                 <b-row>
                     <b-col md="12">
                         <b-input-group prepend="Assunto" class="mb-3">
-                            <b-form-input maxLength="100" v-model="nomeAssunto" placeholder="Assunto..." />
+                            <b-form-input maxLength="100" v-model="assunto.nomeAssunto" placeholder="Assunto..." />
                             <b-input-group-append>
                                 <b-button @click.prevent="searchAssuntos()" class="mr-2" variant="primary"><i class="fa fa-search"></i></b-button>
-                                <b-button variant="primary"><i class="fa fa-plus"></i></b-button>
+                                <b-button variant="primary" @click.prevent="$bvModal.show('modal-assunto')"><i class="fa fa-plus"></i></b-button>
                             </b-input-group-append>
                         </b-input-group>
                     </b-col>
@@ -89,10 +89,10 @@
                 <b-row>
                     <b-col md="12">
                         <b-input-group prepend="Editora" class="mb-3">
-                            <b-form-input maxLength="100" v-model="nomeEditora" placeholder="Editora..." />
+                            <b-form-input maxLength="100" v-model="editora.nomeEditora" placeholder="Editora..." />
                             <b-input-group-append>
                                 <b-button @click.prevent="searchEditoras()" class="mr-2" variant="primary"><i class="fa fa-search"></i></b-button>
-                                <b-button variant="primary"><i class="fa fa-plus"></i></b-button>
+                                <b-button variant="primary" @click.prevent="$bvModal.show('modal-editora')"><i class="fa fa-plus"></i></b-button>
                             </b-input-group-append>
                         </b-input-group>
                     </b-col>
@@ -225,11 +225,18 @@
                 <router-link tag="b-button" to="/dashboard/livros" class="btn-dark">Voltar</router-link>
             </b-form>
         </b-card>
+
+        <FormAutor :autor="autor"/>
+        <FormEditora :editora="editora"/>
+        <FormAssunto :assunto="assunto"/>
     </div>
 </template>
 
 <script>
 import PageTitle from '../template/PageTitle'
+import FormAutor from './FormAutor'
+import FormAssunto from './FormAssunto'
+import FormEditora from './FormEditora'
 import axios from 'axios';
 import { baseApiUrl, showError} from '@/global';
 import { mapGetters } from 'vuex'
@@ -238,7 +245,7 @@ import { required, minValue, minLength } from "vuelidate/lib/validators";
 import {VMoney} from 'v-money'
 export default {
     name:'CadastroLivro',
-    components: {PageTitle, Loading},
+    components: {PageTitle, Loading, FormAutor, FormAssunto, FormEditora},
     directives: {money: VMoney},
     data(){
         return {
@@ -246,9 +253,15 @@ export default {
                 acabamentoLivro: null,
                 condicaoLivro: null
             },
-            nomeAutor: '',
-            nomeEditora: '',
-            nomeAssunto: '',
+            assunto: {
+                nomeAssunto: ''
+            },
+            editora: {
+                nomeEditora: ''
+            },
+            autor: {
+                nomeAutor: ''
+            },
             image: null,
             loaderAutor: false,
             loaderEditora: false,
@@ -292,21 +305,21 @@ export default {
             }
         },
         importToInput(res){
-            this.nomeAutor = res.data.Busca.autorLivro;
-                this.nomeEditora = res.data.Busca.editoraLivro;
+                this.autor.nomeAutor = res.data.Busca.autorLivro;
+                this.editora.nomeEditora = res.data.Busca.editoraLivro;
                 this.livro.tituloLivro = res.data.Busca.tituloLivro;
                 this.livro.paginasLivro = res.data.Busca.paginasLivro;
                 this.livro.anoLivro = res.data.Busca.anoLivro;
                 this.livro.sinopseLivro = res.data.Busca.sinopseLivro;
         },
         searchAutores(){
-            this.getAutores(this.nomeAutor);
+            this.getAutores(this.autor.nomeAutor);
         },
         searchEditoras(){
-            this.getEditoras(this.nomeEditora);
+            this.getEditoras(this.editora.nomeEditora);
         },
         searchAssuntos(){
-            this.getAssuntos(this.nomeAssunto);
+            this.getAssuntos(this.assunto.nomeAssunto);
         },
         async getAutores(nome){
             this.loaderAutor = true;
@@ -343,9 +356,13 @@ export default {
         },
         saveLivro(){
             const url = `${baseApiUrl}/livros`
-            axios.post(url, this.livro).then()
+            axios.post(url, this.livro).then(
+                () => {
+                    this.reset();
+                    this.$toasted.global.defaultSuccess();
+                }
+            )
             .catch((err) => {
-                console.log(err.response);
                 showError(err)})
         },
         upload(){
@@ -369,7 +386,6 @@ export default {
                 }
                 this.submitted = false;
                 this.upload();
-                
         },
         reset(){
             this.submitted = false;
@@ -378,9 +394,9 @@ export default {
                 condicaoLivro: null
             };
             this.image = null;
-            this.nomeAutor = '';
-            this.nomeEditora = '';
-            this.nomeAssunto = '';
+            this.autor.nomeAutor = '';
+            this.editora.nomeEditora = '';
+            this.assunto.nomeAssunto = '';
         }
     }
 }
