@@ -11,6 +11,7 @@ import Livros from '../components/livro/Livros.vue'
 import Assuntos from '../components/livro/assunto/Assuntos.vue'
 import Editoras from '../components/livro/editora/Editoras.vue'
 import Autores from '../components/livro/autor/Autores.vue'
+import Categorias from '../components/livro/categoria/Categorias.vue'
 import {userKey} from '@/global'
 
 Vue.use(Router)
@@ -87,6 +88,11 @@ export default new Router({
           path: 'autores',
           name: 'autor',
           component: Autores
+        },
+        {
+          path:'categorias',
+          name: 'categorias-descricao',
+          component: Categorias
         },
         {
           path: '',

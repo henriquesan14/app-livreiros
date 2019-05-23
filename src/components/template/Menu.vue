@@ -27,7 +27,8 @@ export default {
             {text: 'Livros'},
             {text: 'Editoras'},
             {text: 'Autores'},
-            {text: 'Assuntos'}
+            {text: 'Assuntos'},
+            {text: 'Categorias'}
           ],
           options: {
             filter: {

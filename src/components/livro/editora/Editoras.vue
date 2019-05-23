@@ -42,7 +42,7 @@
 import {mapGetters} from 'vuex';
 import Loading from '../../shared/Loading'
 import PageTitle from '../../template/PageTitle';
-import FormEditora from '../FormEditora'
+import FormEditora from './FormEditora'
 export default {
     name:'Editoras',
     components: {Loading, PageTitle, FormEditora},

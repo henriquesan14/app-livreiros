@@ -38,7 +38,7 @@
             <b-row>
                 <b-col md="4" sm="12">
                     <b-form-group label="Telefone: " label-for="telefone">
-                        <the-mask maxlength="100"
+                        <the-mask
                          type="text" class="form-control" :mask="'(##)#####-####'" id="telefone" v-model="user.telefoneUsuario"  placeholder="Informe o telefone do usuário" />
                     </b-form-group>
                 </b-col>

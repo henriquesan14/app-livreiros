@@ -42,7 +42,7 @@
 import {mapGetters} from 'vuex';
 import Loading from '../../shared/Loading'
 import PageTitle from '../../template/PageTitle';
-import FormAutor from '../FormAutor'
+import FormAutor from './FormAutor'
 export default {
     name:'Autores',
     components: {Loading, PageTitle, FormAutor},

@@ -237,9 +237,9 @@
 
 <script>
 import PageTitle from '../template/PageTitle'
-import FormAutor from './FormAutor'
-import FormAssunto from './FormAssunto'
-import FormEditora from './FormEditora'
+import FormAutor from './autor/FormAutor'
+import FormAssunto from './assunto/FormAssunto'
+import FormEditora from './editora/FormEditora'
 import axios from 'axios';
 import { baseApiUrl, showError} from '@/global';
 import { mapGetters } from 'vuex'

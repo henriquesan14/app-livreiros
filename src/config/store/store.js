@@ -7,6 +7,7 @@ import livro from './modules/livro'
 import autor from './modules/autor'
 import editora from './modules/editora'
 import assunto from './modules/assunto'
+import categoria from './modules/categoria'
 import axios from 'axios'
 import router from '../router'
 import {userKey} from '@/global'
@@ -42,6 +43,7 @@ export default new Vuex.Store({
         livro,
         editora,
         assunto,
-        autor
+        autor,
+        categoria
     }
 })
