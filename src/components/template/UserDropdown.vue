@@ -29,7 +29,7 @@ export default {
             .then(() => {
                 this.$router.push('/')
             })
-            .catch(() => {})  
+            .catch((err) => {console.log(err.response)})  
         }   
     }
 }
