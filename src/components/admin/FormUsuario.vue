@@ -36,14 +36,20 @@
             </b-row>
 
             <b-row>
-                <b-col md="6" sm="12">
-                    <b-form-group label="RG: " label-for="rg">
-                        <b-form-input maxlength="25"
-                        :class="{'is-invalid': submitted && $v.user.rgUsuario.$invalid, 'is-valid': submitted && !$v.user.rgUsuario.$invalid}"
-                         type="text" id="rg" v-model="user.rgUsuario"  placeholder="Informe o RG do usuário" />
+                <b-col md="4" sm="12">
+                    <b-form-group label="Telefone: " label-for="telefone">
+                        <the-mask maxlength="100"
+                         type="text" class="form-control" :mask="'(##)#####-####'" id="telefone" v-model="user.telefoneUsuario"  placeholder="Informe o telefone do usuário" />
                     </b-form-group>
                 </b-col>
-                <b-col md="6" sm="12">
+                <b-col md="4" sm="12">
+                    <b-form-group label="RG: " label-for="rg">
+                        <the-mask maxlength="25" class="form-control"
+                        :class="{'is-invalid': submitted && $v.user.rgUsuario.$invalid, 'is-valid': submitted && !$v.user.rgUsuario.$invalid}"
+                         :mask="'###############'" id="rg" v-model="user.rgUsuario"  placeholder="Informe o RG do usuário" />
+                    </b-form-group>
+                </b-col>
+                <b-col md="4" sm="12">
                     <b-form-group label="CPF: " label-for="cpf">
                         <the-mask class="form-control" :mask="'###.###.###-##'" :masked="false"
                         :class="{'is-invalid': submitted && $v.user.cpfUsuario.$invalid, 'is-valid': submitted && !$v.user.cpfUsuario.$invalid}"
@@ -125,7 +131,7 @@
                     <b-form-group label="Grupos">
                         <span class="text-danger" v-if="submitted && $v.user.grupos.$invalid">Selecione pelo menos um grupo</span>
                         <b-form-checkbox-group class="is-invalid" v-model="user.grupos" name="grupos">
-                            <b-form-checkbox v-for="grupo in grupos.rows" :key="grupo.idGrupo" :value="grupo.idGrupo">{{grupo.nomeGrupo}}</b-form-checkbox>
+                            <b-form-checkbox v-for="grupo in grupos" :key="grupo.idGrupo" :value="grupo.idGrupo">{{grupo.nomeGrupo}}</b-form-checkbox>
                         </b-form-checkbox-group>
                         
                     </b-form-group>

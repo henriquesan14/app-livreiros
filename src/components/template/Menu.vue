@@ -24,7 +24,10 @@ export default {
             items: [
             {text: 'Home'},
             {text: 'Usuarios'},
-            {text: 'Livros'}
+            {text: 'Livros'},
+            {text: 'Editoras'},
+            {text: 'Autores'},
+            {text: 'Assuntos'}
           ],
           options: {
             filter: {

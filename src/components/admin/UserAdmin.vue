@@ -69,13 +69,13 @@ export default {
     methods:{
         async getUsers(){
             this.loader = true;
-        try{
-            await this.$store.dispatch('GET_USERS', {nome: this.nome, page: this.page -1});
-        }catch(err){
-            () => {}
-        }finally{
-            this.loader = false;
-        }     
+            try{
+                await this.$store.dispatch('GET_USERS', {nome: this.nome, page: this.page -1});
+            }catch(err){
+                () => {}
+            }finally{
+                this.loader = false;
+            }     
         },
         loadUser(user){
             this.user = {...user};

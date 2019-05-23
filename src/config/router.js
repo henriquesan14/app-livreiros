@@ -8,6 +8,9 @@ import CadastroUsuario from'../components/admin/CadastroUsuario.vue'
 import EdicaoUsuario from '../components/admin/EdicaoUsuario.vue'
 import CadastroLivro from '../components/livro/CadastroLivro.vue'
 import Livros from '../components/livro/Livros.vue'
+import Assuntos from '../components/livro/assunto/Assuntos.vue'
+import Editoras from '../components/livro/editora/Editoras.vue'
+import Autores from '../components/livro/autor/Autores.vue'
 import {userKey} from '@/global'
 
 Vue.use(Router)
@@ -69,6 +72,21 @@ export default new Router({
           path: 'livros/cadastro',
           name: 'cadastro-livro',
           component: CadastroLivro
+        },
+        {
+          path: 'assuntos',
+          name: 'assunto',
+          component: Assuntos
+        },
+        {
+          path: 'editoras',
+          name: 'editora',
+          component: Editoras
+        },
+        {
+          path: 'autores',
+          name: 'autor',
+          component: Autores
         },
         {
           path: '',

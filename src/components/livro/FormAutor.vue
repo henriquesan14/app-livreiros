@@ -54,9 +54,21 @@ export default {
                 this.reset();
                 this.$bvModal.hide('modal-autor');
                 this.$toasted.global.defaultSuccess();
+                this.$emit('zera-autor');
             }catch(err){
                 showError(err);
             } 
+        },
+         async editAutor(){
+            const url = `${baseApiUrl}/autores/${this.autor.idAutor}`;
+            try{
+                await axios.put(url, this.autor);
+                this.$bvModal.hide('modal-autor');
+                this.$toasted.global.defaultSuccess();
+                this.$emit('zera-autor');
+            }catch(err){
+                showError(err)
+            }
         },
         submitAutor() {
                 this.submitted = true;
@@ -67,7 +79,11 @@ export default {
                     return;
                 }
                 this.submitted = false;
-                this.saveAutor();
+                if(this.autor.idAutor){
+                    this.editAutor();
+                }else{
+                    this.saveAutor();
+                }
         },
         reset(){
             this.submitted = false;

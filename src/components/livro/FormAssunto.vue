@@ -54,9 +54,21 @@ export default {
                 this.reset();
                 this.$bvModal.hide('modal-assunto');
                 this.$toasted.global.defaultSuccess();
+                this.$emit('zera-assunto');
             }catch(err){
                 showError(err);
             } 
+        },
+        async editAssunto(){
+            const url = `${baseApiUrl}/assuntos/${this.assunto.idAssunto}`;
+            try{
+                await axios.put(url, this.assunto);
+                this.$bvModal.hide('modal-assunto');
+                this.$toasted.global.defaultSuccess();
+                this.$emit('zera-assunto');
+            }catch(err){
+                showError(err)
+            }
         },
         submitAssunto() {
                 this.submitted = true;
@@ -67,7 +79,12 @@ export default {
                     return;
                 }
                 this.submitted = false;
-                this.saveAssunto();
+                if(this.assunto.idAssunto){
+                    this.editAssunto();
+                }else{
+                    this.saveAssunto();
+                }
+                
         },
         reset(){
             this.submitted = false; 

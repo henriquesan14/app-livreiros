@@ -54,9 +54,21 @@ export default {
                 this.reset();
                 this.$bvModal.hide('modal-editora');
                 this.$toasted.global.defaultSuccess();
+                this.$emit('zera-editora');
             }catch(err){
                 showError(err);
             } 
+        },
+        async editEditora(){
+            const url = `${baseApiUrl}/editoras/${this.editora.idEditora}`;
+            try{
+                await axios.put(url, this.editora);
+                this.$bvModal.hide('modal-editora');
+                this.$toasted.global.defaultSuccess();
+                this.$emit('zera-editora');
+            }catch(err){
+                showError(err)
+            }
         },
         submitEditora() {
                 this.submitted = true;
@@ -67,7 +79,12 @@ export default {
                     return;
                 }
                 this.submitted = false;
-                this.saveEditora();
+                if(this.editora.idEditora){
+                    this.editEditora();
+                }else{
+                    this.saveEditora();
+                }
+                
         },
         reset(){
             this.submitted = false;
