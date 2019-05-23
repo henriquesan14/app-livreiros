@@ -2,12 +2,12 @@ import axios from 'axios';
 import {baseApiUrl} from '@/global'
 
 const state = {
-  autores: []
+  pageAutores: {rows: []}
 }
 
 const mutations = {
-  RECEIVE_AUTORES(state, {autores}) {
-    state.autores = autores
+  RECEIVE_AUTORES(state, {pageAutores}) {
+    state.pageAutores = pageAutores
   }
 }
 
@@ -15,12 +15,12 @@ const actions = {
   async GET_AUTORES ({commit}, params) {
     const url = `${baseApiUrl}/autores?nome=${params.nome}`;
     const { data } = await axios.get(url);
-    commit('RECEIVE_AUTORES',{ autores: data});
+    commit('RECEIVE_AUTORES',{ pageAutores: data});
   }
 },
 
 getters =  {
-    autores: state => state.autores
+  pageAutores: state => state.pageAutores
 }
 
 export default {

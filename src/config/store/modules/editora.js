@@ -2,12 +2,12 @@ import axios from 'axios';
 import {baseApiUrl} from '@/global'
 
 const state = {
-  editoras: []
+  pageEditoras: {rows: []}
 }
 
 const mutations = {
-  RECEIVE_EDITORAS(state, {editoras}) {
-    state.editoras = editoras
+  RECEIVE_EDITORAS(state, {pageEditoras}) {
+    state.pageEditoras = pageEditoras
   }
 }
 
@@ -15,12 +15,12 @@ const actions = {
   async GET_EDITORAS ({commit}, params) {
     const url = `${baseApiUrl}/editoras?nome=${params.nome}`;
     const { data } = await axios.get(url);
-    commit('RECEIVE_EDITORAS',{ editoras: data});
+    commit('RECEIVE_EDITORAS',{ pageEditoras: data});
   }
 },
 
 getters =  {
-    editoras: state => state.editoras
+  pageEditoras: state => state.pageEditoras
 }
 
 export default {

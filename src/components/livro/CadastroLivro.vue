@@ -17,15 +17,9 @@
                 <b-row>
                     <b-col md="12" >
                         <b-input-group prepend="ISBN" class="mb-3">
-<<<<<<< HEAD
-                            <b-form-input v-model="livro.isbnLivro" type="text" placeholder="Informe o ISBN..." />
-                            <b-input-group-append>
-                                <b-button @click="searchIsbn()" variant="primary"><i class="fa fa-cloud-download mr-1"></i></b-button>
-=======
                             <b-form-input maxLength="13"  v-model.trim="livro.isbn" type="text" placeholder="Informe o ISBN..." />
                             <b-input-group-append>
                                 <b-button @click.prevent="searchIsbn()" variant="primary"><i class="fa fa-cloud-download mr-1"></i></b-button>
->>>>>>> 62e23ec2dc2784a0f45847042d76af4819ec19d0
                             </b-input-group-append>
                         </b-input-group>
                     </b-col>
@@ -35,13 +29,9 @@
                 <b-row>
                     <b-col md="12">
                         <b-input-group prepend="Titulo" class="mb-3">
-<<<<<<< HEAD
-                            <b-form-input v-model="livro.tituloLivro" type="text" placeholder="Titulo..." />
-=======
                             <b-form-input maxLength="100"
                             :class="{'is-invalid': submitted && $v.livro.tituloLivro.$invalid, 'is-valid': submitted && !$v.livro.tituloLivro.$invalid}"
                              v-model="livro.tituloLivro" type="text" placeholder="Titulo..." />
->>>>>>> 62e23ec2dc2784a0f45847042d76af4819ec19d0
                         </b-input-group>
                     </b-col>
                 </b-row>
@@ -50,12 +40,8 @@
                 <b-row>
                     <b-col md="12">
                         <b-input-group prepend="Autor" class="mb-3">
-<<<<<<< HEAD
-                            <b-form-input v-model="livro.autorLivro" type="text" placeholder="Autor..." />
-=======
                             <b-form-input maxLength="100"
                              v-model="autor.nomeAutor"  placeholder="Autor..."></b-form-input>
->>>>>>> 62e23ec2dc2784a0f45847042d76af4819ec19d0
                             <b-input-group-append>
                                 <b-button @click.prevent="searchAutores()" class="mr-2" variant="primary"><i class="fa fa-search"></i></b-button>
                                 <b-button variant="primary" @click.prevent="$bvModal.show('modal-autor')"><i class="fa fa-plus"></i></b-button>
@@ -64,15 +50,15 @@
                         
                     </b-col>
                 </b-row>
-                <span class="text-primary" v-if="subAutor && autores.length < 1">Nenhum resultado...</span>
+                <span class="text-primary" v-if="subAutor && pageAutores.rows.length < 1">Nenhum resultado...</span>
 
                 
 
                 <Loading class="mb-2" :loader="loaderAutor"/>
-                <b-row v-if="!loaderAutor && autores.length > 0">
+                <b-row v-if="!loaderAutor && pageAutores.rows.length > 0">
                     <b-col>
                         <b-form-group>
-                            <b-form-radio v-model="livro.idAutor" v-for="autor in autores" :key="autor.idAutor" :value="autor.idAutor">{{autor.nomeAutor}}</b-form-radio>
+                            <b-form-radio v-model="livro.idAutor" v-for="autor in pageAutores.rows" :key="autor.idAutor" :value="autor.idAutor">{{autor.nomeAutor}}</b-form-radio>
                         </b-form-group>
                     </b-col>
                 </b-row>
@@ -89,13 +75,13 @@
                         </b-input-group>
                     </b-col>
                 </b-row>
-                <span class="text-primary" v-if="subAssunto && assuntos.length < 1">Nenhum resultado...</span>
+                <span class="text-primary" v-if="subAssunto && pageAssuntos.rows.length < 1">Nenhum resultado...</span>
 
                 <Loading class="mb-2" :loader="loaderAssunto"/>
-                <b-row v-if="!loaderAssunto && assuntos.length > 0">
+                <b-row v-if="!loaderAssunto && pageAssuntos.rows.length > 0">
                     <b-col>
                         <b-form-group>
-                            <b-form-radio v-model="livro.idAssunto" v-for="assunto in assuntos" :key="assunto.idAssunto" :value="assunto.idAssunto">{{assunto.nomeAssunto}}</b-form-radio>
+                            <b-form-radio v-model="livro.idAssunto" v-for="assunto in pageAssuntos.rows" :key="assunto.idAssunto" :value="assunto.idAssunto">{{assunto.nomeAssunto}}</b-form-radio>
                         </b-form-group>
                     </b-col>
                 </b-row>
@@ -104,11 +90,7 @@
                 <b-row>
                     <b-col md="12">
                         <b-input-group prepend="Editora" class="mb-3">
-<<<<<<< HEAD
-                            <b-form-input v-model="livro.editoraLivro" type="text" placeholder="Editora..." />
-=======
                             <b-form-input maxLength="100" v-model="editora.nomeEditora" placeholder="Editora..." />
->>>>>>> 62e23ec2dc2784a0f45847042d76af4819ec19d0
                             <b-input-group-append>
                                 <b-button @click.prevent="searchEditoras()" class="mr-2" variant="primary"><i class="fa fa-search"></i></b-button>
                                 <b-button variant="primary" @click.prevent="$bvModal.show('modal-editora')"><i class="fa fa-plus"></i></b-button>
@@ -116,13 +98,13 @@
                         </b-input-group>
                     </b-col>
                 </b-row>
-                <span class="text-primary" v-if="subEditora && editoras.length < 1">Nenhum resultado...</span>
+                <span class="text-primary" v-if="subEditora && pageEditoras.rows.length < 1">Nenhum resultado...</span>
 
                 <Loading class="mb-2" :loader="loaderEditora"/>
-                <b-row v-if="!loaderEditora && editoras.length > 0">
+                <b-row v-if="!loaderEditora && pageEditoras.rows.length > 0">
                     <b-col>
                         <b-form-group>
-                            <b-form-radio v-model="livro.idEditora" v-for="editora in editoras" :key="editora.idEditora" :value="editora.idEditora">{{editora.nomeEditora}}</b-form-radio>
+                            <b-form-radio v-model="livro.idEditora" v-for="editora in pageEditoras.rows" :key="editora.idEditora" :value="editora.idEditora">{{editora.nomeEditora}}</b-form-radio>
                         </b-form-group>
                     </b-col>
                 </b-row>
@@ -135,16 +117,11 @@
                     </b-col>
 
                     <b-col md="6">
-<<<<<<< HEAD
-                        <b-form-group label="Ano de publicação" class="mb-3">
-                            <b-form-input v-model="livro.anoLivro" type="text" placeholder="Idioma..." />
-=======
                         <b-form-group
                          label="Ano de publicação" class="mb-3">
                             <the-mask
                             :class="{'is-invalid': submitted && $v.livro.anoLivro.$invalid, 'is-valid': submitted && !$v.livro.anoLivro.$invalid}"
                              class="form-control" :mask="'####'" v-model="livro.anoLivro" type="text" placeholder="Ano..." />
->>>>>>> 62e23ec2dc2784a0f45847042d76af4819ec19d0
                         </b-form-group>
                     </b-col>
                 </b-row>
@@ -169,13 +146,9 @@
                 <b-row>
                     <b-col md="6">
                         <b-form-group label="Condição">
-<<<<<<< HEAD
-                            <b-form-select v-model="livro.condicaoLivro">
-=======
                             <b-form-select
                             :class="{'is-invalid': submitted && $v.livro.condicaoLivro.$invalid, 'is-valid': submitted && !$v.livro.condicaoLivro.$invalid}" 
                             v-model="livro.condicaoLivro">
->>>>>>> 62e23ec2dc2784a0f45847042d76af4819ec19d0
                                 <option :value="null">Selecione a condição</option>
                                 <option value="Usado">Usado</option>
                                 <option value="Novo">Novo</option>
@@ -185,11 +158,7 @@
 
                     <b-col md="6">
                         <b-form-group label="Qtd. de páginas">
-<<<<<<< HEAD
-                            <b-form-input v-model="livro.paginasLivro" type="text" placeholder="Qtd. páginas..." />
-=======
                             <the-mask :mask="'#####'" class="form-control"  v-model="livro.paginasLivro" type="text" placeholder="Qtd. páginas..." />
->>>>>>> 62e23ec2dc2784a0f45847042d76af4819ec19d0
                         </b-form-group>
                     </b-col>
                 </b-row>  
@@ -231,13 +200,9 @@
 
                     <b-col md="6">
                         <b-form-group label="Acabamento">
-<<<<<<< HEAD
-                            <b-form-select v-model="livro.acabamentoLivro">
-=======
                             <b-form-select
                             :class="{'is-invalid': submitted && $v.livro.acabamentoLivro.$invalid, 'is-valid': submitted && !$v.livro.acabamentoLivro.$invalid}"
                              v-model="livro.acabamentoLivro">
->>>>>>> 62e23ec2dc2784a0f45847042d76af4819ec19d0
                                 <option :value="null">Selecione o acabamento</option>
                                 <option value="Capa comum">Capa comum</option>
                                 <option value="Capa dura">Capa dura</option>
@@ -252,11 +217,7 @@
                     <b-col md="12">
                         <b-form-group label="Sinopse">
                             <b-form-textarea v-model="livro.sinopseLivro" placeholder="Sinopse..."
-<<<<<<< HEAD
-      rows="6"></b-form-textarea>
-=======
       rows="8"></b-form-textarea>
->>>>>>> 62e23ec2dc2784a0f45847042d76af4819ec19d0
                         </b-form-group>
                     </b-col>
                 </b-row>
@@ -292,13 +253,6 @@ export default {
     data(){
         return {
             livro: {
-<<<<<<< HEAD
-                imagemLivro: null,
-                acabamentoLivro: null,
-                condicaoLivro: null,
-            }
-            
-=======
                 acabamentoLivro: null,
                 condicaoLivro: null
             },
@@ -327,7 +281,6 @@ export default {
             subAutor: false,
             subEditora: false,
             subAssunto: false,
->>>>>>> 62e23ec2dc2784a0f45847042d76af4819ec19d0
         }
     },
     validations: {
@@ -342,22 +295,10 @@ export default {
             precoLivro: {required, minValue: minValue(5)}
         }
     },
-    computed: mapGetters(['autores', 'editoras', 'assuntos']),
+    computed: mapGetters(['pageAutores', 'pageEditoras', 'pageAssuntos']),
     mounted(){
     },
     methods: {
-<<<<<<< HEAD
-        searchIsbn(){
-            const url = `${baseApiUrl}/livros/isbn/${this.livro.isbnLivro}`
-            axios.get(url).then(res => this.livro = res.data.Busca).catch(err => console.log(err.response))
-        },
-        upload(){
-            const fd = new FormData();
-            fd.append('image', this.livro.imagemLivro)
-            axios.post(`${baseApiUrl}/livros/capa`, fd, {
-            }).then(() => {})
-            .catch(() => {})
-=======
         async searchIsbn(){
             this.loaderIsbn = true;
             const url = `${baseApiUrl}/livros/isbn/${this.livro.isbn}`
@@ -371,12 +312,12 @@ export default {
             }
         },
         importToInput(res){
-                this.autor.nomeAutor = res.data.Busca.autorLivro;
-                this.editora.nomeEditora = res.data.Busca.editoraLivro;
-                this.livro.tituloLivro = res.data.Busca.tituloLivro;
-                this.livro.paginasLivro = res.data.Busca.paginasLivro;
-                this.livro.anoLivro = res.data.Busca.anoLivro;
-                this.livro.sinopseLivro = res.data.Busca.sinopseLivro;
+                this.autor.nomeAutor = res.data.busca.autorLivro;
+                this.editora.nomeEditora = res.data.busca.editoraLivro;
+                this.livro.tituloLivro = res.data.busca.tituloLivro;
+                this.livro.paginasLivro = res.data.busca.paginasLivro;
+                this.livro.anoLivro = res.data.busca.anoLivro;
+                this.livro.sinopseLivro = res.data.busca.sinopseLivro;
         },
         searchAutores(){
             this.getAutores(this.autor.nomeAutor);
@@ -470,7 +411,6 @@ export default {
             this.autor.nomeAutor = '';
             this.editora.nomeEditora = '';
             this.assunto.nomeAssunto = '';
->>>>>>> 62e23ec2dc2784a0f45847042d76af4819ec19d0
         }
     }
 }
