@@ -21,9 +21,12 @@
                         v-b-tooltip.hover title="Alterar">
                             <i class="fa fa-pencil"></i>
                         </b-button>
-                        <b-button variant="success" v-b-tooltip.hover title="Adicionar" class="mr-2"><i class="fa fa-plus"></i></b-button>
-                        <b-button @click="showMsgBoxTwo(data.item)" v-b-tooltip.hover title="Desativar"
-                         variant="danger">
+                        <b-button variant="success" @click="$bvModal.show('modal-descricoes')" v-b-tooltip.hover title="Adicionar" class="mr-2"><i class="fa fa-plus"></i></b-button>
+                        <b-button
+                        v-b-tooltip.hover :title="data.item.statusCategoriaDescricao == true ? 'Desativar': 'Ativar'"
+                        :variant="data.item.statusCategoriaDescricao == true ? 'danger': 'success'"
+                         @click="showMsgBoxTwo(data.item)"
+                         >
                             <i class="fa fa-lock"></i>
                         </b-button>
                         
@@ -37,6 +40,7 @@
                 <b-pagination size="md" v-model="page" :total-rows="pageCategorias.count" :per-page="10"></b-pagination>
             </b-card>
             <FormCategoria @zera-categoria="getCategorias()" :categoria="categoria" />
+            <Descricoes />
     </div>
 </template>
 
@@ -45,9 +49,12 @@ import {mapGetters} from 'vuex';
 import Loading from '../../shared/Loading'
 import PageTitle from '../../template/PageTitle';
 import FormCategoria from './FormCategoria'
+import Descricoes from './Descricoes';
+import {baseApiUrl, showError} from '@/global'
+import axios from 'axios'
 export default {
     name:'Categorias',
-    components: {Loading, PageTitle, FormCategoria},
+    components: {Loading, PageTitle, FormCategoria, Descricoes},
     data(){
         return {
             categoria: {},
@@ -107,7 +114,11 @@ export default {
             })
       },
       statusCategoria(id){
-          alert(id);
+          const url = `${baseApiUrl}/categorias/${id}/status`;
+          axios.put(url).then(() => {
+              this.getCategorias();
+              this.$toasted.global.defaultSuccess();
+          }).catch(showError)
       },
       zeraCategoria(){
           this.categoria = {};
