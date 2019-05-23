@@ -3,7 +3,7 @@ import {baseApiUrl} from '@/global'
 
 const state = {
   pageUsers: {rows: []},
-  grupos: {rows: []},
+  grupos: {},
   permissoes: [] 
 }
 

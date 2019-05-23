@@ -1,7 +1,7 @@
 <template>
     <div class="grupo-admin">
         <b-button class="mb-3" @click="zeraGrupo(); $bvModal.show('modal-grupo')" variant="dark">Novo grupo</b-button>
-        <b-table v-if="!loader && grupos.rows.length > 0" hover striped :items="grupos.rows" :fields="fields">
+        <b-table v-if="!loader && grupos.length > 0" hover striped :items="grupos" :fields="fields">
             <template slot="actions" slot-scope="data">
                 <b-button variant="warning" @click="loadGrupo(data.item); $bvModal.show('modal-grupo')" class="mr-2"
                 v-b-tooltip.hover title="Alterar">

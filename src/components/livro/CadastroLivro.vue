@@ -8,7 +8,7 @@
                 <b-row>
                     <b-col md="12">
                         <b-form-group label="Imagem:">
-                            <b-form-file v-model="image" accept="image/jpeg, image/png" browse-text="Procurar"  
+                            <b-form-file v-model="livro.imagemLivro" accept="image/jpeg, image/png" browse-text="Procurar"  
                             placeholder="Escolha uma imagem..."></b-form-file>
                         </b-form-group>
                     </b-col>
@@ -50,15 +50,15 @@
                         
                     </b-col>
                 </b-row>
-                <span class="text-primary" v-if="subAutor && autores.length < 1">Nenhum resultado...</span>
+                <span class="text-primary" v-if="subAutor && pageAutores.rows.length < 1">Nenhum resultado...</span>
 
                 
 
                 <Loading class="mb-2" :loader="loaderAutor"/>
-                <b-row v-if="!loaderAutor && autores.length > 0">
+                <b-row v-if="!loaderAutor && pageAutores.rows.length > 0">
                     <b-col>
                         <b-form-group>
-                            <b-form-radio v-model="livro.idAutor" v-for="autor in autores" :key="autor.idAutor" :value="autor.idAutor">{{autor.nomeAutor}}</b-form-radio>
+                            <b-form-radio v-model="livro.idAutor" v-for="autor in pageAutores.rows" :key="autor.idAutor" :value="autor.idAutor">{{autor.nomeAutor}}</b-form-radio>
                         </b-form-group>
                     </b-col>
                 </b-row>
@@ -75,13 +75,13 @@
                         </b-input-group>
                     </b-col>
                 </b-row>
-                <span class="text-primary" v-if="subAssunto && assuntos.length < 1">Nenhum resultado...</span>
+                <span class="text-primary" v-if="subAssunto && pageAssuntos.rows.length < 1">Nenhum resultado...</span>
 
                 <Loading class="mb-2" :loader="loaderAssunto"/>
-                <b-row v-if="!loaderAssunto && assuntos.length > 0">
+                <b-row v-if="!loaderAssunto && pageAssuntos.rows.length > 0">
                     <b-col>
                         <b-form-group>
-                            <b-form-radio v-model="livro.idAssunto" v-for="assunto in assuntos" :key="assunto.idAssunto" :value="assunto.idAssunto">{{assunto.nomeAssunto}}</b-form-radio>
+                            <b-form-radio v-model="livro.idAssunto" v-for="assunto in pageAssuntos.rows" :key="assunto.idAssunto" :value="assunto.idAssunto">{{assunto.nomeAssunto}}</b-form-radio>
                         </b-form-group>
                     </b-col>
                 </b-row>
@@ -98,13 +98,13 @@
                         </b-input-group>
                     </b-col>
                 </b-row>
-                <span class="text-primary" v-if="subEditora && editoras.length < 1">Nenhum resultado...</span>
+                <span class="text-primary" v-if="subEditora && pageEditoras.rows.length < 1">Nenhum resultado...</span>
 
                 <Loading class="mb-2" :loader="loaderEditora"/>
-                <b-row v-if="!loaderEditora && editoras.length > 0">
+                <b-row v-if="!loaderEditora && pageEditoras.rows.length > 0">
                     <b-col>
                         <b-form-group>
-                            <b-form-radio v-model="livro.idEditora" v-for="editora in editoras" :key="editora.idEditora" :value="editora.idEditora">{{editora.nomeEditora}}</b-form-radio>
+                            <b-form-radio v-model="livro.idEditora" v-for="editora in pageEditoras.rows" :key="editora.idEditora" :value="editora.idEditora">{{editora.nomeEditora}}</b-form-radio>
                         </b-form-group>
                     </b-col>
                 </b-row>
@@ -295,7 +295,7 @@ export default {
             precoLivro: {required, minValue: minValue(5)}
         }
     },
-    computed: mapGetters(['autores', 'editoras', 'assuntos']),
+    computed: mapGetters(['pageAutores', 'pageEditoras', 'pageAssuntos']),
     mounted(){
     },
     methods: {
@@ -312,12 +312,12 @@ export default {
             }
         },
         importToInput(res){
-                this.autor.nomeAutor = res.data.Busca.autorLivro;
-                this.editora.nomeEditora = res.data.Busca.editoraLivro;
-                this.livro.tituloLivro = res.data.Busca.tituloLivro;
-                this.livro.paginasLivro = res.data.Busca.paginasLivro;
-                this.livro.anoLivro = res.data.Busca.anoLivro;
-                this.livro.sinopseLivro = res.data.Busca.sinopseLivro;
+                this.autor.nomeAutor = res.data.busca.autorLivro;
+                this.editora.nomeEditora = res.data.busca.editoraLivro;
+                this.livro.tituloLivro = res.data.busca.tituloLivro;
+                this.livro.paginasLivro = res.data.busca.paginasLivro;
+                this.livro.anoLivro = res.data.busca.anoLivro;
+                this.livro.sinopseLivro = res.data.busca.sinopseLivro;
         },
         searchAutores(){
             this.getAutores(this.autor.nomeAutor);
