@@ -4,28 +4,32 @@
             <template slot="modal-title">
                 Gerenciar Descrições
             </template>
-            <Loading :loader="loader" />
-            <div v-if="!loader" class="d-block">
-                <b-form @submit.prevent="handleSubmit()">
+            <Loading :loader="loader || loaderDesc" />
+            <div v-if="!loader && !loaderDesc" class="d-block">
+                <b-form @submit.prevent="handleSubmitSave()">
                     <b-row>
                         <b-col>
                             <b-form-group label="Nome">
-                                <b-form-input v-model="descricao.nomeDescricao" maxLength="100" />
+                                <b-form-input
+                                :class="{'is-invalid': submitted && $v.descricao.nomeDescricao.$invalid, 'is-valid': submitted && !$v.descricao.nomeDescricao.$invalid}"
+                                 v-model="descricao.nomeDescricao" maxLength="100" />
                             </b-form-group>
                         </b-col>
                         <b-col>
                             <b-form-group label="( - ) R$">
-                                <b-form-input v-model="descricao.reducaoPreco" v-money="money"  maxLength="6" />
+                                <b-form-input
+                                :class="{'is-invalid': submitted && $v.descricao.reducaoPreco.$invalid, 'is-valid': submitted && !$v.descricao.reducaoPreco.$invalid}"
+                                 v-model="descricao.reducaoPreco" v-money="money"  maxLength="6" />
                             </b-form-group>
                         </b-col>
                     </b-row>
-                    <b-button type="submit" class="mb-3 mr-2" variant="success">{{descricao.idDescricao ? 'Alterar':'Adicionar'}}</b-button>
+                    <b-button type="submit" class="mb-3 mr-2" variant="success">Adicionar</b-button>
                     <b-button variant="danger" class="mb-3 mr-2" @click="zeraDescricao()">Limpar</b-button>
                     <b-button class="mb-3"  @click="$bvModal.hide('modal-descricoes')">Fechar</b-button>
                 </b-form>
                 <b-table :responsive="true" :fields="fields" :items="descricoes"  hover striped>
                     <template slot="actions" slot-scope="data">
-                        <b-button @click="loadDescricao(data.item)"
+                        <b-button @click="loadDescricao(data.item); $bvModal.show('modal-edit-descricoes')"
                          variant="warning" class="mr-2"
                         v-b-tooltip.hover title="Alterar">
                             <i class="fa fa-pencil"></i>
@@ -41,6 +45,34 @@
             </div>
             
         </b-modal>
+
+        <b-modal size="dm" id="modal-edit-descricoes" hide-footer>
+            <template slot="modal-title">
+                Alterar descrição Cód.
+            </template>
+            <div class="d-block">
+                <b-form @submit.prevent="handleSubmitEdit()">
+                    <b-row>
+                        <b-col>
+                            <b-form-group label="Nome">
+                                <b-form-input
+                                :class="{'is-invalid': submitted && $v.descricaoEdit.nomeDescricao.$invalid, 'is-valid': submitted && !$v.descricaoEdit.nomeDescricao.$invalid}"
+                                 v-model="descricaoEdit.nomeDescricao" maxLength="100" />
+                            </b-form-group>
+                        </b-col>
+                        <b-col>
+                            <b-form-group label="( - ) R$">
+                                <b-form-input
+                                :class="{'is-invalid': submitted && $v.descricaoEdit.reducaoPreco.$invalid, 'is-valid': submitted && !$v.descricaoEdit.reducaoPreco.$invalid}"
+                                 v-model="descricaoEdit.reducaoPreco" v-money="money"  maxLength="6" />
+                            </b-form-group>
+                        </b-col>
+                    </b-row>
+                    <b-button type="submit" class="mb-3 mr-2" variant="success">Alterar</b-button>
+                    <b-button class="mb-3"  @click="$bvModal.hide('modal-edit-descricoes')">Fechar</b-button>
+                </b-form>
+            </div>
+        </b-modal>
     </div>
 </template>
 
@@ -50,6 +82,7 @@ import Loading from '../../shared/Loading'
 import {mapGetters} from 'vuex';
 import {baseApiUrl, showError} from '@/global'
 import axios from 'axios'
+import { required } from "vuelidate/lib/validators";
 export default {
     name: 'Descricoes',
     components: {Loading},
@@ -58,6 +91,7 @@ export default {
     data(){
         return {
             descricao: {},
+            descricaoEdit: {},
             fields: [
                 {key: 'idDescricao', label: 'Cód.', sortable: true},
                 {key: 'nomeDescricao', label: 'Nome', sortable: true},
@@ -70,15 +104,23 @@ export default {
                 precision: 2,
                 masked: false
             },
+            loaderDesc: false,
+            submitted: false
         }
     },
-    mounted(){
-        this.zeraDescricao();
+    validations: {
+        descricao: {
+            nomeDescricao: {required},
+            reducaoPreco: {required}
+        },
+        descricaoEdit: {
+            nomeDescricao: {required},
+            reducaoPreco: {required}
+        }
     },
     props: {
         loader: {
-            type: Boolean,
-            required: true
+            type: Boolean
         },
         idCategoriaDescricao: {
             type: Number
@@ -86,7 +128,7 @@ export default {
     },
     methods: {
         loadDescricao(descricao){
-            this.descricao = {...descricao};
+            this.descricaoEdit = {...descricao};
         },
         showMsgBoxTwo(descricao) {
             this.boxTwo = ''
@@ -109,9 +151,6 @@ export default {
             .catch(() => {
                 
             })
-      },
-      submitDescricao(){
-              this.$emit('save-descricao', this.descricao);
       },
       async statusDescricao(id){
           const url = `${baseApiUrl}/descricoes/${id}/status`
@@ -139,34 +178,45 @@ export default {
           }   
       },
       async editDescricao(){
-          const url = `${baseApiUrl}/descricoes/${this.idCategoriaDescricao}`;
+          const url = `${baseApiUrl}/descricoes/${this.descricaoEdit.idDescricao}`;
           try{
-            await axios.put(url, this.descricao);
+            await axios.put(url, this.descricaoEdit);
             this.$toasted.global.defaultSuccess();
             this.getDescricoes();
-            this.zeraDescricao();
+            this.$bvModal.hide('modal-edit-descricoes');
           }catch(err){
-              console.log(err)
               showError(err);
           }   
       },
       async getDescricoes(){
-          this.loader = true;
+          this.loaderDesc = true;
             try{
                 await this.$store.dispatch('GET_DESCRICOES', this.idCategoriaDescricao);
             }catch(err){
                 showError(err)
             }finally{
-                this.loader = false;
+                this.loaderDesc = false;
             }
       },
-      handleSubmit(){
-          if(this.descricao.idDescricao){
-              this.editDescricao();
-          }else{
-              this.saveDescricao();
+      handleSubmitSave(){
+          this.submitted = true;
+          this.$v.descricao.$touch();     
+          if (this.$v.descricao.$invalid) {
+                return;
           }
+          this.submitted = false;
+          this.saveDescricao();
+      },
+      handleSubmitEdit(){
+          this.submitted = true;
+          this.$v.descricaoEdit.$touch();     
+          if (this.$v.descricaoEdit.$invalid) {
+                return;
+          }
+          this.submitted = false;
+          this.editDescricao();
       }
+
     }
 }
 </script>
