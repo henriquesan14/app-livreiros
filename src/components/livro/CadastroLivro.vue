@@ -134,12 +134,11 @@
                     </b-col>
 
                     <b-col md="6">
-                        <label for="preco">Preço</label>
-                        <b-input-group prepend="R$" class="mb-3" >                         
+                        <b-form-group label="Preço R$">                         
                             <b-form-input
                             :class="{'is-invalid': submitted && $v.livro.precoLivro.$invalid, 'is-valid': submitted && !$v.livro.precoLivro.$invalid}"
-                             maxLength="10" v-money="money" v-model.lazy="livro.precoLivro" type="text"  />
-                        </b-input-group>
+                             maxLength="10" v-money="money" v-model="livro.precoLivro" type="text"  />
+                        </b-form-group>
                     </b-col>
                 </b-row>
 

@@ -5,8 +5,8 @@
                 Gerenciar Descrições
             </template>
             <Loading :loader="loader" />
-            <div class="d-block">
-                <b-form @submit.prevent="submitDescricao()">
+            <div v-if="!loader" class="d-block">
+                <b-form @submit.prevent="handleSubmit()">
                     <b-row>
                         <b-col>
                             <b-form-group label="Nome">
@@ -30,7 +30,11 @@
                         v-b-tooltip.hover title="Alterar">
                             <i class="fa fa-pencil"></i>
                         </b-button>
-                        <b-button variant="danger" @click="showMsgBoxTwo(data.item)"  v-b-tooltip.hover title="Desativar" class="mr-2"><i class="fa fa-lock"></i></b-button>
+                        <b-button
+                        v-b-tooltip.hover :title="data.item.statusDescricao == true ? 'Desativar': 'Ativar'"
+                        :variant="data.item.statusDescricao == true ? 'danger': 'success'"
+                         @click="showMsgBoxTwo(data.item)" class="mr-2">
+                            <i class="fas" :class="data.item.statusDescricao == true ? 'fa-lock':'fa-lock-open'"></i></b-button>
                     
                     </template>
                 </b-table>
@@ -43,9 +47,9 @@
 <script>
 import {VMoney} from 'v-money'
 import Loading from '../../shared/Loading'
-import axios from 'axios';
-import {showError, baseApiUrl} from '@/global'
 import {mapGetters} from 'vuex';
+import {baseApiUrl, showError} from '@/global'
+import axios from 'axios'
 export default {
     name: 'Descricoes',
     components: {Loading},
@@ -67,11 +71,17 @@ export default {
                 masked: false
             },
         }
-    },  
+    },
+    mounted(){
+        this.zeraDescricao();
+    },
     props: {
         loader: {
             type: Boolean,
             required: true
+        },
+        idCategoriaDescricao: {
+            type: Number
         }
     },
     methods: {
@@ -101,13 +111,61 @@ export default {
             })
       },
       submitDescricao(){
-          this.$emit('save-descricao', this.descricao);    
+              this.$emit('save-descricao', this.descricao);
       },
-      statusDescricao(id){
-          alert(id)
+      async statusDescricao(id){
+          const url = `${baseApiUrl}/descricoes/${id}/status`
+          try{
+              await axios.put(url);
+              this.$toasted.global.defaultSuccess();
+                 this.getDescricoes();
+          }catch(err){
+              showError(err)
+          } 
       },
       zeraDescricao(){
           this.descricao = {};
+      },
+      async saveDescricao(){
+          this.descricao.idCategoriaDescricao = this.idCategoriaDescricao;
+          const url = `${baseApiUrl}/descricoes`;
+          try{
+            await axios.post(url, this.descricao);
+            this.$toasted.global.defaultSuccess();
+            this.getDescricoes();
+            this.zeraDescricao();
+          }catch(err){
+              showError(err);
+          }   
+      },
+      async editDescricao(){
+          const url = `${baseApiUrl}/descricoes/${this.idCategoriaDescricao}`;
+          try{
+            await axios.put(url, this.descricao);
+            this.$toasted.global.defaultSuccess();
+            this.getDescricoes();
+            this.zeraDescricao();
+          }catch(err){
+              console.log(err)
+              showError(err);
+          }   
+      },
+      async getDescricoes(){
+          this.loader = true;
+            try{
+                await this.$store.dispatch('GET_DESCRICOES', this.idCategoriaDescricao);
+            }catch(err){
+                showError(err)
+            }finally{
+                this.loader = false;
+            }
+      },
+      handleSubmit(){
+          if(this.descricao.idDescricao){
+              this.editDescricao();
+          }else{
+              this.saveDescricao();
+          }
       }
     }
 }
