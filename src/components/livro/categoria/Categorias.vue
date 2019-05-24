@@ -21,7 +21,7 @@
                         v-b-tooltip.hover title="Alterar">
                             <i class="fa fa-pencil"></i>
                         </b-button>
-                        <b-button variant="success" @click="$bvModal.show('modal-descricoes')" v-b-tooltip.hover title="Adicionar" class="mr-2"><i class="fa fa-plus"></i></b-button>
+                        <b-button variant="success" @click="loadDescricao(data.item.idCategoriaDescricao)" v-b-tooltip.hover title="Adicionar" class="mr-2"><i class="fa fa-plus"></i></b-button>
                         <b-button
                         v-b-tooltip.hover :title="data.item.statusCategoriaDescricao == true ? 'Desativar': 'Ativar'"
                         :variant="data.item.statusCategoriaDescricao == true ? 'danger': 'success'"
@@ -40,7 +40,7 @@
                 <b-pagination size="md" v-model="page" :total-rows="pageCategorias.count" :per-page="10"></b-pagination>
             </b-card>
             <FormCategoria @zera-categoria="getCategorias()" :categoria="categoria" />
-            <Descricoes />
+            <Descricoes :loader="loaderDescricao" @save-descricao="saveDescricao" />
     </div>
 </template>
 
@@ -66,6 +66,7 @@ export default {
                 {key: 'nomeCategoriaDescricao', label: 'Nome', sortable: true},
                 {key: 'actions', label: 'Ações'}
             ],
+            loaderDescricao: false
         }
     },
     mounted(){
@@ -90,6 +91,19 @@ export default {
         },
         loadCategoria(categoria){
             this.categoria = {...categoria};
+        },
+        async loadDescricao(id){
+            this.loaderDescricao = true;
+            this.categoria.idCategoriaDescricao = id;
+            try{
+                await this.$store.dispatch('GET_DESCRICOES', id);
+                this.$bvModal.show('modal-descricoes');
+            }catch(err){
+                showError(err)
+            }finally{
+                this.loaderDescricao = false;
+            }
+            
         },
         showMsgBoxTwo(categoria) {
             this.boxTwo = ''
@@ -122,6 +136,17 @@ export default {
       },
       zeraCategoria(){
           this.categoria = {};
+      },
+      async saveDescricao(descricao){
+          descricao.idCategoriaDescricao = this.categoria.idCategoriaDescricao;
+          const url = `${baseApiUrl}/descricoes`;
+          try{
+            await axios.post(url, descricao);
+            this.$toasted.global.defaultSuccess();
+            this.$store.dispatch('GET_DESCRICOES', this.categoria.idCategoriaDescricao);
+          }catch(err){
+              showError(err);
+          }   
       }
     }
 }

@@ -22,7 +22,7 @@ const actions = {
     commit('RECEIVE_ESTADOS',{ estados: data});
   },
   async GET_CIDADES({commit}, params){
-    const url = `${baseApiUrl}/cidades/${params.id}`;
+    const url = `${baseApiUrl}/estados/${params.id}/cidades`;
     const { data } = await axios.get(url);
     commit('RECEIVE_CIDADES',{ cidades: data});
   },
