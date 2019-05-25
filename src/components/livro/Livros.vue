@@ -55,7 +55,8 @@
                                   variant="primary" class="mr-2"><i class="fa fa-plus"></i></b-button>
                                 <b-button v-b-tooltip.hover title="Alterar" 
                                   variant="warning" class="mr-2"><i class="fa fa-pencil"></i></b-button>
-                                <b-button v-b-tooltip.hover title="Detalhes" 
+                                <b-button @click="loadLivro(livro.idLivro);$bvModal.show('modal-detalhes-livro')"
+                                 v-b-tooltip.hover title="Detalhes" 
                                   variant="dark"><i class="fa fa-search-plus"></i></b-button>
                             </div>
                             <b-button class="mt-2" variant="secondary">Descrição<i class="fa fa-caret-down ml-2"></i></b-button>
@@ -67,6 +68,8 @@
                 </div>
                 <b-pagination size="md" v-model="page" :total-rows="pageLivros.count" :per-page="10"></b-pagination>
             </b-card>
+
+            <ModalDetalhesLivro :livroSelecionado="livroSelecionado" />
         </div> <!--component-->
 </template>
 
@@ -74,9 +77,11 @@
 import PageTitle from '../template/PageTitle'
 import {mapGetters} from 'vuex'
 import Loading from '../shared/Loading'
+import ModalDetalhesLivro from './ModalDetalhesLivro'
+
 export default {
     name: 'Livros',
-    components: {PageTitle, Loading},
+    components: {PageTitle, Loading, ModalDetalhesLivro},
     computed: mapGetters(['pageLivros']),
     mounted(){
         this.getLivros();
@@ -85,6 +90,7 @@ export default {
         return {
             loader: false,
             page: 1,
+            livroSelecionado: null
         }
     },
     watch:{
@@ -102,12 +108,15 @@ export default {
         }finally{
             this.loader = false;
         }     
+        },
+        loadLivro(id){
+            this.livroSelecionado = id;
         }
     }
 }
 </script>
 
-<style>
+<style scoped>
     
     .box-livro{
         border:1px solid #ccc;
