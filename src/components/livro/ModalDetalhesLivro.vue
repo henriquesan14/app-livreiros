@@ -2,11 +2,10 @@
     <div class="c-detalhes-livro">
         <b-modal size="lg" id="modal-detalhes-livro" hide-footer>
             <template slot="modal-title">
-                Livro
+                <h3>Detalhes Livro</h3>
             </template>
             <Loading :loader="loader" />
             <div v-if="!loader" class="d-block">
-                <h2 class="text-center">Detalhes Livro</h2>
                 <div class="detalhes-livro">
                     <div class="box1">
                         <div class="infos1">
@@ -42,22 +41,24 @@
                         </div>
 
                         <div class="infos4">
-                            <h5><strong>Qtd. estoque:</strong> 20</h5>
+                            <h5><strong>Qtd. estoque:</strong> {{livro.qtdTotal}}</h5>
                         </div>
                     </div>
                     <div class="box3">
                          <b-form-group>
                              <label><strong>Sinopse:</strong></label>
-                            <b-form-textarea cols="100" rows="4"
+                            <b-form-textarea readonly="readonly" cols="100" rows="4"
                             :value="livro.sinopseLivro ? livro.sinopseLivro : 'N/A'">
                             
                             </b-form-textarea>
                         </b-form-group>
                     </div>
                     <h4 class="text-center mt-3">Movimentações</h4>
-                    <b-table :items="livro.livroMovimentos" :fields="fields" striped hover>
-
+                    <b-table :responsive="true"  :items="livro.livroMovimentos" :fields="fields" striped hover>
                     </b-table>
+                    <div v-if="livro.livroMovimentos.length < 1">
+                            Nenhuma movimentação
+                    </div>
                 </div> <!--detalhes-livro-->
             </div> <!--body-modal-->
         </b-modal>
@@ -68,6 +69,7 @@
 import axios from 'axios';
 import { baseApiUrl, showError} from '@/global';
 import Loading from '../shared/Loading'
+import moment from 'moment'
 export default {
     name: 'ModalDetalhesLivro',
     components: {Loading},
@@ -80,9 +82,13 @@ export default {
                 livroMovimentos: [],
                 livrosDescritos: []
             },
+            date: '2019-05-22 16:10',
             loader: false,
             fields: [
-                {key: 'createdAt', label: 'Data/Hora', sortable: true},
+                {key: 'createdAt', label: 'Data/Hora', sortable: true, 
+                formatter: (value) => {
+                    return moment(String(value)).format('MM/DD/YYYY HH:mm')}
+                    },
                 {key: 'subIdLivro', label: 'SubCód.', sortable: true},
                 {key: 'idUsuario', label: 'Usuário', sortable: true},
                 {key: 'tipoLivroMovimento', label: 'Tipo', sortable: true},
@@ -121,6 +127,7 @@ export default {
         display: flex;
         flex-direction: column;
         padding: 10px;
+        border: 1px solid #ccc;
     }
 
     .box1{  
@@ -133,7 +140,9 @@ export default {
     .infos1{
         display: flex;
         flex-direction: column;
+        font-size: 18px;
     }
+
     
     .box2{
         padding: 10px;

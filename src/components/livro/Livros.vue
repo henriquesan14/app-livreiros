@@ -22,46 +22,68 @@
 
                 <Loading :loader="loader"/>
                 <div class="scroll-table" v-if="!loader">
-                    <div class="box-livro mb-2" v-for="livro in pageLivros.rows" :key="livro.idLivro">
-                        <div class="img-livro">
-                            <img 
-                            :src="'https://imagens-capas-1.s3.amazonaws.com/'+ (livro.imagemLivro == null ? '1557681051638': livro.imagemLivro)" 
-                            alt="capa-livro">
+                    <div v-for="livro in pageLivros.rows" :key="livro.idLivro">
+                        <div class="box-livro mb-2" >
+                            <div class="img-livro">
+                                <img 
+                                :src="'https://imagens-capas-1.s3.amazonaws.com/'+ (livro.imagemLivro == null ? '1557681051638': livro.imagemLivro)" 
+                                alt="capa-livro">
+                                
+                            </div>
+                            <div class="info-livro">
+                                <div class="title-livro">
+                                    <h4><strong>{{livro.tituloLivro}}</strong></h4>
+                                    <h4>{{livro.autor.nomeAutor}}</h4>
+                                </div>
+                                <div class="desc-livro">
+                                    <div class="desc1">
+                                        <span><strong>Ano: </strong>{{livro.anoLivro}}</span>
+                                        <span><strong>Tipo:</strong> {{livro.condicaoLivro}}</span>
+                                        <span><strong>Qtd.:</strong> {{livro.qtdTotal}}</span>
+                                    </div>
+                                    <div class="desc2">
+                                        <span><strong>Editora:</strong> {{livro.editora.nomeEditora}}</span>
+                                        <span><strong>Assunto:</strong> {{livro.assunto.nomeAssunto}}</span>
+                                        <span><strong>ID:</strong> {{livro.idLivro}}</span>
+                                    </div>
+                                </div>  
+                            </div><!--info-->
+
+                            <div class="info2-livro">
+                                <h4>{{'R$' + livro.precoLivro}}</h4>
+                                <div class="btns-livro">
+                                    <b-button v-b-tooltip.hover title="Adicionar" 
+                                    variant="primary" class="mr-2"><i class="fa fa-plus"></i></b-button>
+                                    <b-button v-b-tooltip.hover title="Alterar" 
+                                    variant="warning" class="mr-2"><i class="fa fa-pencil"></i></b-button>
+                                    <b-button @click="loadLivro(livro.idLivro);$bvModal.show('modal-detalhes-livro')"
+                                    v-b-tooltip.hover title="Detalhes" 
+                                    variant="dark"><i class="fa fa-search-plus"></i></b-button>
+                                </div>
+                                
+                                <b-button :disabled="livro.livrosDescritos.length < 1" @click="livro.showCollapse = !livro.showCollapse" class="mt-2" variant="secondary">Descrição<i class="fa fa-caret-down ml-2"></i></b-button>
+
+                            </div><!--btn-->
+                        </div><!--box-->
+                        <div v-if="livro.livrosDescritos.length > 0">
+                            
+                            <b-collapse id="collapse-livro" class="mb-3" v-model="livro.showCollapse">
+                                <h4 class="text-center">Livros Descritos</h4>
+                                <b-table :responsive="true" :items="livro.livrosDescritos" :fields="fields" hover striped >
+                                    <template slot="actions">
+                                        <b-button variant="warning"
+                                            v-b-tooltip.hover title="Alterar">
+                                            <i class="fa fa-pencil"></i>
+                                        </b-button>
+                                    </template>
+                                </b-table>
+                            </b-collapse>
                             
                         </div>
-                        <div class="info-livro">
-                            <div class="title-livro">
-                                <h4><strong>{{livro.tituloLivro}}</strong></h4>
-                                <h4>{{livro.autor.nomeAutor}}</h4>
-                            </div>
-                            <div class="desc-livro">
-                                <div class="desc1">
-                                    <span><strong>Ano: </strong>{{livro.anoLivro}}</span>
-                                    <span><strong>Tipo:</strong> {{livro.condicaoLivro}}</span>
-                                    <span><strong>Qtd.:</strong> 1</span>
-                                </div>
-                                <div class="desc2">
-                                    <span><strong>Editora:</strong> {{livro.editora.nomeEditora}}</span>
-                                    <span><strong>Assunto:</strong> {{livro.assunto.nomeAssunto}}</span>
-                                    <span><strong>ID:</strong> {{livro.idLivro}}</span>
-                                </div>
-                            </div>  
-                        </div><!--info-->
+                    </div>
 
-                        <div class="info2-livro">
-                            <h4>{{'R$' + livro.precoLivro}}</h4>
-                            <div class="btns-livro">
-                                <b-button v-b-tooltip.hover title="Adicionar" 
-                                  variant="primary" class="mr-2"><i class="fa fa-plus"></i></b-button>
-                                <b-button v-b-tooltip.hover title="Alterar" 
-                                  variant="warning" class="mr-2"><i class="fa fa-pencil"></i></b-button>
-                                <b-button @click="loadLivro(livro.idLivro);$bvModal.show('modal-detalhes-livro')"
-                                 v-b-tooltip.hover title="Detalhes" 
-                                  variant="dark"><i class="fa fa-search-plus"></i></b-button>
-                            </div>
-                            <b-button class="mt-2" variant="secondary">Descrição<i class="fa fa-caret-down ml-2"></i></b-button>
-                        </div><!--btn-->
-                    </div><!--box-->
+                    
+                    
                 </div> <!--scroll-->
                 <div v-if="!loader && pageLivros.rows.length < 1" class="mb-2">
                     <span>Nenhum resultado...</span>
@@ -90,7 +112,15 @@ export default {
         return {
             loader: false,
             page: 1,
-            livroSelecionado: null
+            livroSelecionado: null,
+            fields: [
+                {key: 'subIdLivro', label: 'SubCód.', sortable: true},
+                {key: 'textLivroDescrito', label: 'Desc.', sortable: true},
+                {key: 'qtdLivro', label: 'Qtd.', sortable: true},
+                {key: 'precoLivroDescrito', label: 'Preço', sortable: true, 
+                formatter: (value) => {return 'R$' + value;}},
+                {key: 'actions', label: 'Ações'}
+            ]
         }
     },
     watch:{
@@ -117,6 +147,11 @@ export default {
 </script>
 
 <style scoped>
+
+    #collapse-livro{
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
     
     .box-livro{
         border:1px solid #ccc;

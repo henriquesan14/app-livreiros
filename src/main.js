@@ -9,7 +9,6 @@ import './config/mq'
 import store from './config/store/store'
 import VueTheMask from 'vue-the-mask'
 Vue.use(VueTheMask)
-
 Vue.use(Vuelidate)
 
 
