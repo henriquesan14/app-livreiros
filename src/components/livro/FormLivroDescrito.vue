@@ -32,7 +32,7 @@
                 </b-col>
                 <b-col md="6">
                     <b-form-group label="SubCódigo.">
-                        <b-form-input :class="{'is-invalid': submitted && $v.livroDescrito.subIdLivro.$invalid, 'is-valid': submitted && !$v.livroDescrito.subIdLivro.$invalid}" 
+                        <b-form-input :readOnly="livroDescrito.subIdLivro" :class="{'is-invalid': submitted && $v.livroDescrito.subIdLivro.$invalid, 'is-valid': submitted && !$v.livroDescrito.subIdLivro.$invalid}" 
                         v-model="livroDescrito.subIdLivro" maxLength="2" />
                     </b-form-group>
                 </b-col>
@@ -45,9 +45,26 @@
                     </b-form-group>
                 </b-col>
                 <b-col>
-                    <b-form-group label="Qtd.">
-                        <the-mask :class="{'is-invalid': submitted && $v.livroDescrito.qtdLivro.$invalid, 'is-valid': submitted && !$v.livroDescrito.qtdLivro.$invalid}"
+                    <b-form-group :label="livroDescrito.idLivroDescrito? 'Qtd. Atual' : 'Qtd.'">
+                        <the-mask :readOnly="livroDescrito.idLivroDescrito" :class="{'is-invalid': submitted && $v.livroDescrito.qtdLivro.$invalid, 'is-valid': submitted && !$v.livroDescrito.qtdLivro.$invalid}"
                          mask="####" class="form-control" v-model="livroDescrito.qtdLivro" />
+                    </b-form-group>
+                </b-col>
+                <b-col v-if="livroDescrito.idLivroDescrito">
+                    <b-form-group label="Qtd.">
+                        <the-mask
+                         mask="####" class="form-control" v-model="livroDescrito.qtd" />
+                    </b-form-group>
+                </b-col>
+            </b-row>
+
+            <b-row v-if="livroDescrito.idLivroDescrito">
+                <b-col md="6">
+                    <b-form-group label="Tipo Movimento">
+                        <b-form-select
+                                v-model="livroDescrito.movimento">
+                                    <option v-for="op in options" :key="op.name" :value="op.value">{{op.name}}</option>
+                        </b-form-select>
                     </b-form-group>
                 </b-col>
             </b-row>
@@ -59,19 +76,27 @@
                     </b-form-group>
                 </b-col>
             </b-row>
+
+            <b-row v-if="livroDescrito.textLivroDescrito">
+                <b-col>
+                    <b-form-group label="Descrição Atual">
+                        <b-form-textarea :readonly="true" v-model="livroDescrito.textLivroDescrito" />
+                    </b-form-group>
+                </b-col>
+            </b-row>
             
             <div v-for="categoria in categoriasAtivas" :key="categoria.idCategoriaDescricao">
                 <h5><strong>{{categoria.nomeCategoriaDescricao}}</strong></h5>
                 <b-table :items="categoria.descricoes" :fields="fields"  striped hover>
                     <template slot="actions" slot-scope="data">
                         <b-form-checkbox-group name="descricoes">
-                            <b-form-checkbox @change="onChangeDesc(data.item.idDescricao)"  ></b-form-checkbox>
+                            <b-form-checkbox @change="onChangeDesc(data.item.idDescricao)" v-model="livroDescrito.descs" ></b-form-checkbox>
                         </b-form-checkbox-group>
                     </template>
                 </b-table>
             </div>
             <b-button type="submit" class="mr-2" variant="success">{{livroDescrito.idLivroDescrito ? 'Alterar': 'Adicionar'}}</b-button>
-            <b-button @click="$bvModal.hide('new-livro-descrito')">Fechar</b-button>
+            <b-button @click="$bvModal.hide('new-livro-descrito');$bvModal.hide('edit-livro-descrito')">Fechar</b-button>
         </b-form>
     </div>
 </template>
@@ -107,6 +132,11 @@ export default {
                 {key: 'reducaoPreco', label: '( - ) R$', sortable: true}
             ],
             submitted: false,
+            options: [
+                {name: 'Adicionar', value: 'adicionar'},
+                {name: 'Corrigir', value: 'corrigir'},
+                {name: 'Falta', value: 'falta'},
+            ]
         }
     },
     validations: {
@@ -147,7 +177,7 @@ export default {
             }
             this.submitted = false;
             this.livroDescrito.idLivro = this.livroSelecionado;
-            this.$emit('save-livro-desc', this.livroDescrito);
+            this.$emit('submit-livro-desc', this.livroDescrito);
         }
     }
 }

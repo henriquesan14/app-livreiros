@@ -87,7 +87,7 @@ export default {
             fields: [
                 {key: 'createdAt', label: 'Data/Hora', sortable: true, 
                 formatter: (value) => {
-                    return moment(String(value)).format('MM/DD/YYYY HH:mm')}
+                    return moment(String(value)).format('DD/MM/YYYY HH:mm')}
                     },
                 {key: 'subIdLivro', label: 'SubCód.', sortable: true},
                 {key: 'idUsuario', label: 'Usuário', sortable: true},

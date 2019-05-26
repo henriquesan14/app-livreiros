@@ -71,7 +71,7 @@
                                 <h4 class="text-center">Livros Descritos</h4>
                                 <b-table :responsive="true" :items="livro.livrosDescritos" :fields="fields" hover striped >
                                     <template slot="actions" slot-scope="data">
-                                        <b-button @click="loadLivroDesc(data.item);$bvModal.show('new-livro-descrito')" variant="warning"
+                                        <b-button @click="loadLivroDesc(data.item);$bvModal.show('edit-livro-descrito')" variant="warning"
                                             v-b-tooltip.hover title="Alterar">
                                             <i class="fa fa-pencil"></i>
                                         </b-button>
@@ -93,10 +93,19 @@
 
             <b-modal size="lg" id="new-livro-descrito" hide-footer>
                 <template slot="modal-title">
-                    <h3>{{livroDescrito.idLivroDescrito ? 'Edição Livro Descrito': 'Cadastro Livro Descrito'}}</h3>
+                    <h3>Cadastro Livro Descrito</h3>
                 </template>
                 <div class="d-block">
-                    <FormLivroDescrito @save-livro-desc="saveLivroDesc" :livroDescrito="livroDescrito" :livroSelecionado="livroSelecionado" />
+                    <FormLivroDescrito @submit-livro-desc="saveLivroDesc" :livroDescrito="livroDescrito" :livroSelecionado="livroSelecionado" />
+                </div>
+            </b-modal>
+
+            <b-modal size="lg" id="edit-livro-descrito" hide-footer>
+                <template slot="modal-title">
+                    <h3>Edição Livro Descrito</h3>
+                </template>
+                <div class="d-block">
+                    <FormLivroDescrito @submit-livro-desc="editLivroDesc" :livroDescrito="livroDescrito" :livroSelecionado="livroSelecionado" />
                 </div>
             </b-modal>
 
@@ -118,6 +127,7 @@ export default {
     computed: mapGetters(['pageLivros']),
     mounted(){
         this.getLivros();
+    
     },
     data(){
         return {
@@ -140,7 +150,7 @@ export default {
             ],
             filtroSelecionado: 'titulo',
             nomeFiltro: '',
-            livroDescrito: {descricoes: []}
+            livroDescrito: {descricoes: [] }
         }
     },
     watch:{
@@ -177,9 +187,26 @@ export default {
         },
         zeraLivroDesc(){
             this.livroDescrito= {descricoes: []};
+            this.livroDescrito.descs = [];
         },
         loadLivroDesc(livroDesc){
             this.livroDescrito = livroDesc;
+            this.livroDescrito.movimento = 'adicionar';
+            this.livroDescrito.descricoes = [];
+            this.livroDescrito.descs = [];
+        },
+        async editLivroDesc(livroDesc){
+            const url = `${baseApiUrl}/livrosdescritos/${this.livroDescrito.idLivroDescrito}`;
+            try{
+                await axios.put(url, livroDesc);
+                this.$toasted.global.defaultSuccess();
+                this.getLivros();
+                this.zeraLivroDesc();
+                this.$bvModal.hide('edit-livro-descrito');
+            }catch(err){
+                showError(err);
+            }
+            
         }
     }
 }
