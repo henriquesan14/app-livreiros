@@ -32,7 +32,8 @@
                 </b-col>
                 <b-col md="6">
                     <b-form-group label="SubCódigo.">
-                        <b-form-input v-model="livroDescrito.subIdLivro" maxLength="2" />
+                        <b-form-input :class="{'is-invalid': submitted && $v.livroDescrito.subIdLivro.$invalid, 'is-valid': submitted && !$v.livroDescrito.subIdLivro.$invalid}" 
+                        v-model="livroDescrito.subIdLivro" maxLength="2" />
                     </b-form-group>
                 </b-col>
             </b-row>
@@ -45,7 +46,8 @@
                 </b-col>
                 <b-col>
                     <b-form-group label="Qtd.">
-                        <the-mask mask="####" class="form-control" v-model="livroDescrito.qtdLivro" />
+                        <the-mask :class="{'is-invalid': submitted && $v.livroDescrito.qtdLivro.$invalid, 'is-valid': submitted && !$v.livroDescrito.qtdLivro.$invalid}"
+                         mask="####" class="form-control" v-model="livroDescrito.qtdLivro" />
                     </b-form-group>
                 </b-col>
             </b-row>
@@ -57,7 +59,7 @@
                     </b-form-group>
                 </b-col>
             </b-row>
-
+            
             <div v-for="categoria in categoriasAtivas" :key="categoria.idCategoriaDescricao">
                 <h5><strong>{{categoria.nomeCategoriaDescricao}}</strong></h5>
                 <b-table :items="categoria.descricoes" :fields="fields"  striped hover>
@@ -78,6 +80,7 @@ import {mapGetters} from 'vuex'
 import axios from 'axios';
 import { baseApiUrl, showError} from '@/global';
 import Loading from '../shared/Loading'
+import { required } from "vuelidate/lib/validators";
 export default {
     name: 'FormLivroDescrito',
     components: {Loading},
@@ -102,7 +105,14 @@ export default {
                 {key: 'actions', label: 'Ações'},
                 {key: 'nomeDescricao', label: 'Desc.', sortable: true},
                 {key: 'reducaoPreco', label: '( - ) R$', sortable: true}
-            ]
+            ],
+            submitted: false,
+        }
+    },
+    validations: {
+        livroDescrito: {
+            subIdLivro: {required},
+            qtdLivro: {required}
         }
     },
     methods:{
@@ -128,6 +138,14 @@ export default {
             }
         },
         submitLivroDesc(){
+            this.submitted = true;
+                // stop here if form is invalid
+            this.$v.$touch();
+                
+            if (this.$v.$invalid) {
+                return;
+            }
+            this.submitted = false;
             this.livroDescrito.idLivro = this.livroSelecionado;
             this.$emit('save-livro-desc', this.livroDescrito);
         }

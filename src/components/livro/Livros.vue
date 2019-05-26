@@ -7,13 +7,12 @@
                 <b-row>
                     <b-col md="12" sm="12" class="mb-3">
                         <b-input-group>
-                            <b-form-select class="col-2 mr-2">
-                                <option value="1">Autor1</option>
-                                <option value="2">Autor2</option>
+                            <b-form-select v-model="filtroSelecionado" class="col-2 mr-2">
+                                <option v-for="op in options" :key="op.name" :value="op.value">{{op.name}}</option>
                             </b-form-select>
-                            <b-form-input  type="text" placeholder="Pesquise o nome do livro..." />
+                            <b-form-input @keyup.enter="getLivros()" v-model="nomeFiltro" type="text" placeholder="Pesquise o nome do livro..." />
                             <b-input-group-append>
-                                <b-button  variant="primary"><i class="fa fa-search"></i></b-button>
+                                <b-button @click="getLivros()"  variant="primary"><i class="fa fa-search"></i></b-button>
                             </b-input-group-append>
                             
                         </b-input-group>
@@ -127,12 +126,20 @@ export default {
             livroSelecionado: null,
             fields: [
                 {key: 'subIdLivro', label: 'SubCód.', sortable: true},
-                {key: 'textLivroDescrito', label: 'Desc.', sortable: true},
+                {key: 'textLivroDescrito', label: 'Desc.', sortable: true, 
+                formatter: value => value != null ? value : 'N/A'},
                 {key: 'qtdLivro', label: 'Qtd.', sortable: true},
                 {key: 'precoLivroDescrito', label: 'Preço', sortable: true, 
                 formatter: (value) => {return 'R$' + value;}},
                 {key: 'actions', label: 'Ações'}
             ],
+            options: [
+                {name: 'Título', value: 'titulo'},
+                {name: 'Autor', value: 'autor'},
+                {name: 'Editora', value: 'editora'}
+            ],
+            filtroSelecionado: 'titulo',
+            nomeFiltro: '',
             livroDescrito: {descricoes: []}
         }
     },
@@ -145,7 +152,7 @@ export default {
         async getLivros(){
             this.loader = true;
         try{
-            await this.$store.dispatch('GET_LIVROS', {page: this.page -1});
+            await this.$store.dispatch('GET_LIVROS', {page: this.page -1, name: this.filtroSelecionado, value: this.nomeFiltro});
         }catch(err){
             () => {}
         }finally{
@@ -156,7 +163,6 @@ export default {
             this.livroSelecionado = id;
         },
         async saveLivroDesc(livroDesc){
-            console.log(livroDesc)
             const url = `${baseApiUrl}/livrosdescritos`;
             try{
                 await axios.post(url, livroDesc);
@@ -166,7 +172,6 @@ export default {
                 this.$bvModal.hide('new-livro-descrito');
             }catch(err){
                 showError(err);
-                console.log(err.response)
             }
             
         },
