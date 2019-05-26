@@ -70,7 +70,7 @@
                     </template>
                 </b-table>
             </div>
-            <b-button type="submit" class="mr-2" variant="success">Salvar</b-button>
+            <b-button type="submit" class="mr-2" variant="success">{{livroDescrito.idLivroDescrito ? 'Alterar': 'Adicionar'}}</b-button>
             <b-button @click="$bvModal.hide('new-livro-descrito')">Fechar</b-button>
         </b-form>
     </div>

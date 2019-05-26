@@ -61,7 +61,7 @@
                                     variant="dark"><i class="fa fa-search-plus"></i></b-button>
                                 </div>
                                 
-                                <b-button :disabled="livro.livrosDescritos.length < 1" @click="livro.showCollapse = !livro.showCollapse" class="mt-2" variant="secondary">Descrição<i class="fa fa-caret-down ml-2"></i></b-button>
+                                <b-button  :disabled="livro.livrosDescritos.length < 1" @click="loadLivro(livro.idLivro);livro.showCollapse = !livro.showCollapse" class="mt-2" variant="secondary">Descrição<i class="fa fa-caret-down ml-2"></i></b-button>
 
                             </div><!--btn-->
                         </div><!--box-->
@@ -70,8 +70,8 @@
                             <b-collapse id="collapse-livro" class="mb-3" v-model="livro.showCollapse">
                                 <h4 class="text-center">Livros Descritos</h4>
                                 <b-table :responsive="true" :items="livro.livrosDescritos" :fields="fields" hover striped >
-                                    <template slot="actions">
-                                        <b-button variant="warning"
+                                    <template slot="actions" slot-scope="data">
+                                        <b-button @click="loadLivroDesc(data.item);$bvModal.show('new-livro-descrito')" variant="warning"
                                             v-b-tooltip.hover title="Alterar">
                                             <i class="fa fa-pencil"></i>
                                         </b-button>
@@ -93,7 +93,7 @@
 
             <b-modal size="lg" id="new-livro-descrito" hide-footer>
                 <template slot="modal-title">
-                    <h3>Cadastro Livro Descrito</h3>
+                    <h3>{{livroDescrito.idLivroDescrito ? 'Edição Livro Descrito': 'Cadastro Livro Descrito'}}</h3>
                 </template>
                 <div class="d-block">
                     <FormLivroDescrito @save-livro-desc="saveLivroDesc" :livroDescrito="livroDescrito" :livroSelecionado="livroSelecionado" />
@@ -177,6 +177,9 @@ export default {
         },
         zeraLivroDesc(){
             this.livroDescrito= {descricoes: []};
+        },
+        loadLivroDesc(livroDesc){
+            this.livroDescrito = livroDesc;
         }
     }
 }

@@ -14,7 +14,6 @@ const mutations = {
 const actions = {
   async GET_LIVROS ({commit}, params) {
     const url = `${baseApiUrl}/livros?pagina=${params.page}&${params.name}=${params.value}`;
-    console.log(url)
     const { data } = await axios.get(url);
     commit('RECEIVE_LIVROS',{ pageLivros: data});
   }
