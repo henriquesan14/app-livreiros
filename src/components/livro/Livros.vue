@@ -52,7 +52,8 @@
                             <div class="info2-livro">
                                 <h4>{{'R$' + livro.precoLivro}}</h4>
                                 <div class="btns-livro">
-                                    <b-button v-b-tooltip.hover title="Adicionar" 
+                                    <b-button @click="loadLivro(livro.idLivro);zeraLivroDesc();$bvModal.show('new-livro-descrito')"
+                                     v-b-tooltip.hover title="Adicionar" 
                                     variant="primary" class="mr-2"><i class="fa fa-plus"></i></b-button>
                                     <b-button v-b-tooltip.hover title="Alterar" 
                                     variant="warning" class="mr-2"><i class="fa fa-pencil"></i></b-button>
@@ -91,6 +92,15 @@
                 <b-pagination size="md" v-model="page" :total-rows="pageLivros.count" :per-page="10"></b-pagination>
             </b-card>
 
+            <b-modal size="lg" id="new-livro-descrito" hide-footer>
+                <template slot="modal-title">
+                    <h3>Cadastro Livro Descrito</h3>
+                </template>
+                <div class="d-block">
+                    <FormLivroDescrito @save-livro-desc="saveLivroDesc" :livroDescrito="livroDescrito" :livroSelecionado="livroSelecionado" />
+                </div>
+            </b-modal>
+
             <ModalDetalhesLivro :livroSelecionado="livroSelecionado" />
         </div> <!--component-->
 </template>
@@ -100,10 +110,12 @@ import PageTitle from '../template/PageTitle'
 import {mapGetters} from 'vuex'
 import Loading from '../shared/Loading'
 import ModalDetalhesLivro from './ModalDetalhesLivro'
-
+import FormLivroDescrito from './FormLivroDescrito'
+import axios from 'axios';
+import { baseApiUrl, showError} from '@/global';
 export default {
     name: 'Livros',
-    components: {PageTitle, Loading, ModalDetalhesLivro},
+    components: {PageTitle, Loading, ModalDetalhesLivro, FormLivroDescrito},
     computed: mapGetters(['pageLivros']),
     mounted(){
         this.getLivros();
@@ -120,7 +132,8 @@ export default {
                 {key: 'precoLivroDescrito', label: 'Preço', sortable: true, 
                 formatter: (value) => {return 'R$' + value;}},
                 {key: 'actions', label: 'Ações'}
-            ]
+            ],
+            livroDescrito: {descricoes: []}
         }
     },
     watch:{
@@ -141,6 +154,24 @@ export default {
         },
         loadLivro(id){
             this.livroSelecionado = id;
+        },
+        async saveLivroDesc(livroDesc){
+            console.log(livroDesc)
+            const url = `${baseApiUrl}/livrosdescritos`;
+            try{
+                await axios.post(url, livroDesc);
+                this.$toasted.global.defaultSuccess();
+                this.getLivros();
+                this.zeraLivroDesc();
+                this.$bvModal.hide('new-livro-descrito');
+            }catch(err){
+                showError(err);
+                console.log(err.response)
+            }
+            
+        },
+        zeraLivroDesc(){
+            this.livroDescrito= {descricoes: []};
         }
     }
 }
