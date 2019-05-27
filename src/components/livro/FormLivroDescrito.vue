@@ -25,41 +25,39 @@
         </div>
         <b-form @submit.prevent="submitLivroDesc()" v-if="!loader">
             <b-row>
-                <b-col md="6">
+                <b-col >
                     <b-form-group label="Código.">
                         <b-form-input :readonly="true" :value="livro.idLivro" />
                     </b-form-group>
                 </b-col>
-                <b-col md="6">
+                <b-col >
                     <b-form-group label="SubCódigo.">
                         <b-form-input :readOnly="livroDescrito.subIdLivro" :class="{'is-invalid': submitted && $v.livroDescrito.subIdLivro.$invalid, 'is-valid': submitted && !$v.livroDescrito.subIdLivro.$invalid}" 
                         v-model="livroDescrito.subIdLivro" maxLength="2" />
                     </b-form-group>
                 </b-col>
-            </b-row>
-
-            <b-row>
                 <b-col>
                     <b-form-group label="Valor">
                         <b-form-input :readonly="true" :value="livro.precoLivro" />
                     </b-form-group>
                 </b-col>
-                <b-col>
+            </b-row>
+
+            <b-row>
+                
+                <b-col md="4">
                     <b-form-group :label="livroDescrito.idLivroDescrito? 'Qtd. Atual' : 'Qtd.'">
                         <the-mask :readOnly="livroDescrito.idLivroDescrito" :class="{'is-invalid': submitted && $v.livroDescrito.qtdLivro.$invalid, 'is-valid': submitted && !$v.livroDescrito.qtdLivro.$invalid}"
                          mask="####" class="form-control" v-model="livroDescrito.qtdLivro" />
                     </b-form-group>
                 </b-col>
-                <b-col v-if="livroDescrito.idLivroDescrito">
+                <b-col  v-if="livroDescrito.idLivroDescrito">
                     <b-form-group label="Qtd.">
                         <the-mask
                          mask="####" class="form-control" v-model="livroDescrito.qtd" />
                     </b-form-group>
                 </b-col>
-            </b-row>
-
-            <b-row v-if="livroDescrito.idLivroDescrito">
-                <b-col md="6">
+                <b-col v-if="livroDescrito.idLivroDescrito" >
                     <b-form-group label="Tipo Movimento">
                         <b-form-select
                                 v-model="livroDescrito.movimento">
@@ -68,6 +66,7 @@
                     </b-form-group>
                 </b-col>
             </b-row>
+
 
             <b-row>
                 <b-col>

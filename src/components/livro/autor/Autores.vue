@@ -21,10 +21,6 @@
                         v-b-tooltip.hover title="Alterar">
                             <i class="fa fa-pencil"></i>
                         </b-button>
-                        <b-button @click="showMsgBoxTwo(data.item)" v-b-tooltip.hover title="Excluir"
-                         variant="danger">
-                            <i class="fa fa-trash"></i>
-                            </b-button>
                     
                     </template>
                 </b-table>
@@ -82,31 +78,6 @@ export default {
         loadAutor(autor){
             this.autor = {...autor};
         },
-        showMsgBoxTwo(autor) {
-            this.boxTwo = ''
-            this.$bvModal.msgBoxConfirm(`Tem certeza que deseja excluir o autor de Cód. ${autor.idAutor}?` , {
-            title: 'Confirmação',
-            size: 'md',
-            buttonSize: 'md',
-            okVariant: 'danger',
-            okTitle: 'SIM',
-            cancelTitle: 'NÃO',
-            footerClass: 'p-2',
-            hideHeaderClose: false,
-            centered: true
-            })
-            .then((res) => {
-                if(res){
-                    this.removeAutor(autor.idAutor);
-                }
-            })
-            .catch(() => {
-                
-            })
-      },
-      removeAutor(id){
-          alert(id);
-      },
       zeraAutor(){
           this.autor = {};
       }

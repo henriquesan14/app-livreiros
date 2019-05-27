@@ -21,10 +21,6 @@
                         v-b-tooltip.hover title="Alterar">
                             <i class="fa fa-pencil"></i>
                         </b-button>
-                        <b-button @click="showMsgBoxTwo(data.item)" v-b-tooltip.hover title="Excluir"
-                         variant="danger">
-                            <i class="fa fa-trash"></i>
-                            </b-button>
                     
                     </template>
                 </b-table>
@@ -82,31 +78,6 @@ export default {
         loadAssunto(assunto){
             this.assunto = {...assunto};
         },
-        showMsgBoxTwo(assunto) {
-            this.boxTwo = ''
-            this.$bvModal.msgBoxConfirm(`Tem certeza que deseja excluir o assunto de Cód. ${assunto.idAssunto}?` , {
-            title: 'Confirmação',
-            size: 'md',
-            buttonSize: 'md',
-            okVariant: 'danger',
-            okTitle: 'SIM',
-            cancelTitle: 'NÃO',
-            footerClass: 'p-2',
-            hideHeaderClose: false,
-            centered: true
-            })
-            .then((res) => {
-                if(res){
-                    this.removeAssunto(assunto.idAssunto);
-                }
-            })
-            .catch(() => {
-                
-            })
-      },
-      removeAssunto(id){
-          alert(id);
-      },
       zeraAssunto(){
           this.assunto = {};
       }

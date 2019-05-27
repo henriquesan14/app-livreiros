@@ -8,7 +8,7 @@
                 <b-row>
                     <b-col md="12">
                         <b-form-group label="Imagem:">
-                            <b-form-file v-model="livro.imagemLivro" accept="image/jpeg, image/png" browse-text="Procurar"  
+                            <b-form-file v-model="image" accept="image/jpeg, image/png" browse-text="Procurar"  
                             placeholder="Escolha uma imagem..."></b-form-file>
                         </b-form-group>
                     </b-col>
@@ -379,11 +379,13 @@ export default {
             const fd = new FormData();
             fd.append('image', this.image)
             try{
-                const res = await axios.post(`${baseApiUrl}/livros/capa`, fd, {
+                const url = `${baseApiUrl}/livros/capa`
+                const res = await axios.post(url, fd, {
                 });
                 this.livro.imagemLivro = res.data.imagemLivro;
                 this.saveLivro();
             }catch(err){
+                console.log(err.response)
                 showError(err);
             }finally{
                 this.loaderLivro = false;
