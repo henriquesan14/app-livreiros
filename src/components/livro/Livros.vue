@@ -150,7 +150,7 @@ export default {
             ],
             filtroSelecionado: 'titulo',
             nomeFiltro: '',
-            livroDescrito: {descricoes: [] }
+            livroDescrito: {descricoes: []}
         }
     },
     watch:{
@@ -188,13 +188,11 @@ export default {
         },
         zeraLivroDesc(){
             this.livroDescrito= {descricoes: []};
-            this.livroDescrito.descs = [];
         },
         loadLivroDesc(livroDesc){
             this.livroDescrito = livroDesc;
             this.livroDescrito.movimento = 'adicionar';
             this.livroDescrito.descricoes = [];
-            this.livroDescrito.descs = [];
         },
         async editLivroDesc(livroDesc){
             const url = `${baseApiUrl}/livrosdescritos/${this.livroDescrito.idLivroDescrito}`;

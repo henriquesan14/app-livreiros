@@ -88,8 +88,8 @@
                 <h5><strong>{{categoria.nomeCategoriaDescricao}}</strong></h5>
                 <b-table :items="categoria.descricoes" :fields="fields"  striped hover>
                     <template slot="actions" slot-scope="data">
-                        <b-form-checkbox-group name="descricoes">
-                            <b-form-checkbox @change="onChangeDesc(data.item.idDescricao)" v-model="livroDescrito.descs" ></b-form-checkbox>
+                        <b-form-checkbox-group>
+                            <b-form-checkbox @change="onChangeDesc(data.item.idDescricao)"></b-form-checkbox>
                         </b-form-checkbox-group>
                     </template>
                 </b-table>
