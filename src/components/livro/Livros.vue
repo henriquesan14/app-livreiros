@@ -177,9 +177,10 @@ export default {
             try{
                 await axios.post(url, livroDesc);
                 this.$toasted.global.defaultSuccess();
+                this.$bvModal.hide('new-livro-descrito');
                 this.getLivros();
                 this.zeraLivroDesc();
-                this.$bvModal.hide('new-livro-descrito');
+                this.loadLivro(this.idSelecionado);
             }catch(err){
                 showError(err);
             }
@@ -200,9 +201,10 @@ export default {
             try{
                 await axios.put(url, livroDesc);
                 this.$toasted.global.defaultSuccess();
+                this.$bvModal.hide('edit-livro-descrito');
                 this.getLivros();
                 this.zeraLivroDesc();
-                this.$bvModal.hide('edit-livro-descrito');
+                this.loadLivro(this.idSelecionado);
             }catch(err){
                 showError(err);
             }

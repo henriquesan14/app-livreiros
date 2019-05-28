@@ -32,7 +32,7 @@
                 </b-col>
                 <b-col >
                     <b-form-group label="SubCódigo.">
-                        <b-form-input :readOnly="livroDescrito.subIdLivro" :class="{'is-invalid': submitted && $v.livroDescrito.subIdLivro.$invalid, 'is-valid': submitted && !$v.livroDescrito.subIdLivro.$invalid}" 
+                        <b-form-input :readOnly="livroDescrito.idLivroDescrito" :class="{'is-invalid': submitted && $v.livroDescrito.subIdLivro.$invalid, 'is-valid': submitted && !$v.livroDescrito.subIdLivro.$invalid}" 
                         v-model="livroDescrito.subIdLivro" maxLength="2" />
                     </b-form-group>
                 </b-col>
