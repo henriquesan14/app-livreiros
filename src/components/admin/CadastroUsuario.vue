@@ -30,7 +30,7 @@ export default {
             const url = `${baseApiUrl}/usuarios`;
             axios.post(url, this.user).then(() => {
                 this.$toasted.global.defaultSuccess();
-                this.zeraUser();
+                this.$router.push('/dashboard/usuarios');
             }).catch(showError)
         },
         zeraUser(){

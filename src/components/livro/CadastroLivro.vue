@@ -371,8 +371,8 @@ export default {
             const url = `${baseApiUrl}/livros`
             try{
                 await axios.post(url, this.livro);
-                this.reset();
-                    this.$toasted.global.defaultSuccess();
+                this.$toasted.global.defaultSuccess();
+                this.$router.push('/dashboard/livros');
             }catch(err){
                 showError(err);
             }
