@@ -7,6 +7,7 @@ import AdminPages from '../components/admin/AdminPages.vue'
 import CadastroUsuario from'../components/admin/CadastroUsuario.vue'
 import EdicaoUsuario from '../components/admin/EdicaoUsuario.vue'
 import CadastroLivro from '../components/livro/CadastroLivro.vue'
+import EdicaoLivro from '../components/livro/EdicaoLivro.vue'
 import Livros from '../components/livro/Livros.vue'
 import Assuntos from '../components/livro/assunto/Assuntos.vue'
 import Editoras from '../components/livro/editora/Editoras.vue'
@@ -73,6 +74,11 @@ export default new Router({
           path: 'livros/cadastro',
           name: 'cadastro-livro',
           component: CadastroLivro
+        },
+        {
+          path: 'livros/edit/:id',
+          name: 'edit-livro',
+          component: EdicaoLivro
         },
         {
           path: 'assuntos',

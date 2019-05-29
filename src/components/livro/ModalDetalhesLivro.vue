@@ -14,7 +14,7 @@
                             <span><strong>Titulo:</strong> {{livro.tituloLivro}}</span>
                             <span><strong>Autor:</strong> {{livro.autor.nomeAutor}}</span>
                             <span><strong>Editora:</strong> {{livro.editora.nomeEditora}}</span>
-                            <span><strong>Assunto:</strong> {{livro.assunto.nomeAsunto ? livro.assunto.nomeAsunto : 'N/A'}}</span>
+                            <span><strong>Assunto:</strong> {{livro.assunto.nomeAssunto ? livro.assunto.nomeAssunto : 'N/A'}}</span>
                             <span><strong>Idioma:</strong> {{livro.idiomaLivro ? livro.idiomaLivro : 'N/A'}}</span>
                         </div>
                         <div>
@@ -110,6 +110,7 @@ export default {
             try{
                 const res = await axios.get(url);
                 this.livro = res.data
+                console.log(res.data)
             }catch(err){
                 showError(err)
             }finally{

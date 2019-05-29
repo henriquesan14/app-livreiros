@@ -1,15 +1,15 @@
 <template>
-    <div class="cadastro-livro">
-        <PageTitle icon="fa fa-book" main="Administração de livros" sub="Cadastro livro"/>
+    <div class="edit-livro">
+        <PageTitle icon="fa fa-book" main="Administração de livros" sub="Edição livro"/>
         <router-link tag="b-button" class="btn-dark btn-sm mb-1" to="/dashboard/livros">Voltar</router-link>
-        <b-card header="Novo livro">
-            <b-form @submit.prevent="submitLivro()">
+        <b-card header="Edição livro">
+            <b-form v-if="!loaderLivro" @submit.prevent="submitLivro()">
 
-                <img v-if="url" id="img-livro" :src="url">
-                <button v-if="url" @click="url = null; image=null" class="btn-danger btn-center"><i class="fa fa-times"></i></button>
+                <img class="img-livro" v-if="livro.imagemLivro || url" :src="url ? url  : 'https://imagens-capas-1.s3.amazonaws.com/'+ livro.imagemLivro">
+                <button v-if="url" @click="url = null; image = null" class="btn-danger btn-center"><i class="fa fa-times"></i></button>
                 <b-row>
                     <b-col md="12">
-                        <b-form-group label="Imagem:">
+                        <b-form-group label="Nova Imagem:">
                             <b-form-file @change="onFileChange" v-model="image" accept="image/jpeg, image/png" browse-text="Procurar"  
                             placeholder="Escolha uma imagem..."></b-form-file>
                         </b-form-group>
@@ -38,10 +38,13 @@
                     </b-col>
                 </b-row>
 
+               
                 <span class="text-danger" v-if="submitted && $v.livro.idAutor.$invalid">Selecione um autor</span>
+                <span v-if="livro.autor"><strong>Autor atual :</strong> {{livro.autor.nomeAutor}}</span>
                 <b-row>
                     <b-col md="12">
                         <b-input-group prepend="Autor" class="mb-3">
+                            
                             <b-form-input maxLength="100"
                              v-model="autor.nomeAutor"  placeholder="Autor..."></b-form-input>
                             <b-input-group-append>
@@ -66,6 +69,7 @@
                 </b-row>
 
                 <span class="text-danger" v-if="submitted && $v.livro.idAssunto.$invalid">Selecione um assunto</span>
+                <span v-if="livro.assunto"><strong>Assunto atual :</strong> {{livro.assunto.nomeAssunto}}</span>
                 <b-row>
                     <b-col md="12">
                         <b-input-group prepend="Assunto" class="mb-3">
@@ -89,6 +93,7 @@
                 </b-row>
 
                 <span class="text-danger" v-if="submitted && $v.livro.idEditora.$invalid">Selecione uma editora</span>
+                <span v-if="livro.editora"><strong>Editora atual :</strong> {{livro.editora.nomeEditora}}</span>
                 <b-row>
                     <b-col md="12">
                         <b-input-group prepend="Editora" class="mb-3">
@@ -223,7 +228,7 @@
                     </b-col>
                 </b-row>
 
-                <b-button type="submit" class="mr-2" variant="success">Salvar</b-button>  
+                <b-button type="submit" class="mr-2" variant="success">Alterar</b-button>  
                 <b-button @click="reset()" variant="danger" class="mr-2">Limpar</b-button>
                 <router-link tag="b-button" to="/dashboard/livros" class="btn-dark">Voltar</router-link>
             </b-form>
@@ -248,7 +253,7 @@ import Loading from '../shared/Loading'
 import { required, minValue, minLength } from "vuelidate/lib/validators";
 import {VMoney} from 'v-money'
 export default {
-    name:'CadastroLivro',
+    name:'EdicaoLivro',
     components: {PageTitle, Loading, FormAutor, FormAssunto, FormEditora},
     directives: {money: VMoney},
     data(){
@@ -299,8 +304,26 @@ export default {
     },
     computed: mapGetters(['pageAutores', 'pageEditoras', 'pageAssuntos']),
     mounted(){
+        this.getLivro();
     },
     methods: {
+        onFileChange(e) {
+            const file = e.target.files[0];
+            this.url = URL.createObjectURL(file);
+        },
+        async getLivro(){
+            this.loaderLivro = true;
+            const url = `${baseApiUrl}/livros/${this.$route.params.id}`
+            try{
+                const res = await axios.get(url);
+                this.livro = res.data;
+            }catch(err){
+                console.log(err.response)
+                showError(err)
+            }finally{
+                this.loaderLivro = false;
+            }
+        },
         async searchIsbn(){
             this.loaderIsbn = true;
             const url = `${baseApiUrl}/livros/isbn/${this.livro.isbn}`
@@ -318,7 +341,7 @@ export default {
                 this.editora.nomeEditora = res.data.busca.editoraLivro;
                 this.livro.tituloLivro = res.data.busca.tituloLivro;
                 this.livro.paginasLivro = res.data.busca.paginasLivro;
-                this.livro.anoLivro ? this.livro.anoLivro = res.data.busca.anoLivro : null;
+                this.livro.anoLivro = res.data.busca.anoLivro;
                 this.livro.sinopseLivro = res.data.busca.sinopseLivro;
         },
         searchAutores(){
@@ -367,12 +390,12 @@ export default {
                 this.subAssunto = true;
             }
         },
-        async saveLivro(){
-            const url = `${baseApiUrl}/livros`
+        async editLivro(){
+            const url = `${baseApiUrl}/livros/${this.livro.idLivro}`
             try{
-                await axios.post(url, this.livro);
-                this.reset();
-                    this.$toasted.global.defaultSuccess();
+                await axios.put(url, this.livro);
+                this.$toasted.global.defaultSuccess();
+                this.$router.push('/dashboard/livros');
             }catch(err){
                 showError(err);
             }
@@ -387,7 +410,7 @@ export default {
                     const res = await axios.post(url, fd, {
                     });
                     this.livro.imagemLivro = res.data.imagemLivro;
-                    this.saveLivro();
+                    this.editLivro();
                 }catch(err){
                     console.log(err.response)
                     showError(err);
@@ -395,7 +418,7 @@ export default {
                     this.loaderLivro = false;
                 }
             }else{
-                this.saveLivro();
+                this.editLivro();
             }
             
         },
@@ -410,10 +433,6 @@ export default {
                 this.submitted = false;
                 this.upload();
         },
-        onFileChange(e) {
-            const file = e.target.files[0];
-            this.url = URL.createObjectURL(file);
-        },
         reset(){
             this.submitted = false;
             this.livro = {
@@ -424,7 +443,6 @@ export default {
             this.autor.nomeAutor = '';
             this.editora.nomeEditora = '';
             this.assunto.nomeAssunto = '';
-            this.url = null;
         }
     }
 }
@@ -435,7 +453,7 @@ export default {
     width: 600px;
 }
 
-#img-livro{
+.img-livro{
     display: block;
     margin: 0 auto;
     width: 150px;
@@ -450,4 +468,5 @@ export default {
     margin-top: 5px;
     border-radius: 5px;
 }
+
 </style>

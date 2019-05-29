@@ -54,7 +54,7 @@
                                     <b-button @click="loadLivro(livro.idLivro);zeraLivroDesc();$bvModal.show('new-livro-descrito')"
                                      v-b-tooltip.hover title="Adicionar" 
                                     variant="primary" class="mr-2"><i class="fa fa-plus"></i></b-button>
-                                    <b-button v-b-tooltip.hover title="Alterar" 
+                                    <b-button @click="navigate(livro.idLivro)" v-b-tooltip.hover title="Alterar" 
                                     variant="warning" class="mr-2"><i class="fa fa-pencil"></i></b-button>
                                     <b-button @click="loadLivro(livro.idLivro);$bvModal.show('modal-detalhes-livro')"
                                     v-b-tooltip.hover title="Detalhes" 
@@ -180,7 +180,7 @@ export default {
                 this.$bvModal.hide('new-livro-descrito');
                 this.getLivros();
                 this.zeraLivroDesc();
-                this.loadLivro(this.idSelecionado);
+                this.loadLivro(1);
             }catch(err){
                 showError(err);
             }
@@ -202,11 +202,14 @@ export default {
                 this.$bvModal.hide('edit-livro-descrito');
                 this.getLivros();
                 this.zeraLivroDesc();
-                this.loadLivro(this.idSelecionado);
+                this.loadLivro(1);
             }catch(err){
                 showError(err);
             }
             
+        },
+        navigate(id){
+          this.$router.push({name: 'edit-livro', params: {id}})
         }
     }
 }
