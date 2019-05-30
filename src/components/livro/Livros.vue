@@ -3,7 +3,7 @@
        <PageTitle icon="fa fa-book" main="Administração de livros" sub="Gerenciar livros"/>
             
             <b-card header="Livros">
-                <router-link to="/dashboard/livros/cadastro" tag="b-button" class="mb-2 btn-dark btn-sm">Novo Livro</router-link>
+                <router-link v-hasRole="'ESCREVER_LIVRO'" to="/dashboard/livros/cadastro" tag="b-button" class="mb-2 btn-dark btn-sm">Novo Livro</router-link>
                 <b-row>
                     <b-col md="12" sm="12" class="mb-3">
                         <b-input-group>
@@ -51,17 +51,17 @@
                             <div class="info2-livro">
                                 <h4>{{'R$' + livro.precoLivro}}</h4>
                                 <div class="btns-livro">
-                                    <b-button @click="loadLivro(livro.idLivro);zeraLivroDesc();$bvModal.show('new-livro-descrito')"
+                                    <b-button v-hasRole="'ESCREVER_LIVRO'" @click="loadLivro(livro.idLivro);zeraLivroDesc();$bvModal.show('new-livro-descrito')"
                                      v-b-tooltip.hover title="Adicionar" 
                                     variant="primary" class="mr-2"><i class="fa fa-plus"></i></b-button>
-                                    <b-button @click="navigate(livro.idLivro)" v-b-tooltip.hover title="Alterar" 
+                                    <b-button v-hasRole="'ESCREVER_LIVRO'" @click="navigate(livro.idLivro)" v-b-tooltip.hover title="Alterar" 
                                     variant="warning" class="mr-2"><i class="fa fa-pencil"></i></b-button>
                                     <b-button @click="loadLivro(livro.idLivro);$bvModal.show('modal-detalhes-livro')"
                                     v-b-tooltip.hover title="Detalhes" 
                                     variant="dark"><i class="fa fa-search-plus"></i></b-button>
                                 </div>
                                 
-                                <b-button  :disabled="livro.livrosDescritos.length < 1" @click="loadLivro(livro.idLivro);livro.showCollapse = !livro.showCollapse" class="mt-2" variant="secondary">Descrição<i class="fa fa-caret-down ml-2"></i></b-button>
+                                <b-button :disabled="livro.livrosDescritos.length < 1" @click="loadLivro(livro.idLivro);livro.showCollapse = !livro.showCollapse" class="mt-2" variant="secondary">Descrição<i class="fa fa-caret-down ml-2"></i></b-button>
 
                             </div><!--btn-->
                         </div><!--box-->

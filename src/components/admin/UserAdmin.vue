@@ -1,6 +1,6 @@
 <template>
     <div class="user-admin">
-        <router-link class="btn-dark mb-2" tag="b-button" to="/dashboard/usuarios/cadastro" >Novo usuário</router-link>
+        <router-link v-hasRole="'ESCREVER_USUARIO'" class="btn-dark mb-2" tag="b-button" to="/dashboard/usuarios/cadastro" >Novo usuário</router-link>
         <b-row>
             <b-col md="12" sm="12" class="mb-3">
                 <b-input-group>
@@ -13,11 +13,11 @@
         </b-row>
         <b-table :responsive="true" v-if="!loader && pageUsers.rows.length > 0" hover striped :items="pageUsers.rows" :fields="fields">
             <template slot="actions" slot-scope="data">
-                <b-button variant="warning" class="mr-2" @click="navigate(data.item.idUsuario)"
+                <b-button v-hasRole="'ESCREVER_USUARIO'" variant="warning" class="mr-2" @click="navigate(data.item.idUsuario)"
                 v-b-tooltip.hover title="Alterar">
                     <i class="fa fa-pencil"></i>
                 </b-button>
-                <b-button v-b-tooltip.hover :title="data.item.statusUsuario == true ? 'Desativar': 'Ativar'"
+                <b-button v-hasRole="'ESCREVER_USUARIO'" v-b-tooltip.hover :title="data.item.statusUsuario == true ? 'Desativar': 'Ativar'"
                 :variant="data.item.statusUsuario == true ? 'danger': 'success'" @click="showMsgBoxTwo(data.item);" class="mr-2">
                     <i class="fas" :class="data.item.statusUsuario == true ? 'fa-lock':'fa-lock-open'" ></i>
                 </b-button>

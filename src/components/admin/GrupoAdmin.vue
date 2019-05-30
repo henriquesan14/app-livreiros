@@ -1,9 +1,9 @@
 <template>
     <div class="grupo-admin">
-        <b-button class="mb-3" @click="zeraGrupo(); $bvModal.show('modal-grupo')" variant="dark">Novo grupo</b-button>
+        <b-button v-hasRole="'ESCREVER_GRUPO'" class="mb-3" @click="zeraGrupo(); $bvModal.show('modal-grupo')" variant="dark">Novo grupo</b-button>
         <b-table v-if="!loader && grupos.length > 0" hover striped :items="grupos" :fields="fields">
             <template slot="actions" slot-scope="data">
-                <b-button variant="warning" @click="loadGrupo(data.item); $bvModal.show('modal-grupo')" class="mr-2"
+                <b-button v-hasRole="'ESCREVER_GRUPO'" variant="warning" @click="loadGrupo(data.item); $bvModal.show('modal-grupo')" class="mr-2"
                 v-b-tooltip.hover title="Alterar">
                     <i class="fa fa-cogs"></i>
                 </b-button>
@@ -96,7 +96,8 @@ export default {
                 {value: 'assunto', text: 'ASSUNTOS'},
                 {value: 'autor', text: 'AUTORES'},
                 {value: 'editora', text: 'EDITORAS'},
-                {value: 'grupo', text: 'GRUPOS'}
+                {value: 'grupo', text: 'GRUPOS'},
+                {value: 'categoria', text: 'CATEGORIAS'}
             ]
         }
     },

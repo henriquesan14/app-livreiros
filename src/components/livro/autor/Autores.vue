@@ -3,7 +3,7 @@
         <PageTitle icon="fas fa-user-cog" main="Administração de autores" sub="Gerenciar autores"/>
     
         <b-card header="Autores">
-                <b-button variant="dark" @click="zeraAutor();$bvModal.show('modal-autor')" class="mb-2" size="sm">Novo Autor</b-button>
+                <b-button v-hasRole="'ESCREVER_AUTOR'" variant="dark" @click="zeraAutor();$bvModal.show('modal-autor')" class="mb-2" size="sm">Novo Autor</b-button>
                 <b-row>
                     <b-col md="12" sm="12" class="mb-3">
                         <b-input-group>
@@ -17,7 +17,7 @@
 
                 <b-table :responsive="true" :fields="fields" v-if="!loader && pageAutores.rows.length > 0" hover striped :items="pageAutores.rows" >
                     <template slot="actions" slot-scope="data">
-                        <b-button @click="loadAutor(data.item);$bvModal.show('modal-autor')" variant="warning" class="mr-2"
+                        <b-button v-hasRole="'ESCREVER_AUTOR'" @click="loadAutor(data.item);$bvModal.show('modal-autor')" variant="warning" class="mr-2"
                         v-b-tooltip.hover title="Alterar">
                             <i class="fa fa-pencil"></i>
                         </b-button>

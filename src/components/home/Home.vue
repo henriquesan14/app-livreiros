@@ -3,7 +3,7 @@
         <PageTitle icon="fa fa-home" main="Home" sub="Analytics" />
         <b-card>
             <template slot="header">
-                <h4 class="text-center">{{infosDia()}}</h4>
+                <h4  class="text-center">{{infosDia()}}</h4>
             </template>
             <b-row>
                 <b-col>
@@ -36,6 +36,7 @@ import Chart from './Chart'
 import LineChart from './LineChart'
 import axios from 'axios'
 import {baseApiUrl, showError} from '@/global'
+
 export default {
     name: 'Home',
     components: {PageTitle, Chart, LineChart},

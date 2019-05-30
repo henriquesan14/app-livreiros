@@ -7,10 +7,13 @@ import './config/bootstrap'
 import './config/msgs'
 import './config/mq'
 import './config/interceptors'
+import './config/role-directive'
 import store from './config/store/store'
 import VueTheMask from 'vue-the-mask'
 Vue.use(VueTheMask)
 Vue.use(Vuelidate)
+
+
 
 
 Vue.config.productionTip = false

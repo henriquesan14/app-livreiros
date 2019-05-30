@@ -3,7 +3,7 @@
         <PageTitle icon="fa fa-comments" main="Administração de assuntos" sub="Gerenciar assuntos"/>
     
         <b-card header="Assuntos">
-                <b-button variant="dark" @click="zeraAssunto();$bvModal.show('modal-assunto')" class="mb-2" size="sm">Novo Assunto</b-button>
+                <b-button v-hasRole="'ESCREVER_ASSUNTO'" variant="dark" @click="zeraAssunto();$bvModal.show('modal-assunto')" class="mb-2" size="sm">Novo Assunto</b-button>
                 <b-row>
                     <b-col md="12" sm="12" class="mb-3">
                         <b-input-group>
@@ -17,7 +17,7 @@
 
                 <b-table :responsive="true" :fields="fields" v-if="!loader && pageAssuntos.rows.length > 0" hover striped :items="pageAssuntos.rows" >
                     <template slot="actions" slot-scope="data">
-                        <b-button @click="loadAssunto(data.item);$bvModal.show('modal-assunto')" variant="warning" class="mr-2"
+                        <b-button v-hasRole="'ESCREVER_ASSUNTO'" @click="loadAssunto(data.item);$bvModal.show('modal-assunto')" variant="warning" class="mr-2"
                         v-b-tooltip.hover title="Alterar">
                             <i class="fa fa-pencil"></i>
                         </b-button>

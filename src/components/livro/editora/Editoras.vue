@@ -3,7 +3,7 @@
         <PageTitle icon="fas fa-book-open" main="Administração de editoras" sub="Gerenciar editoras"/>
     
         <b-card header="Editoras">
-                <b-button variant="dark" @click="zeraEditora();$bvModal.show('modal-editora')" class="mb-2" size="sm">Nova Editora</b-button>
+                <b-button v-hasRole="'ESCREVER_EDITORA'" variant="dark" @click="zeraEditora();$bvModal.show('modal-editora')" class="mb-2" size="sm">Nova Editora</b-button>
                 <b-row>
                     <b-col md="12" sm="12" class="mb-3">
                         <b-input-group>
@@ -17,7 +17,7 @@
 
                 <b-table :responsive="true" :fields="fields" v-if="!loader && pageEditoras.rows.length > 0" hover striped :items="pageEditoras.rows" >
                     <template slot="actions" slot-scope="data">
-                        <b-button @click="loadEditora(data.item);$bvModal.show('modal-editora')" variant="warning" class="mr-2"
+                        <b-button v-hasRole="'ESCREVER_EDITORA'" @click="loadEditora(data.item);$bvModal.show('modal-editora')" variant="warning" class="mr-2"
                         v-b-tooltip.hover title="Alterar">
                             <i class="fa fa-pencil"></i>
                         </b-button>
