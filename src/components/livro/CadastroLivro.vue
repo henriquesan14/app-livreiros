@@ -438,7 +438,7 @@ export default {
 #img-livro{
     display: block;
     margin: 0 auto;
-    width: 150px;
+    width: 180px;
     height: 200px;
 }
 

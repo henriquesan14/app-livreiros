@@ -169,7 +169,7 @@ export default {
     }
 
     img.img-livro{
-        width: 160px;
+        width: 190px;
         height: 220px;
     }
 </style>

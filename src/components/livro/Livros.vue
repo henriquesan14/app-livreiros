@@ -240,7 +240,7 @@ export default {
     }
     
     .img-livro img{
-        width: 100px;
+        width: 120px;
         height: 140px;
     }
     .info-livro{

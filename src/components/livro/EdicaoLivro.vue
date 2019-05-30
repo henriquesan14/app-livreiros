@@ -5,7 +5,7 @@
         <b-card header="Edição livro">
             <b-form v-if="!loaderLivro" @submit.prevent="submitLivro()">
 
-                <img class="img-livro" v-if="livro.imagemLivro || url" :src="url ? url  : 'https://imagens-capas-1.s3.amazonaws.com/'+ livro.imagemLivro">
+                <img class="img-livro2" v-if="livro.imagemLivro || url" :src="url ? url  : 'https://imagens-capas-1.s3.amazonaws.com/'+ livro.imagemLivro">
                 <button v-if="url" @click="url = null; image = null" class="btn-danger btn-center"><i class="fa fa-times"></i></button>
                 <b-row>
                     <b-col md="12">
@@ -453,10 +453,10 @@ export default {
     width: 600px;
 }
 
-.img-livro{
+.img-livro2{
     display: block;
     margin: 0 auto;
-    width: 150px;
+    width: 180px;
     height: 200px;
 }
 
