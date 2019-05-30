@@ -71,7 +71,7 @@
                                 <h4 class="text-center">Livros Descritos</h4>
                                 <b-table :responsive="true" :items="livro.livrosDescritos" :fields="fields" hover striped >
                                     <template slot="actions" slot-scope="data">
-                                        <b-button @click="loadLivroDesc(data.item);$bvModal.show('edit-livro-descrito')" variant="warning"
+                                        <b-button v-hasRole="'ESCREVER_LIVRO'" @click="loadLivroDesc(data.item);$bvModal.show('edit-livro-descrito')" variant="warning"
                                             v-b-tooltip.hover title="Alterar">
                                             <i class="fa fa-pencil"></i>
                                         </b-button>

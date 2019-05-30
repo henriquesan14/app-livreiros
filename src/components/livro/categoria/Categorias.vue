@@ -3,7 +3,7 @@
         <PageTitle icon="fas fa-file-alt" main="Administração de categorias" sub="Gerenciar categorias das descrições"/>
     
         <b-card header="Categorias">
-                <b-button variant="dark" @click="zeraCategoria();$bvModal.show('modal-categoria')" class="mb-2" size="sm">Nova Categoria</b-button>
+                <b-button v-hasRole="'ESCREVER_DESCRICAO'" variant="dark" @click="zeraCategoria();$bvModal.show('modal-categoria')" class="mb-2" size="sm">Nova Categoria</b-button>
                 <b-row>
                     <b-col md="12" sm="12" class="mb-3">
                         <b-input-group>
@@ -17,12 +17,12 @@
 
                 <b-table :responsive="true" :fields="fields" v-if="!loader && pageCategorias.rows.length > 0" hover striped :items="pageCategorias.rows" >
                     <template slot="actions" slot-scope="data">
-                        <b-button @click="loadCategoria(data.item);$bvModal.show('modal-categoria')" variant="warning" class="mr-2"
+                        <b-button v-hasRole="'ESCREVER_DESCRICAO'" @click="loadCategoria(data.item);$bvModal.show('modal-categoria')" variant="warning" class="mr-2"
                         v-b-tooltip.hover title="Alterar">
                             <i class="fa fa-pencil"></i>
                         </b-button>
-                        <b-button variant="success" @click="getDescricoes(data.item.idCategoriaDescricao)" v-b-tooltip.hover title="Adicionar" class="mr-2"><i class="fa fa-plus"></i></b-button>
-                        <b-button
+                        <b-button v-hasRole="'ESCREVER_DESCRICAO'" variant="success" @click="getDescricoes(data.item.idCategoriaDescricao)" v-b-tooltip.hover title="Adicionar" class="mr-2"><i class="fa fa-plus"></i></b-button>
+                        <b-button v-hasRole="'ESCREVER_DESCRICAO'"
                         v-b-tooltip.hover :title="data.item.statusCategoriaDescricao == true ? 'Desativar': 'Ativar'"
                         :variant="data.item.statusCategoriaDescricao == true ? 'danger': 'success'"
                          @click="showMsgBoxTwo(data.item)"

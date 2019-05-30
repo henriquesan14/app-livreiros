@@ -97,7 +97,7 @@ export default {
                 {value: 'autor', text: 'AUTORES'},
                 {value: 'editora', text: 'EDITORAS'},
                 {value: 'grupo', text: 'GRUPOS'},
-                {value: 'categoria', text: 'CATEGORIAS'}
+                {value: 'descricao', text: 'DESCRIÇÃO'}
             ]
         }
     },

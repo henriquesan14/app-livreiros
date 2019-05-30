@@ -13,7 +13,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import Tree from 'liquor-tree'
-
+import {userKey} from '@/global'
 export default {
     name: 'Menu',
     components: {Tree},
@@ -41,13 +41,19 @@ export default {
     methods: {
         onNodeSelect(node){
             this.$router.push(`/dashboard/${node.text.toLowerCase()}`)
-
+            console.log(node)
+            // node.states.visible =false
+            
             if(this.$mq === 'xs' || this.$mq === 'sm'){
                 this.$store.dispatch('toggleMenu', false)
             }
         }
     },
     mounted(){
+        // let roles = JSON.parse(localStorage.getItem(userKey)).user.permissoes;
+        // this.items.forEach((e, index) => {
+        //     console.log(e.text.toUpperCase())
+        // })
         this.$refs.tree.$on('node:selected', this.onNodeSelect)
     }
 }
