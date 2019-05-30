@@ -318,7 +318,6 @@ export default {
                 const res = await axios.get(url);
                 this.livro = res.data;
             }catch(err){
-                console.log(err.response)
                 showError(err)
             }finally{
                 this.loaderLivro = false;
@@ -412,7 +411,6 @@ export default {
                     this.livro.imagemLivro = res.data.imagemLivro;
                     this.editLivro();
                 }catch(err){
-                    console.log(err.response)
                     showError(err);
                 }finally{
                     this.loaderLivro = false;

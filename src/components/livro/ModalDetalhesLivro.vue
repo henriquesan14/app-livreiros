@@ -110,7 +110,6 @@ export default {
             try{
                 const res = await axios.get(url);
                 this.livro = res.data
-                console.log(res.data)
             }catch(err){
                 showError(err)
             }finally{

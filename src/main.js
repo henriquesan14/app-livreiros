@@ -6,6 +6,7 @@ import router from './config/router'
 import './config/bootstrap'
 import './config/msgs'
 import './config/mq'
+import './config/interceptors'
 import store from './config/store/store'
 import VueTheMask from 'vue-the-mask'
 Vue.use(VueTheMask)

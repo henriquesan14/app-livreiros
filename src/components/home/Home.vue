@@ -1,9 +1,29 @@
 <template>
     <div class="home">
-        <PageTitle icon="fa fa-home" main="Home" sub="Inicio" />
+        <PageTitle icon="fa fa-home" main="Home" sub="Analytics" />
         <b-card>
-            <Chart v-if="loaded" :chartdata="chartdata" :options="options" />
-            <LineChart v-if="loaded2" :chartdata="chartdata2" :options="options2" />
+            <template slot="header">
+                <h4 class="text-center">{{infosDia()}}</h4>
+            </template>
+            <b-row>
+                <b-col>
+                    <b-card>
+                        <template slot="header">
+                            <h5 class="text-center">Total Por Condição - Mês Atual</h5>
+                        </template>
+                        <Chart v-if="loaded" :chartdata="chartdata" :options="options" />
+                    </b-card>
+                </b-col>
+                
+                <b-col>
+                    <b-card>
+                        <template slot="header">
+                            <h5 class="text-center">Livros Adicionados por dia - Mês Atual</h5>
+                        </template>
+                        <LineChart v-if="loaded2" :chartdata="chartdata2" :options="options2" />
+                    </b-card>
+                </b-col>
+            </b-row>
         </b-card>
 
         
@@ -14,7 +34,6 @@
 import PageTitle from '../template/PageTitle'
 import Chart from './Chart'
 import LineChart from './LineChart'
-import { setTimeout } from 'timers';
 import axios from 'axios'
 import {baseApiUrl, showError} from '@/global'
 export default {
@@ -23,43 +42,46 @@ export default {
     data(){
         return {
             loaded: false,
-            loaded2: false,
             chartdata: null,
             options: null,
+            loaded2: false,
             chartdata2: null,
-            options2: null
+            options2: null,
+            jsonMes: {0: 'Janeiro', 1: 'Fevereiro', 2: 'Março', 3: 'Abril',
+             4: 'Maio', 5: 'Junho', 6: 'Julho', 7: 'Agosto', 8: 'Setembro',
+              9: 'Outubro', 10: 'Novembro', 11: 'Dezembro'},
+            jsonDia: {0:'Domingo', 1: 'Segunda', 2: 'Terça', 3: 'Quarta', 4: 'Quinta', 5: 'Sexta', 6: 'Sábado'},
+            dataAtual: new Date(),
+            dataExtenso: ''
         }
     },
     mounted(){
         this.getStats();
         this.getStats2();
+        
     },
     methods: {
+        infosDia(){
+            return `${this.dataAtual.getDate()} de ${this.jsonMes[this.dataAtual.getMonth()]} ${this.dataAtual.getFullYear()} - ${this.jsonDia[this.dataAtual.getDay()]}`
+        },
         async getStats(){
             this.loaded = false;
             try{
                 const res = await axios.get(`${baseApiUrl}/estatisticas`);
-                
                 let labels = res.data.totalPorCondicao.map(x => x.condicaoLivro)
+                let data = res.data.totalPorCondicao.map(x => x.livrosDescritos).map(y => y[0].total);
                 
-                setTimeout(() => {
-                    this.chartdata = {
-                    labels: ['Novo', 'Usado'],
-                    datasets: [
-                        {
-                        backgroundColor: ['#f87979', '#73A3D8'],
-                        data: [40, 20]
-                        }
-                    ]
+                this.chartdata = {
+                    labels: labels,
+                    datasets: [{backgroundColor: ['#FF6384', '#36A2EB'], data: data}]
                 }
                 this.options = {
                     responsive: true,
                     maintainAspectRatio: false
                 },
                 this.loaded = true;
-                }, 2000)
             }catch(err){
-                console.log(err)
+                showError(err);
             }
         },
         async getStats2(){
@@ -69,17 +91,19 @@ export default {
                 
                 let labels = res.data.adicionadosMesPorDia.map(x => x.dia);
                 let data = res.data.adicionadosMesPorDia.map(x => x.totalAdiconado);
-                this.labels2 = labels;
-                this.datasets2 = [
-                    {backgroundColor: '#f87979', data: data},
-                ]
+                let listDias = labels.map(x => new Date(x).getDate());
+                this.chartdata2 = {
+
+                    labels: listDias,
+                    datasets: [{label: this.jsonMes[this.dataAtual.getMonth()],backgroundColor: '#f87979', data: data}]
+                }
                 this.options2 = {
                     responsive: true,
                     maintainAspectRatio: false
                 },
                 this.loaded2 = true;
             }catch(err){
-                console.log(err)
+                showError(err)
             }
         }
     }
@@ -87,9 +111,5 @@ export default {
 </script>
 
 <style>
-    .stats{
-        display:flex;
-        justify-content: space-between;
-        flex-wrap: wrap
-    }
+  
 </style>

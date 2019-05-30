@@ -389,7 +389,7 @@ export default {
                     this.livro.imagemLivro = res.data.imagemLivro;
                     this.saveLivro();
                 }catch(err){
-                    console.log(err.response)
+                    
                     showError(err);
                 }finally{
                     this.loaderLivro = false;

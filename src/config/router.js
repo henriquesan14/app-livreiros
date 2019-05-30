@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Dashboard from '../views/Dashboard.vue'
 import Login from '../views/Login.vue'
 import Home from '../components/home/Home.vue'
+import Error403 from '../views/Error403.vue'
 import AdminPages from '../components/admin/AdminPages.vue'
 import CadastroUsuario from'../components/admin/CadastroUsuario.vue'
 import EdicaoUsuario from '../components/admin/EdicaoUsuario.vue'
@@ -45,6 +46,11 @@ export default new Router({
         next('/')
       },
       children: [
+        {
+          path: 'error403',
+          name: 'error403',
+          component: Error403
+        },
         {
           path: 'home',
           name: 'home',
