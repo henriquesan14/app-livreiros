@@ -299,8 +299,14 @@ export default {
     },
     computed: mapGetters(['pageAutores', 'pageEditoras', 'pageAssuntos']),
     mounted(){
+        this.resetStore();
     },
     methods: {
+        resetStore(){
+            this.$store.dispatch('RESET_ASSUNTOS');
+            this.$store.dispatch('RESET_EDITORAS');
+            this.$store.dispatch('RESET_AUTORES');
+        },
         async searchIsbn(){
             this.loaderIsbn = true;
             const url = `${baseApiUrl}/livros/isbn/${this.livro.isbn}`

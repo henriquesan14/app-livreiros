@@ -92,7 +92,7 @@ export default {
                 
                 let labels = res.data.adicionadosMesPorDia.map(x => x.dia);
                 let data = res.data.adicionadosMesPorDia.map(x => x.totalAdiconado);
-                let listDias = labels.map(x => new Date(x).getDate());
+                let listDias = labels.map(x => new Date(x).getUTCDate());
                 this.chartdata2 = {
 
                     labels: listDias,

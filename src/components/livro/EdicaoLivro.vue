@@ -304,9 +304,15 @@ export default {
     },
     computed: mapGetters(['pageAutores', 'pageEditoras', 'pageAssuntos']),
     mounted(){
+        this.resetStore();
         this.getLivro();
     },
     methods: {
+        resetStore(){
+            this.$store.dispatch('RESET_ASSUNTOS');
+            this.$store.dispatch('RESET_EDITORAS');
+            this.$store.dispatch('RESET_AUTORES');
+        },
         onFileChange(e) {
             const file = e.target.files[0];
             this.url = URL.createObjectURL(file);

@@ -16,6 +16,9 @@ const actions = {
     const url = `${baseApiUrl}/assuntos?nome=${params.nome}`;
     const { data } = await axios.get(url);
     commit('RECEIVE_ASSUNTOS',{ pageAssuntos: data});
+  },
+  RESET_ASSUNTOS({commit}){
+    commit('RECEIVE_ASSUNTOS', {pageAssuntos: {rows: []}});
   }
 },
 

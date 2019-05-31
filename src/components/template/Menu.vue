@@ -41,8 +41,6 @@ export default {
     methods: {
         onNodeSelect(node){
             this.$router.push(`/dashboard/${node.text.toLowerCase()}`)
-            console.log(node)
-            // node.states.visible =false
             
             if(this.$mq === 'xs' || this.$mq === 'sm'){
                 this.$store.dispatch('toggleMenu', false)
@@ -52,7 +50,19 @@ export default {
     mounted(){
         // let roles = JSON.parse(localStorage.getItem(userKey)).user.permissoes;
         // this.items.forEach((e, index) => {
-        //     console.log(e.text.toUpperCase())
+        //     if(e.text ===  'Autores'){
+        //         let r = `BUSCAR_${e.text.toUpperCase().substring(0,e.text.length -2)}`;
+        //         if(!roles.includes(r)){
+        //             this.items.splice(index,1)
+        //         }
+        //     }else{
+        //         let r = `BUSCAR_${e.text.toUpperCase().substring(0,e.text.length -1)}`;
+        //         if(!roles.includes(r)){
+        //             this.items.splice(index,1)
+        //         }
+        //     }
+            
+            
         // })
         this.$refs.tree.$on('node:selected', this.onNodeSelect)
     }

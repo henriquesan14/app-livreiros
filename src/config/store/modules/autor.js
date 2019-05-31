@@ -16,6 +16,9 @@ const actions = {
     const url = `${baseApiUrl}/autores?nome=${params.nome}`;
     const { data } = await axios.get(url);
     commit('RECEIVE_AUTORES',{ pageAutores: data});
+  },
+  RESET_AUTORES({commit}){
+    commit('RECEIVE_AUTORES', {pageAutores: {rows: []}});
   }
 },
 

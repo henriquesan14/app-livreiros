@@ -16,6 +16,9 @@ const actions = {
     const url = `${baseApiUrl}/editoras?nome=${params.nome}`;
     const { data } = await axios.get(url);
     commit('RECEIVE_EDITORAS',{ pageEditoras: data});
+  },
+  RESET_EDITORAS({commit}){
+    commit('RECEIVE_EDITORAS', {pageEditoras: {rows: []}});
   }
 },
 

@@ -90,7 +90,7 @@ export default {
                     return moment(String(value)).format('DD/MM/YYYY HH:mm')}
                     },
                 {key: 'subIdLivro', label: 'SubCód.', sortable: true},
-                {key: 'idUsuario', label: 'Usuário', sortable: true},
+                {key: 'usuario.loginUsuario', label: 'Usuário', sortable: true},
                 {key: 'tipoLivroMovimento', label: 'Tipo', sortable: true},
                 {key: 'qtdMovimento', label: 'Qtd.', sortable: true},
             ]
