@@ -5,13 +5,16 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "postinstall": "npm run build",
+    "start": "node server.js"
   },
   "dependencies": {
     "axios": "^0.18.0",
     "bootstrap-vue": "^2.0.0-rc.19",
     "chart.js": "^2.8.0",
     "core-js": "^2.6.5",
+    "express": "^4.17.1",
     "font-awesome": "^4.7.0",
     "moment": "^2.24.0",
     "v-money": "^0.8.1",
