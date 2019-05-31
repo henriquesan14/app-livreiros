@@ -6,7 +6,7 @@
             <b-form v-if="!loaderLivro" @submit.prevent="submitLivro()">
 
                 <img class="img-livro2" v-if="livro.imagemLivro || url" :src="url ? url  : 'https://imagens-capas-1.s3.amazonaws.com/'+ livro.imagemLivro">
-                <button v-if="url" @click="url = null; image = null" class="btn-danger btn-center"><i class="fa fa-times"></i></button>
+                <button type="button" v-if="url" @click="url = null; image = null" class="btn-danger btn-center"><i class="fa fa-times"></i></button>
                 <b-row>
                     <b-col md="12">
                         <b-form-group label="Nova Imagem:">
@@ -40,7 +40,7 @@
 
                
                 <span class="text-danger" v-if="submitted && $v.livro.idAutor.$invalid">Selecione um autor</span>
-                <span v-if="livro.autor"><strong>Autor atual :</strong> {{livro.autor.nomeAutor}}</span>
+                
                 <b-row>
                     <b-col md="12">
                         <b-input-group prepend="Autor" class="mb-3">
@@ -69,7 +69,7 @@
                 </b-row>
 
                 <span class="text-danger" v-if="submitted && $v.livro.idAssunto.$invalid">Selecione um assunto</span>
-                <span v-if="livro.assunto"><strong>Assunto atual :</strong> {{livro.assunto.nomeAssunto}}</span>
+                
                 <b-row>
                     <b-col md="12">
                         <b-input-group prepend="Assunto" class="mb-3">
@@ -93,7 +93,7 @@
                 </b-row>
 
                 <span class="text-danger" v-if="submitted && $v.livro.idEditora.$invalid">Selecione uma editora</span>
-                <span v-if="livro.editora"><strong>Editora atual :</strong> {{livro.editora.nomeEditora}}</span>
+                
                 <b-row>
                     <b-col md="12">
                         <b-input-group prepend="Editora" class="mb-3">
@@ -235,9 +235,9 @@
             <Loading :loader="loaderLivro" />
         </b-card>
 
-        <FormAutor :autor="autor"/>
-        <FormEditora :editora="editora"/>
-        <FormAssunto :assunto="assunto"/>
+        <FormAutor @zera-autor="getAutores(autor.nomeAutor)" :autor="autor"/>
+        <FormEditora @zera-editora="getEditoras(editora.nomeEditora)" :editora="editora"/>
+        <FormAssunto @zera-assunto="getAssuntos(assunto.nomeAssunto)" :assunto="assunto"/>
     </div>
 </template>
 
@@ -306,6 +306,7 @@ export default {
     mounted(){
         this.resetStore();
         this.getLivro();
+        
     },
     methods: {
         resetStore(){
@@ -323,6 +324,9 @@ export default {
             try{
                 const res = await axios.get(url);
                 this.livro = res.data;
+                this.autor.nomeAutor = this.livro.autor.nomeAutor;
+                this.editora.nomeEditora = this.livro.editora.nomeEditora;
+                this.assunto.nomeAssunto = this.livro.assunto.nomeAssunto;
             }catch(err){
                 showError(err)
             }finally{
@@ -399,8 +403,8 @@ export default {
             const url = `${baseApiUrl}/livros/${this.livro.idLivro}`
             try{
                 await axios.put(url, this.livro);
-                this.$toasted.global.defaultSuccess();
                 this.$router.push('/dashboard/livros');
+                this.$toasted.global.defaultSuccess();    
             }catch(err){
                 showError(err);
             }

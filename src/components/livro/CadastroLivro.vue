@@ -6,7 +6,7 @@
             <b-form @submit.prevent="submitLivro()">
 
                 <img v-if="url" id="img-livro" :src="url">
-                <button v-if="url" @click="url = null; image=null" class="btn-danger btn-center"><i class="fa fa-times"></i></button>
+                <button type="button" v-if="url" @click.prevent="url = null; image=null" class="btn-danger btn-center"><i class="fa fa-times"></i></button>
                 <b-row>
                     <b-col md="12">
                         <b-form-group label="Imagem:">
@@ -230,9 +230,9 @@
             <Loading :loader="loaderLivro" />
         </b-card>
 
-        <FormAutor :autor="autor"/>
-        <FormEditora :editora="editora"/>
-        <FormAssunto :assunto="assunto"/>
+        <FormAutor @zera-autor="getAutores(autor.nomeAutor)" :autor="autor"/>
+        <FormEditora @zera-editora="getEditoras(editora.nomeEditora)" :editora="editora"/>
+        <FormAssunto @zera-assunto="getAssuntos(assunto.nomeAssunto)" :assunto="assunto"/>
     </div>
 </template>
 
@@ -377,8 +377,8 @@ export default {
             const url = `${baseApiUrl}/livros`
             try{
                 await axios.post(url, this.livro);
-                this.$toasted.global.defaultSuccess();
                 this.$router.push('/dashboard/livros');
+                this.$toasted.global.defaultSuccess();              
             }catch(err){
                 showError(err);
             }
