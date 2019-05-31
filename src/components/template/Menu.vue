@@ -52,12 +52,6 @@ export default {
         }
     },
     methods: {
-        toRoute(path){
-            this.$router.push(path);
-            if(this.$mq === 'xs' || this.$mq === 'sm'){
-                this.$store.dispatch('toggleMenu', false)
-            }
-        },
         hasRole(role){
             let roles = JSON.parse(localStorage.getItem(userKey)).user.permissoes;
             if(roles.includes(role)){
