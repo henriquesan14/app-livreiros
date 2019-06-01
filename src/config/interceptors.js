@@ -1,10 +1,12 @@
 import axios from 'axios'
 import router from './router'
-import {userKey} from '@/global'
+import {userKey, baseApiUrl} from '@/global'
 
 axios.interceptors.request.use(function(config) {
     const auth = JSON.parse(localStorage.getItem(userKey));
-    if(auth) {
+    const n = baseApiUrl.length;
+    const requestToAPI = config.url.substring(0, n) === baseApiUrl;
+    if(requestToAPI && auth) {
         config.headers.Authorization = auth.token;
     }
     return config;
