@@ -196,10 +196,12 @@ export default {
         .then(() => {})
         .catch(() => {});  
     },
-    created(){
-        this.$store.dispatch('GET_CIDADES', {id: this.user.idUf})
+    created(){    
+            this.user.idUf = this.user.cidade.estado.idUf
+            this.$store.dispatch('GET_CIDADES', {id: this.user.idUf})
             .then(() => {})
             .catch(() => {})
+            this.user.idCidade = this.user.cidade.idCidade
     },
     methods:{
         loadCidades(){

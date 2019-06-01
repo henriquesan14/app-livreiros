@@ -23,6 +23,7 @@ export default {
             user: {
                 idUf: null,
                 idCidade: null,
+                cidade: {estado:{}},
                 grupos: []
             }, 
             loader: false
