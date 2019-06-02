@@ -12,17 +12,17 @@
 
 <script>
 import UserDropdown from './UserDropdown'
+import {mapGetters} from 'vuex';
 export default {
     name: 'Header',
     components: {UserDropdown},
     props:{
         title: String
     },
-    computed: {
+    computed: {...mapGetters(['isMenuVisible']),
         icon(){
-            return this.$store.state.isMenuVisible ?  "fa-angle-left" : "fa-angle-down"
-        }
-    },
+            return this.isMenuVisible ? 'fa fa-angle-left': 'fa fa-angle-down';
+        }},
     methods: {
         toggleMenu(){
             this.$store.dispatch('toggleMenu');
