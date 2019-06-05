@@ -21,4 +21,8 @@ export default {
         justify-content: flex-end;
         padding-right: 10px;
     }
+
+    footer span{
+        font-size: .875rem;
+    }
 </style>

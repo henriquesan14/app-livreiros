@@ -65,7 +65,7 @@ header.header > a.toggle{
     color: #fff;
     justify-self: flex-start;
     text-decoration: none;
-
+    font-size: .875rem;
     display:flex;
     justify-content: center;
     align-items: center;

@@ -18,12 +18,12 @@ export default {
 <style>
     .page-title h1{
         margin: 0px;
-
+        font-size: 2.2rem;
     }
 
     .page-title h2{
         color: #777;
         margin-top:5px;
-        font-size: 1.3rem;
+        font-size: .875rem;
     }
 </style>

@@ -63,6 +63,9 @@ export default {
         max-height: 37px;
         border-radius: 5px;
     }
+    .user-button span{
+        font-size: .875rem;
+    }
 
     .user-dropdown-content{
         position: absolute;

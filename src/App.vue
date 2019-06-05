@@ -7,6 +7,7 @@
 <style>
 *{
         font-family: "Lato", sans-serif;
+        
     }
 
     body{

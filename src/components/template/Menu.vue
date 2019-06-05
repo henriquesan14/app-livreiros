@@ -9,7 +9,7 @@
         <nav >
             <ul>
                 <router-link active-class="active" exact v-if="item.visible" :to="item.path" tag="li" v-for="item in items" :key="item.id" >
-                    <span>{{item.text}}</span>
+                    <span><i :class="item.icon" class="mr-2"></i>{{item.text}}</span>
                 </router-link>
             </ul>
         </nav>
@@ -27,26 +27,26 @@ export default {
         return {
             filtroMenu: '',
             items: [
-            {text: 'Home', path: '/dashboard/home', visible: true},
-            {text: 'Usuarios', path: '/dashboard/usuarios', visible: this.hasRole('BUSCAR_USUARIO')},
-            {text: 'Livros', path: '/dashboard/livros', visible: this.hasRole('BUSCAR_LIVRO')},
-            {text: 'Editoras', path: '/dashboard/editoras', visible: this.hasRole('BUSCAR_EDITORA')},
-            {text: 'Autores', path: '/dashboard/autores', visible: this.hasRole('BUSCAR_AUTOR')},
-            {text: 'Assuntos', path: '/dashboard/assuntos', visible: this.hasRole('BUSCAR_ASSUNTO')},
-            {text: 'Categorias', path: '/dashboard/categorias', visible: this.hasRole('BUSCAR_DESCRICAO')}
+            {text: 'Home', path: '/dashboard/home', icon: 'fa fa-home', visible: true},
+            {text: 'Usuarios', path: '/dashboard/usuarios', icon: 'fa fa-cogs',  visible: this.hasRole('BUSCAR_USUARIO')},
+            {text: 'Livros', path: '/dashboard/livros',  icon: 'fa fa-book',  visible: this.hasRole('BUSCAR_LIVRO')},
+            {text: 'Editoras', path: '/dashboard/editoras',  icon: 'fas fa-book-open',  visible: this.hasRole('BUSCAR_EDITORA')},
+            {text: 'Autores', path: '/dashboard/autores',  icon: 'fas fa-user-cog',  visible: this.hasRole('BUSCAR_AUTOR')},
+            {text: 'Assuntos', path: '/dashboard/assuntos', icon: 'fa fa-comments', visible: this.hasRole('BUSCAR_ASSUNTO')},
+            {text: 'Categorias', path: '/dashboard/categorias', icon: 'fas fa-file-alt', visible: this.hasRole('BUSCAR_DESCRICAO')}
           ],
         }
     },
     watch: {
         filtroMenu(newValue, oldValue){
-            let items = [
-            {text: 'Home', path: '/dashboard/home', visible: true},
-            {text: 'Usuarios', path: '/dashboard/usuarios', visible: this.hasRole('BUSCAR_USUARIO')},
-            {text: 'Livros', path: '/dashboard/livros', visible: this.hasRole('BUSCAR_LIVRO')},
-            {text: 'Editoras', path: '/dashboard/editoras', visible: this.hasRole('BUSCAR_EDITORA')},
-            {text: 'Autores', path: '/dashboard/autores', visible: this.hasRole('BUSCAR_AUTOR')},
-            {text: 'Assuntos', path: '/dashboard/assuntos', visible: this.hasRole('BUSCAR_ASSUNTO')},
-            {text: 'Categorias', path: '/dashboard/categorias', visible: this.hasRole('BUSCAR_DESCRICAO')}
+            let items =  [
+            {text: 'Home', path: '/dashboard/home', icon: 'fa fa-home', visible: true},
+            {text: 'Usuarios', path: '/dashboard/usuarios', icon: 'fa fa-cogs',  visible: this.hasRole('BUSCAR_USUARIO')},
+            {text: 'Livros', path: '/dashboard/livros',  icon: 'fa fa-book',  visible: this.hasRole('BUSCAR_LIVRO')},
+            {text: 'Editoras', path: '/dashboard/editoras',  icon: 'fas fa-book-open',  visible: this.hasRole('BUSCAR_EDITORA')},
+            {text: 'Autores', path: '/dashboard/autores',  icon: 'fas fa-user-cog',  visible: this.hasRole('BUSCAR_AUTOR')},
+            {text: 'Assuntos', path: '/dashboard/assuntos', icon: 'fa fa-comments', visible: this.hasRole('BUSCAR_ASSUNTO')},
+            {text: 'Categorias', path: '/dashboard/categorias', icon: 'fas fa-file-alt', visible: this.hasRole('BUSCAR_DESCRICAO')}
           ];
             this.items =items.filter(x=> x.visible === true).filter(x => x.text.toLowerCase().includes(newValue.toLowerCase()));
         }
@@ -80,10 +80,24 @@ export default {
         background-color: rgba(255, 255, 255, 0.2);
     }
 
+    .active-icon{
+        color: #20a8d8;
+    }
+
     nav ul li span{
-        margin-left: 32px;
+        font-size: .875rem;
         color: #fff;
         text-decoration: none;
+        margin-left: 10px;
+    }
+
+    nav ul li span i{
+        font-size: .750rem;
+        color: #73818f;
+    }
+
+    nav ul li:hover i{
+        color: #fff;
     }
 
     nav ul li span:hover{
@@ -111,10 +125,11 @@ export default {
     .menu .menu-filter i {
         color: #AAA;
         margin-right: 10px;
+        font-size: .875rem;
     }
     .menu input {
         color: #CCC;
-        font-size: 1.3rem;
+        font-size: .875rem;
         border: 0;
         outline: 0;
         width: 100%;
@@ -122,7 +137,7 @@ export default {
     }
     .tree-filter-empty {
         color: #CCC;
-        font-size: 1.3rem;
+        font-size: .875rem;
         margin-left: 20px;
     }
 
