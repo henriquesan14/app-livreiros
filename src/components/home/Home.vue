@@ -3,22 +3,22 @@
         <PageTitle icon="fa fa-home" main="Home" sub="Analytics" />
         <b-card>
             <template slot="header">
-                <h4  class="text-center">{{infosDia()}}</h4>
+                <h5 class="title-card-main">{{infosDia()}}</h5>
             </template>
             <b-row>
-                <b-col>
+                <b-col sm="6" md="6">
                     <b-card>
                         <template slot="header">
-                            <h5 class="text-center">Total Por Condição - Mês Atual</h5>
+                            <h5 class="title-card">Total Por Condição</h5>
                         </template>
                         <Chart v-if="loaded" :chartdata="chartdata" :options="options" />
                     </b-card>
                 </b-col>
                 
-                <b-col>
+                <b-col sm="6" md="6">
                     <b-card>
                         <template slot="header">
-                            <h5 class="text-center">Livros Adicionados por dia - Mês Atual</h5>
+                            <h5 class="title-card">Livros Adicionados por dia - Mês Atual</h5>
                         </template>
                         <LineChart v-if="loaded2" :chartdata="chartdata2" :options="options2" />
                     </b-card>
@@ -112,5 +112,14 @@ export default {
 </script>
 
 <style>
-  
+
+    .title-card-main{
+        font-size: 1rem;
+        text-align:center;
+    }
+
+  .title-card{
+      text-align:center;
+      font-size: .875rem;
+  }
 </style>

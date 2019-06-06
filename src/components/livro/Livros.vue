@@ -2,17 +2,20 @@
     <div class='users'>
        <PageTitle icon="fa fa-book" main="Administração de livros" sub="Gerenciar livros"/>
             
-            <b-card header="Livros">
-                <router-link v-hasRole="'ESCREVER_LIVRO'" to="/dashboard/livros/cadastro" tag="b-button" class="mb-2 btn-dark btn-sm">Novo Livro</router-link>
+            <b-card >
+                <template slot="header">
+                    <h5>Livros</h5>
+                </template>
+                <router-link v-hasRole="'ESCREVER_LIVRO'" to="/dashboard/livros/cadastro" tag="b-button" class="mb-2 btn-dark btn-sm"><i class="fa fa-plus-circle mr-1"></i>Novo Livro</router-link>
                 <b-row>
                     <b-col md="12" sm="12" class="mb-3">
                         <b-input-group>
-                            <b-form-select v-model="filtroSelecionado" class="col-2 mr-2">
+                            <b-form-select size="sm" v-model="filtroSelecionado" class="col-2 mr-2">
                                 <option v-for="op in options" :key="op.name" :value="op.value">{{op.name}}</option>
                             </b-form-select>
-                            <b-form-input @keyup.enter="getLivros()" v-model="nomeFiltro" type="text" placeholder="Pesquise o nome do livro..." />
+                            <b-form-input size="sm" @keyup.enter="getLivros()" v-model="nomeFiltro" type="text" placeholder="Pesquise o nome do livro..." />
                             <b-input-group-append>
-                                <b-button @click="getLivros()"  variant="primary"><i class="fa fa-search"></i></b-button>
+                                <b-button size="sm" @click="getLivros()"  variant="primary"><i class="fa fa-search"></i></b-button>
                             </b-input-group-append>
                             
                         </b-input-group>
@@ -51,17 +54,17 @@
                             <div class="info2-livro">
                                 <h4>{{'R$' + livro.precoLivro}}</h4>
                                 <div class="btns-livro">
-                                    <b-button v-hasRole="'ESCREVER_LIVRO'" @click="loadLivro(livro.idLivro);zeraLivroDesc();$bvModal.show('new-livro-descrito')"
+                                    <b-button size="sm" v-hasRole="'ESCREVER_LIVRO'" @click="loadLivro(livro.idLivro);zeraLivroDesc();$bvModal.show('new-livro-descrito')"
                                      v-b-tooltip.hover title="Adicionar" 
                                     variant="primary" class="mr-2"><i class="fa fa-plus"></i></b-button>
-                                    <b-button v-hasRole="'ESCREVER_LIVRO'" @click="navigate(livro.idLivro)" v-b-tooltip.hover title="Alterar" 
+                                    <b-button size="sm" v-hasRole="'ESCREVER_LIVRO'" @click="navigate(livro.idLivro)" v-b-tooltip.hover title="Alterar" 
                                     variant="warning" class="mr-2"><i class="fa fa-pencil"></i></b-button>
-                                    <b-button @click="loadLivro(livro.idLivro);$bvModal.show('modal-detalhes-livro')"
+                                    <b-button class="btn-plus" size="sm" @click="loadLivro(livro.idLivro);$bvModal.show('modal-detalhes-livro')"
                                     v-b-tooltip.hover title="Detalhes" 
                                     variant="dark"><i class="fa fa-search-plus"></i></b-button>
                                 </div>
                                 
-                                <b-button :disabled="livro.livrosDescritos.length < 1" @click="loadLivro(livro.idLivro);livro.showCollapse = !livro.showCollapse" class="mt-2" variant="secondary">Descrição<i class="fa fa-caret-down ml-2"></i></b-button>
+                                <b-button size="sm" :disabled="livro.livrosDescritos.length < 1" @click="loadLivro(livro.idLivro);livro.showCollapse = !livro.showCollapse" class="mt-2" variant="secondary">Descrição<i class="fa fa-caret-down ml-2"></i></b-button>
 
                             </div><!--btn-->
                         </div><!--box-->
@@ -88,7 +91,7 @@
                 <div v-if="!loader && pageLivros.rows.length < 1" class="mb-2">
                     <span>Nenhum resultado...</span>
                 </div>
-                <b-pagination size="md" v-model="page" :total-rows="pageLivros.count" :per-page="10"></b-pagination>
+                <b-pagination size="sm" v-model="page" :total-rows="pageLivros.count" :per-page="10"></b-pagination>
             </b-card>
 
             <b-modal size="lg" id="new-livro-descrito" hide-footer>
@@ -217,6 +220,21 @@ export default {
 
 <style scoped>
 
+    span{
+        font-size: .875rem;
+    }
+
+    h4{
+        font-size: 1.2rem;
+    }
+
+    h5{
+        text-align: center;
+        font-size: 1rem;
+    }
+
+
+
     #collapse-livro{
         border: 1px solid #ccc;
         border-radius: 5px;
@@ -294,6 +312,8 @@ export default {
             border: none;
         }        
 
-        
+        .btn-plus{
+            margin-top:8px;
+        }
     }
 </style>

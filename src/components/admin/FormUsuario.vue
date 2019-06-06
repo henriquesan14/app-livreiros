@@ -137,9 +137,8 @@
                     </b-form-group>
                 </b-col>
             </b-row>
-            <b-button type="submit" variant="success mr-2">Cadastrar</b-button>
-            <b-button variant="danger mr-2" @click="zeraUser()">Limpar</b-button>
-            <router-link tag="b-button" @click="zeraUser()" class="btn-dark" to="/dashboard/usuarios" type="button" variant="light">Voltar</router-link>
+            <b-button size="sm" type="submit" variant="success mr-2"><i class="fa fa-save mr-1"></i>Cadastrar</b-button>
+            <router-link tag="b-button" @click="zeraUser()" class="btn-dark btn-sm" to="/dashboard/usuarios" type="button" variant="light"><i class="fa fa-arrow-left mr-1"></i>Voltar</router-link>
         </b-form>
     </div>
 </template>
@@ -240,6 +239,16 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+    input{
+     font-size: .875rem;
+    }
 
+    select{
+        font-size: .875rem;
+    }
+
+    form{
+        font-size: .875rem;
+    }
 </style>

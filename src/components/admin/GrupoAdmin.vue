@@ -20,7 +20,7 @@
                <b-row>
                    <b-col md="6" sm="12">
                        <b-form-group label="Nome: " label-for="nomeGrupo">
-                        <b-form-input maxlength="100"
+                        <b-form-input maxlength="100" class="input-perm"
                         :class="{'is-invalid': submitted && $v.grupo.nomeGrupo.$invalid, 'is-valid': submitted && !$v.grupo.nomeGrupo.$invalid}"  
                          id="nomeGrupo" v-model="grupo.nomeGrupo" placeholder="Informe o nome do grupo" />
                     </b-form-group>
@@ -28,7 +28,7 @@
 
                    <b-col md="6" sm="12">
                     <b-form-group label="Categoria da permissão: " label-for="categoriaPermissao">
-                        <b-form-select id="categoriaPermissao" @change="getPermissoes(categoriaSelecionada)" v-model="categoriaSelecionada" :options="options">
+                        <b-form-select class="input-perm" id="categoriaPermissao" @change="getPermissoes(categoriaSelecionada)" v-model="categoriaSelecionada" :options="options">
                         </b-form-select>
                     </b-form-group>
                 </b-col>
@@ -36,7 +36,7 @@
                <b-row>
                 <b-col md="12" sm="12">
                         <div class="perm-group">
-                            <h5>Adicione permissões:</h5>
+                            <h5 class="text-primary">Adicione permissões:</h5>
                             <span class="mr-2 perms"  v-for="permissao in permissoes" :key="permissao.idPermissao">{{permissao.nomePermissao}}
                                 <button :disabled="verificaPermissao(permissao.idPermissao)" type="button" @click="addPermissao(permissao)"  class="primary ml-1" >
                                     <i class="fa"  :class="verificaPermissao(permissao.idPermissao) === true ? 'fa-ban':'fa-plus'"></i>
@@ -49,7 +49,7 @@
                <b-row >
                 <b-col md="12" sm="12">  
                     <div class="perm-group">
-                        <h5>Permissões do grupo:</h5>
+                        <h5 class="text-primary">Permissões do grupo:</h5>
                         <h6 v-if="submitted && $v.grupo.permissoes.$invalid" class="alert-perm">Adicione pelo menos uma permissão</h6>
                         
                         <span class="mr-2 perms" v-for="perm in grupo.permissoes" :key="perm.idPermissao">{{perm.nomePermissao}}
@@ -61,8 +61,8 @@
                     </div>
                 </b-col>
                </b-row>
-               <b-button class="mr-2" type="submit" variant="success">Salvar</b-button>
-               <b-button type="button"   @click="$bvModal.hide('modal-grupo')">Fechar</b-button>
+               <b-button class="mr-2" size="sm" type="submit" variant="success"><i class="fa fa-save mr-1"></i>Salvar</b-button>
+               <b-button type="button" size="sm"  @click="$bvModal.hide('modal-grupo')"><i class="fa fa-arrow-left mr-1"></i>Fechar</b-button>
            </b-form>
         </div>
     </b-modal>
@@ -197,6 +197,19 @@ export default {
 </script>
     
 <style>
+
+
+    form{
+        font-size: .875rem;
+        
+    }
+
+    input.input-perm, select.input-perm{
+        font-size: .875rem;
+    }
+
+
+
     .perm-group{
         padding: 8px;
         border: 1px solid #ccc;
@@ -210,6 +223,8 @@ export default {
     .perm-group h5{
         width:100%;
         text-align: center;
+        font-size: 1rem;
+        
     }
 
     .perm-group h6{
@@ -221,7 +236,7 @@ export default {
     .perm-group span{
         
         padding:2px;
-        font-size: 15px;
+        font-size: .875rem;
         margin: 2px;
     }
 

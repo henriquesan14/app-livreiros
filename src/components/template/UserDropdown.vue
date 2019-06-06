@@ -71,7 +71,7 @@ export default {
         position: absolute;
         right: 0px;
         background-color: #f9f9f9;
-        min-width: 170px;
+        min-width: 162px;
         box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
         padding: 10px;
         z-index: 1;
@@ -91,6 +91,7 @@ export default {
     }
 
     .user-dropdown-content a{
+        font-size: .875rem;
         text-decoration: none;
         color: #000;
         padding: 10px;

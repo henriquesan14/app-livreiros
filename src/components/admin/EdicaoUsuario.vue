@@ -1,7 +1,7 @@
 <template>
     <div class="edit-user">
         <PageTitle icon="fa fa-cogs" main="Administração do Sistema" sub="Alteração usuário"/>
-        <router-link tag="b-button" class="btn-dark btn-sm mb-1" to="/dashboard/usuarios">Voltar</router-link>
+        <router-link tag="b-button" class="btn-dark btn-sm mb-1" to="/dashboard/usuarios"><i class="fa fa-arrow-left mr-1"></i>Voltar</router-link>
         <b-card header="Alterar usuário">
             <Loading :loader="loader"/>
             <FormEditUsuario v-if="!loader"  :user="user" @submit-user="editUser()"/>

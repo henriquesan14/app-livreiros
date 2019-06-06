@@ -42,7 +42,7 @@ export default {
 }
 
 .title{
-    font-size:1.2rem;
+    font-size:1rem;
     color: #fff;
     font-weight: 100;
     flex-grow: 1;

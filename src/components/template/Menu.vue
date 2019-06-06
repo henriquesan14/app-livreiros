@@ -6,7 +6,7 @@
             v-model="filtroMenu" class="filter-field">
         </div>
         <span class="tree-filter-empty" v-if="items.length < 1">Categoria não encontrada</span>
-        <nav >
+        <nav class="menu-aside">
             <ul>
                 <router-link active-class="active" exact v-if="item.visible" :to="item.path" tag="li" v-for="item in items" :key="item.id" >
                     <span><i :class="item.icon" class="mr-2"></i>{{item.text}}</span>
@@ -80,7 +80,7 @@ export default {
         background-color: rgba(255, 255, 255, 0.2);
     }
 
-    .active-icon{
+    nav ul li.active i{
         color: #20a8d8;
     }
 
@@ -97,7 +97,7 @@ export default {
     }
 
     nav ul li:hover i{
-        color: #fff;
+        color: #20a8d8;
     }
 
     nav ul li span:hover{
@@ -111,6 +111,7 @@ export default {
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;
+        
     }
 
     

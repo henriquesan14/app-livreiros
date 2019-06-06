@@ -1,8 +1,11 @@
 <template>
     <div class="cadastro-user">
         <PageTitle icon="fa fa-cogs" main="Administração do Sistema" sub="Cadastro usuário"/>
-        <router-link tag="b-button" class="btn-dark btn-sm mb-1" to="/dashboard/usuarios">Voltar</router-link>
-        <b-card header="Novo usuário">
+        <router-link tag="b-button" class="btn-dark btn-sm mb-1" to="/dashboard/usuarios"><i class="fa fa-arrow-left mr-1"></i>Voltar</router-link>
+        <b-card >
+            <template slot="header">
+                <h5 class="title-card">Novo usuário</h5>
+            </template>
             <FormUsuario :user="user" @submit-user="saveUser()"/>
         </b-card>
     </div>
@@ -41,6 +44,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+ 
 
 </style>

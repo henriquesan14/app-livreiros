@@ -73,6 +73,7 @@ export default {
 
     }
 
+
     #dashboard.hide-menu{
         grid-template-areas:
             "header header"
