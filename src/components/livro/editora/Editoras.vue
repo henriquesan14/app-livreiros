@@ -3,21 +3,24 @@
         <PageTitle icon="fas fa-book-open" main="Administração de editoras" sub="Gerenciar editoras"/>
     
         <b-card header="Editoras">
-                <b-button v-hasRole="'ESCREVER_EDITORA'" variant="dark" @click="zeraEditora();$bvModal.show('modal-editora')" class="mb-2" size="sm">Nova Editora</b-button>
+            <template slot="header">
+                <h5 class="card-title">Editoras</h5>
+            </template>
+                <b-button size="sm" v-hasRole="'ESCREVER_EDITORA'" variant="dark" @click="zeraEditora();$bvModal.show('modal-editora')" class="mb-2" ><i class="fa fa-plus-circle mr-1"></i> Editora</b-button>
                 <b-row>
                     <b-col md="12" sm="12" class="mb-3">
                         <b-input-group>
-                            <b-form-input @keyup.enter="getEditoras()"  type="text" v-model="nome" placeholder="Pesquise o nome da editora..." />
+                            <b-form-input size="sm" @keyup.enter="getEditoras()"  type="text" v-model="nome" placeholder="Pesquise o nome da editora..." />
                             <b-input-group-append>
-                                <b-button @click="getEditoras()"  variant="primary"><i class="fa fa-search"></i></b-button>
+                                <b-button size="sm" @click="getEditoras()"  variant="primary"><i class="fa fa-search"></i></b-button>
                             </b-input-group-append> 
                         </b-input-group>
                     </b-col>
                 </b-row>
 
-                <b-table :responsive="true" :fields="fields" v-if="!loader && pageEditoras.rows.length > 0" hover striped :items="pageEditoras.rows" >
+                <b-table class="table-sm" :responsive="true" :fields="fields" v-if="!loader && pageEditoras.rows.length > 0" hover striped :items="pageEditoras.rows" >
                     <template slot="actions" slot-scope="data">
-                        <b-button v-hasRole="'ESCREVER_EDITORA'" @click="loadEditora(data.item);$bvModal.show('modal-editora')" variant="warning" class="mr-2"
+                        <b-button size="sm" v-hasRole="'ESCREVER_EDITORA'" @click="loadEditora(data.item);$bvModal.show('modal-editora')" variant="warning" class="mr-2"
                         v-b-tooltip.hover title="Alterar">
                             <i class="fa fa-pencil"></i>
                         </b-button>
@@ -28,7 +31,7 @@
                     <span>Nenhum resultado...</span>
                 </div>
                 <Loading :loader="loader"/>
-                <b-pagination size="md" v-model="page" :total-rows="pageEditoras.count" :per-page="10"></b-pagination>
+                <b-pagination size="sm" v-model="page" :total-rows="pageEditoras.count" :per-page="10"></b-pagination>
             </b-card>
             <FormEditora @zera-editora="getEditoras()" :editora="editora" />
     </div>
@@ -86,5 +89,8 @@ export default {
 </script>
 
 <style>
-
+    h5{
+        font-size: 1rem;
+        text-align: center;
+    }
 </style>

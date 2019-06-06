@@ -3,26 +3,29 @@
         <PageTitle icon="fas fa-file-alt" main="Administração de categorias" sub="Gerenciar categorias das descrições"/>
     
         <b-card header="Categorias">
-                <b-button v-hasRole="'ESCREVER_DESCRICAO'" variant="dark" @click="zeraCategoria();$bvModal.show('modal-categoria')" class="mb-2" size="sm">Nova Categoria</b-button>
+            <template slot="header">
+                <h5 class="card-title">Categorias</h5>
+            </template>
+                <b-button v-hasRole="'ESCREVER_DESCRICAO'" variant="dark" @click="zeraCategoria();$bvModal.show('modal-categoria')" class="mb-2" size="sm"><i class="fa fa-plus-circle mr-1"></i>Nova Categoria</b-button>
                 <b-row>
                     <b-col md="12" sm="12" class="mb-3">
                         <b-input-group>
-                            <b-form-input @keyup.enter="getCategorias()"  type="text" v-model="nome" placeholder="Pesquise o nome da categoria..." />
+                            <b-form-input size="sm" @keyup.enter="getCategorias()"  type="text" v-model="nome" placeholder="Pesquise o nome da categoria..." />
                             <b-input-group-append>
-                                <b-button @click="getCategorias()"  variant="primary"><i class="fa fa-search"></i></b-button>
+                                <b-button size="sm" @click="getCategorias()"  variant="primary"><i class="fa fa-search"></i></b-button>
                             </b-input-group-append> 
                         </b-input-group>
                     </b-col>
                 </b-row>
 
-                <b-table :responsive="true" :fields="fields" v-if="!loader && pageCategorias.rows.length > 0" hover striped :items="pageCategorias.rows" >
+                <b-table class="table-sm" :responsive="true" :fields="fields" v-if="!loader && pageCategorias.rows.length > 0" hover striped :items="pageCategorias.rows" >
                     <template slot="actions" slot-scope="data">
-                        <b-button v-hasRole="'ESCREVER_DESCRICAO'" @click="loadCategoria(data.item);$bvModal.show('modal-categoria')" variant="warning" class="mr-2"
+                        <b-button size="sm" v-hasRole="'ESCREVER_DESCRICAO'" @click="loadCategoria(data.item);$bvModal.show('modal-categoria')" variant="warning" class="mr-2"
                         v-b-tooltip.hover title="Alterar">
                             <i class="fa fa-pencil"></i>
                         </b-button>
-                        <b-button v-hasRole="'ESCREVER_DESCRICAO'" variant="success" @click="getDescricoes(data.item.idCategoriaDescricao)" v-b-tooltip.hover title="Adicionar" class="mr-2"><i class="fa fa-plus"></i></b-button>
-                        <b-button v-hasRole="'ESCREVER_DESCRICAO'"
+                        <b-button size="sm" v-hasRole="'ESCREVER_DESCRICAO'" variant="success" @click="getDescricoes(data.item.idCategoriaDescricao)" v-b-tooltip.hover title="Adicionar" class="mr-2"><i class="fa fa-plus"></i></b-button>
+                        <b-button size="sm" v-hasRole="'ESCREVER_DESCRICAO'"
                         v-b-tooltip.hover :title="data.item.statusCategoriaDescricao == true ? 'Desativar': 'Ativar'"
                         :variant="data.item.statusCategoriaDescricao == true ? 'danger': 'success'"
                          @click="showMsgBoxTwo(data.item)"
@@ -37,7 +40,7 @@
                     <span>Nenhum resultado...</span>
                 </div>
                 <Loading :loader="loader"/>
-                <b-pagination size="md" v-model="page" :total-rows="pageCategorias.count" :per-page="10"></b-pagination>
+                <b-pagination size="sm" v-model="page" :total-rows="pageCategorias.count" :per-page="10"></b-pagination>
             </b-card>
             <FormCategoria @zera-categoria="getCategorias()" :categoria="categoria" />
             <Descricoes :idCategoriaDescricao="categoria.idCategoriaDescricao" :loader="loaderDescricao" />
@@ -144,5 +147,8 @@ export default {
 </script>
 
 <style>
-
+    h5{
+        text-align: center;
+        font-size: 1rem;
+    }
 </style>

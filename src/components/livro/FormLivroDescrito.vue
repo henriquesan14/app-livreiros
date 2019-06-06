@@ -2,7 +2,7 @@
     <div>
         <Loading :loader="loader"/>
         <div v-if="!loader" class="table-responsive">
-            <table class="table table-hover table-striped">
+            <table class="table table-hover table-sm table-striped">
                 <thead class="thead-dark">
                     <tr>
                         <th>Título</th>
@@ -27,18 +27,18 @@
             <b-row>
                 <b-col >
                     <b-form-group label="Código.">
-                        <b-form-input :readonly="true" :value="livro.idLivro" />
+                        <b-form-input size="sm" :readonly="true" :value="livro.idLivro" />
                     </b-form-group>
                 </b-col>
                 <b-col >
                     <b-form-group label="SubCódigo.">
-                        <b-form-input :readOnly="livroDescrito.idLivroDescrito" :class="{'is-invalid': submitted && $v.livroDescrito.subIdLivro.$invalid, 'is-valid': submitted && !$v.livroDescrito.subIdLivro.$invalid}" 
+                        <b-form-input size="sm" :readOnly="livroDescrito.idLivroDescrito" :class="{'is-invalid': submitted && $v.livroDescrito.subIdLivro.$invalid, 'is-valid': submitted && !$v.livroDescrito.subIdLivro.$invalid}" 
                         v-model="livroDescrito.subIdLivro" maxLength="2" />
                     </b-form-group>
                 </b-col>
                 <b-col>
                     <b-form-group label="Valor">
-                        <b-form-input :readonly="true" :value="livro.precoLivro" />
+                        <b-form-input size="sm" :readonly="true" :value="livro.precoLivro" />
                     </b-form-group>
                 </b-col>
             </b-row>
@@ -47,14 +47,14 @@
                 
                 <b-col md="4">
                     <b-form-group :label="livroDescrito.idLivroDescrito? 'Qtd. Atual' : 'Qtd.'">
-                        <the-mask :readOnly="livroDescrito.idLivroDescrito" :class="{'is-invalid': submitted && $v.livroDescrito.qtdLivro.$invalid, 'is-valid': submitted && !$v.livroDescrito.qtdLivro.$invalid}"
-                         mask="####" class="form-control" v-model="livroDescrito.qtdLivro" />
+                        <the-mask  :readOnly="livroDescrito.idLivroDescrito" :class="{'is-invalid': submitted && $v.livroDescrito.qtdLivro.$invalid, 'is-valid': submitted && !$v.livroDescrito.qtdLivro.$invalid}"
+                         mask="####" class="form-control form-control-sm" v-model="livroDescrito.qtdLivro" />
                     </b-form-group>
                 </b-col>
                 <b-col  v-if="livroDescrito.idLivroDescrito">
                     <b-form-group label="Qtd.">
                         <the-mask
-                         mask="####" class="form-control" v-model="livroDescrito.qtd" />
+                         mask="####" class="form-control form-control-sm" v-model="livroDescrito.qtd" />
                     </b-form-group>
                 </b-col>
                 <b-col v-if="livroDescrito.idLivroDescrito" >
@@ -85,8 +85,8 @@
             </b-row>
             
             <div v-for="categoria in categoriasAtivas" :key="categoria.idCategoriaDescricao">
-                <h5><strong>{{categoria.nomeCategoriaDescricao}}</strong></h5>
-                <b-table :items="categoria.descricoes" :fields="fields"  striped hover>
+                <h5 class="title-descricoes"><strong>{{categoria.nomeCategoriaDescricao}}</strong></h5>
+                <b-table class="table-sm" :items="categoria.descricoes" :fields="fields"  striped hover>
                     <template slot="actions" slot-scope="data">
                         <b-form-checkbox-group>
                             <b-form-checkbox @change="onChangeDesc(data.item.idDescricao)"></b-form-checkbox>
@@ -94,8 +94,8 @@
                     </template>
                 </b-table>
             </div>
-            <b-button type="submit" class="mr-2" variant="success">{{livroDescrito.idLivroDescrito ? 'Alterar': 'Adicionar'}}</b-button>
-            <b-button @click="$bvModal.hide('new-livro-descrito');$bvModal.hide('edit-livro-descrito')">Fechar</b-button>
+            <b-button size="sm" type="submit" class="mr-2" variant="success"><i class="fa fa-save mr-1"></i>{{livroDescrito.idLivroDescrito ? 'Alterar': 'Adicionar'}}</b-button>
+            <b-button size="sm" @click="$bvModal.hide('new-livro-descrito');$bvModal.hide('edit-livro-descrito')"><i class="fa fa-arrow-left mr-1"></i>Fechar</b-button>
         </b-form>
     </div>
 </template>
@@ -182,4 +182,12 @@ export default {
 }
 </script>
 <style>
+    form{
+        font-size: .875rem;
+    }
+
+    h5.title-descricoes{
+        font-size: 1rem;
+    }
+
 </style>

@@ -2,17 +2,17 @@
     <div class="c-detalhes-livro">
         <b-modal size="lg" id="modal-detalhes-livro" hide-footer>
             <template slot="modal-title">
-                <h3>Detalhes Livro</h3>
+                Detalhes Livro
             </template>
             <Loading :loader="loader" />
             <div v-if="!loader" class="d-block">
                 <div class="detalhes-livro">
                     <div class="box1">
                         <div class="infos1">
-                            <span><strong>Id:</strong> {{livro.idLivro}}</span>
+                            <h5><strong>Id:</strong> {{livro.idLivro}}</h5>
+                            <h5><strong>Titulo:</strong> {{livro.tituloLivro}}</h5>
+                            <h5><strong>Autor:</strong> {{livro.autor.nomeAutor}}</h5>
                             <span><strong>ISBN:</strong> {{livro.isbn ? livro.isbn : 'N/A'}}</span>
-                            <span><strong>Titulo:</strong> {{livro.tituloLivro}}</span>
-                            <span><strong>Autor:</strong> {{livro.autor.nomeAutor}}</span>
                             <span><strong>Editora:</strong> {{livro.editora.nomeEditora}}</span>
                             <span><strong>Assunto:</strong> {{livro.assunto.nomeAssunto ? livro.assunto.nomeAssunto : 'N/A'}}</span>
                             <span><strong>Idioma:</strong> {{livro.idiomaLivro ? livro.idiomaLivro : 'N/A'}}</span>
@@ -47,14 +47,14 @@
                     <div class="box3">
                          <b-form-group>
                              <label><strong>Sinopse:</strong></label>
-                            <b-form-textarea readonly="readonly" cols="100" rows="4"
+                            <b-form-textarea class="text-sinopse" readonly="readonly" cols="100" rows="6"
                             :value="livro.sinopseLivro ? livro.sinopseLivro : 'N/A'">
                             
                             </b-form-textarea>
                         </b-form-group>
                     </div>
                     <h4 class="text-center mt-3">Movimentações</h4>
-                    <b-table :responsive="true"  :items="livro.livroMovimentos" :fields="fields" striped hover>
+                    <b-table class="table-sm" :responsive="true"  :items="livro.livroMovimentos" :fields="fields" striped hover>
                     </b-table>
                     <div v-if="livro.livroMovimentos.length < 1">
                             Nenhuma movimentação
@@ -121,7 +121,22 @@ export default {
 }
 </script>
 
-<style>
+<style >
+
+    textarea.text-sinopse{
+        font-size: .875rem;
+    }
+    label{
+        font-size: .875rem;
+    }
+
+    span{
+        font-size: .875rem;   
+    }
+
+    h5{
+        font-size: 1.2rem;
+    }
 
     .detalhes-livro{
         display: flex;

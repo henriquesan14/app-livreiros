@@ -3,13 +3,16 @@
         <PageTitle icon="fa fa-comments" main="Administração de assuntos" sub="Gerenciar assuntos"/>
     
         <b-card header="Assuntos">
-                <b-button v-hasRole="'ESCREVER_ASSUNTO'"  variant="dark" @click="zeraAssunto();$bvModal.show('modal-assunto')" class="mb-2" size="sm">Novo Assunto</b-button>
+            <template slot="header">
+                <h5 class="card-title">Assuntos</h5>
+            </template>
+                <b-button v-hasRole="'ESCREVER_ASSUNTO'"  variant="dark" @click="zeraAssunto();$bvModal.show('modal-assunto')" class="mb-2" size="sm"><i class="fa fa-plus-circle mr-1"></i>Novo Assunto</b-button>
                 <b-row>
                     <b-col md="12" sm="12" class="mb-3">
                         <b-input-group>
-                            <b-form-input @keyup.enter="getAssuntos()"  type="text" v-model="nome" placeholder="Pesquise o nome do assunto..." />
+                            <b-form-input size="sm" @keyup.enter="getAssuntos()"  type="text" v-model="nome" placeholder="Pesquise o nome do assunto..." />
                             <b-input-group-append>
-                                <b-button @click="getAssuntos()"  variant="primary"><i class="fa fa-search"></i></b-button>
+                                <b-button size="sm" @click="getAssuntos()"  variant="primary"><i class="fa fa-search"></i></b-button>
                             </b-input-group-append> 
                         </b-input-group>
                     </b-col>
@@ -28,7 +31,7 @@
                     <span>Nenhum resultado...</span>
                 </div>
                 <Loading :loader="loader"/>
-                <b-pagination size="md" v-model="page" :total-rows="pageAssuntos.count" :per-page="10"></b-pagination>
+                <b-pagination size="sm" v-model="page" :total-rows="pageAssuntos.count" :per-page="10"></b-pagination>
             </b-card>
             <FormAssunto @zera-assunto="getAssuntos()" :assunto="assunto" />
     </div>
@@ -87,4 +90,8 @@ export default {
 
 <style>
 
+    h5{
+        text-align: center;
+        font-size: 1rem;
+    }
 </style>

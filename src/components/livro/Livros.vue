@@ -71,10 +71,10 @@
                         <div v-if="livro.livrosDescritos.length > 0">
                             
                             <b-collapse id="collapse-livro" class="mb-3" v-model="livro.showCollapse">
-                                <h4 class="text-center">Livros Descritos</h4>
-                                <b-table :responsive="true" :items="livro.livrosDescritos" :fields="fields" hover striped >
+                                <h4 class="text-center mt-1">Livros Descritos</h4>
+                                <b-table class="table-sm" :responsive="true" :items="livro.livrosDescritos" :fields="fields" hover striped >
                                     <template slot="actions" slot-scope="data">
-                                        <b-button v-hasRole="'ESCREVER_LIVRO'" @click="loadLivroDesc(data.item);$bvModal.show('edit-livro-descrito')" variant="warning"
+                                        <b-button size="sm" v-hasRole="'ESCREVER_LIVRO'" @click="loadLivroDesc(data.item);$bvModal.show('edit-livro-descrito')" variant="warning"
                                             v-b-tooltip.hover title="Alterar">
                                             <i class="fa fa-pencil"></i>
                                         </b-button>
@@ -96,7 +96,7 @@
 
             <b-modal size="lg" id="new-livro-descrito" hide-footer>
                 <template slot="modal-title">
-                    <h3>Cadastro Livro Descrito</h3>
+                    Cadastro Livro Descrito
                 </template>
                 <div class="d-block">
                     <FormLivroDescrito @submit-livro-desc="saveLivroDesc" :livroDescrito="livroDescrito" :livroSelecionado="livroSelecionado" />
@@ -105,7 +105,7 @@
 
             <b-modal size="lg" id="edit-livro-descrito" hide-footer>
                 <template slot="modal-title">
-                    <h3>Edição Livro Descrito</h3>
+                    Edição Livro Descrito
                 </template>
                 <div class="d-block">
                     <FormLivroDescrito @submit-livro-desc="editLivroDesc" :livroDescrito="livroDescrito" :livroSelecionado="livroSelecionado" />
