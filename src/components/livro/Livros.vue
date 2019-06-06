@@ -34,8 +34,8 @@
                             </div>
                             <div class="info-livro">
                                 <div class="title-livro">
-                                    <h4><strong>{{livro.tituloLivro}}</strong></h4>
-                                    <h4>{{livro.autor.nomeAutor}}</h4>
+                                    <h4><strong>{{livro.tituloLivro | toTitle}}</strong></h4>
+                                    <h4>{{livro.autor.nomeAutor | toTitle}}</h4>
                                 </div>
                                 <div class="desc-livro">
                                     <div class="desc1">
