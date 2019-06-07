@@ -10,31 +10,31 @@
                     <b-row>
                         <b-col>
                             <b-form-group label="Nome">
-                                <b-form-input
+                                <b-form-input size="sm"
                                 :class="{'is-invalid': submitted && $v.descricao.nomeDescricao.$invalid, 'is-valid': submitted && !$v.descricao.nomeDescricao.$invalid}"
                                  v-model="descricao.nomeDescricao" maxLength="100" />
                             </b-form-group>
                         </b-col>
                         <b-col>
                             <b-form-group label="( - ) R$">
-                                <b-form-input
+                                <b-form-input size="sm"
                                 :class="{'is-invalid': submitted && $v.descricao.reducaoPreco.$invalid, 'is-valid': submitted && !$v.descricao.reducaoPreco.$invalid}"
                                  v-model="descricao.reducaoPreco" v-money="money"  maxLength="6" />
                             </b-form-group>
                         </b-col>
                     </b-row>
-                    <b-button type="submit" class="mb-3 mr-2" variant="success">Adicionar</b-button>
-                    <b-button variant="danger" class="mb-3 mr-2" @click="zeraDescricao()">Limpar</b-button>
-                    <b-button class="mb-3"  @click="$bvModal.hide('modal-descricoes')">Fechar</b-button>
+                    <b-button size="sm" type="submit" class="mb-3 mr-2" variant="success"><i class="fa fa-save mr-1"></i>Adicionar</b-button>
+                    <b-button size="sm" variant="danger" class="mb-3 mr-2" @click="zeraDescricao()"><i class="fa fa-times-circle mr-1"></i>Limpar</b-button>
+                    <b-button size="sm" class="mb-3"  @click="$bvModal.hide('modal-descricoes')"><i class="fa fa-arrow-left mr-1"></i>Fechar</b-button>
                 </b-form>
-                <b-table :responsive="true" :fields="fields" :items="descricoes"  hover striped>
+                <b-table class="table-sm" :responsive="true" :fields="fields" :items="descricoes"  hover striped>
                     <template slot="actions" slot-scope="data">
-                        <b-button @click="loadDescricao(data.item); $bvModal.show('modal-edit-descricoes')"
+                        <b-button size="sm" @click="loadDescricao(data.item); $bvModal.show('modal-edit-descricoes')"
                          variant="warning" class="mr-2"
                         v-b-tooltip.hover title="Alterar">
                             <i class="fa fa-pencil"></i>
                         </b-button>
-                        <b-button
+                        <b-button size="sm"
                         v-b-tooltip.hover :title="data.item.statusDescricao == true ? 'Desativar': 'Ativar'"
                         :variant="data.item.statusDescricao == true ? 'danger': 'success'"
                          @click="showMsgBoxTwo(data.item)" class="mr-2">
@@ -55,21 +55,21 @@
                     <b-row>
                         <b-col>
                             <b-form-group label="Nome">
-                                <b-form-input
+                                <b-form-input size="sm"
                                 :class="{'is-invalid': submitted && $v.descricaoEdit.nomeDescricao.$invalid, 'is-valid': submitted && !$v.descricaoEdit.nomeDescricao.$invalid}"
                                  v-model="descricaoEdit.nomeDescricao" maxLength="100" />
                             </b-form-group>
                         </b-col>
                         <b-col>
                             <b-form-group label="( - ) R$">
-                                <b-form-input
+                                <b-form-input size="sm"
                                 :class="{'is-invalid': submitted && $v.descricaoEdit.reducaoPreco.$invalid, 'is-valid': submitted && !$v.descricaoEdit.reducaoPreco.$invalid}"
                                  v-model="descricaoEdit.reducaoPreco" v-money="money"  maxLength="6" />
                             </b-form-group>
                         </b-col>
                     </b-row>
-                    <b-button type="submit" class="mb-3 mr-2" variant="success">Alterar</b-button>
-                    <b-button class="mb-3"  @click="$bvModal.hide('modal-edit-descricoes')">Fechar</b-button>
+                    <b-button size="sm" type="submit" class="mb-3 mr-2" variant="success"><i class="fa fa-save mr-1"></i>Alterar</b-button>
+                    <b-button size="sm" class="mb-3"  @click="$bvModal.hide('modal-edit-descricoes')"><i class="fa fa-arrow-left mr-1"></i>Fechar</b-button>
                 </b-form>
             </div>
         </b-modal>
@@ -135,7 +135,7 @@ export default {
             this.$bvModal.msgBoxConfirm(`Tem certeza que deseja ativar/desativar a descrição de Cód. ${descricao.idDescricao}?` , {
             title: 'Confirmação',
             size: 'md',
-            buttonSize: 'md',
+            buttonSize: 'sm',
             okVariant: 'danger',
             okTitle: 'SIM',
             cancelTitle: 'NÃO',
@@ -222,5 +222,4 @@ export default {
 </script>
 
 <style>
-
 </style>

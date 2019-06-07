@@ -85,7 +85,7 @@ export default {
         this.$bvModal.msgBoxConfirm(`Tem certeza que deseja ativar/desativar o usuário de Cód. ${user.idUsuario}?` , {
           title: 'Confirmação',
           size: 'md',
-          buttonSize: 'md',
+          buttonSize: 'sm',
           okVariant: 'danger',
           okTitle: 'SIM',
           cancelTitle: 'NÃO',

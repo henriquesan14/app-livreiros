@@ -24,7 +24,7 @@
                         v-b-tooltip.hover title="Alterar">
                             <i class="fa fa-pencil"></i>
                         </b-button>
-                        <b-button size="sm" v-hasRole="'ESCREVER_DESCRICAO'" variant="success" @click="getDescricoes(data.item.idCategoriaDescricao)" v-b-tooltip.hover title="Adicionar" class="mr-2"><i class="fa fa-plus"></i></b-button>
+                        <b-button size="sm" v-hasRole="'ESCREVER_DESCRICAO'" variant="primary" @click="getDescricoes(data.item.idCategoriaDescricao)" v-b-tooltip.hover title="Adicionar" class="mr-2"><i class="fa fa-plus"></i></b-button>
                         <b-button size="sm" v-hasRole="'ESCREVER_DESCRICAO'"
                         v-b-tooltip.hover :title="data.item.statusCategoriaDescricao == true ? 'Desativar': 'Ativar'"
                         :variant="data.item.statusCategoriaDescricao == true ? 'danger': 'success'"
@@ -114,7 +114,7 @@ export default {
             this.$bvModal.msgBoxConfirm(`Tem certeza que deseja ativar/desativar a categoria de Cód. ${categoria.idCategoriaDescricao}?` , {
             title: 'Confirmação',
             size: 'md',
-            buttonSize: 'md',
+            buttonSize: 'sm',
             okVariant: 'danger',
             okTitle: 'SIM',
             cancelTitle: 'NÃO',

@@ -8,7 +8,7 @@
                     <b-col>
                         <b-input-group>
                             <b-input-group-prepend is-text><i class="fa fa-user"></i></b-input-group-prepend>
-                         <b-form-input 
+                         <b-form-input size="sm" 
                             :class="{'is-invalid': submitted && $v.user.loginUsuario.$invalid, 'is-valid': submitted && !$v.user.loginUsuario.$invalid}"
                             type="text" v-model="user.loginUsuario" placeholder="Login" />
                         </b-input-group>
@@ -19,7 +19,7 @@
                     <b-col>
                         <b-input-group>
                             <b-input-group-prepend is-text><i class="fa fa-lock"></i></b-input-group-prepend>
-                            <b-form-input
+                            <b-form-input size="sm"
                             :class="{'is-invalid': submitted && $v.user.senhaUsuario.$invalid, 'is-valid': submitted && !$v.user.senhaUsuario.$invalid}"
                             type="password" v-model="user.senhaUsuario" placeholder="Senha"
                              />
@@ -27,7 +27,7 @@
                     </b-col>
                 </b-row>
 
-                <b-button block type="submit" variant="primary">Entrar
+                <b-button size="sm" block type="submit" variant="primary">Entrar
                     <b-spinner v-if="loader" small class="ml-1"></b-spinner>
                     <span class="sr-only">Loading...</span>
                 </b-button>

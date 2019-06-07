@@ -9,15 +9,15 @@
                 <b-row>
                     <b-col>
                         <b-form-group label="Nome: " label-for="nomeCategoriaDescricao">
-                            <b-form-input
+                            <b-form-input size="sm"
                             :class="{'is-invalid': submitted && $v.categoria.nomeCategoriaDescricao.$invalid, 'is-valid': submitted && !$v.categoria.nomeCategoriaDescricao.$invalid}"
                              maxlength="100"
                             id="nomeCategoriaDescricao" v-model="categoria.nomeCategoriaDescricao" placeholder="Informe o nome da categoria" />
                         </b-form-group>
                     </b-col>
                 </b-row>
-                <b-button class="mr-2" type="submit" variant="success">Salvar</b-button>
-                <b-button type="button"   @click="$bvModal.hide('modal-categoria')">Fechar</b-button>
+                <b-button size="sm" class="mr-2" type="submit" variant="success"><i class="fa fa-save mr-1"></i>Salvar</b-button>
+                <b-button size="sm" type="button"   @click="$bvModal.hide('modal-categoria')"><i class="fa fa-arrow-left mr-1"></i>Fechar</b-button>
             </b-form>
             </div>
         </b-modal>

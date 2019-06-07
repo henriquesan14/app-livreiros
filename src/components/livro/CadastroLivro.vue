@@ -223,9 +223,8 @@
                     </b-col>
                 </b-row>
 
-                <b-button type="submit" class="mr-2" variant="success">Salvar</b-button>  
-                <b-button @click="reset()" variant="danger" class="mr-2">Limpar</b-button>
-                <router-link tag="b-button" to="/dashboard/livros" class="btn-dark">Voltar</router-link>
+                <b-button size="sm" type="submit" class="mr-2" variant="success"><i class="fa fa-save mr-1"></i>Salvar</b-button>  
+                <router-link tag="b-button" to="/dashboard/livros" class="btn-dark btn-sm"><i class="fa fa-arrow-left mr-1"></i>Voltar</router-link>
             </b-form>
             <Loading :loader="loaderLivro" />
         </b-card>
@@ -446,6 +445,8 @@ export default {
     margin: 0 auto;
     width: 180px;
     height: 200px;
+    border: 8px solid #ccc;
+    border-radius: 5px;
 }
 
 .btn-center{

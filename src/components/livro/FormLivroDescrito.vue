@@ -188,6 +188,7 @@ export default {
 
     h5.title-descricoes{
         font-size: 1rem;
+        text-align:left;
     }
 
 </style>

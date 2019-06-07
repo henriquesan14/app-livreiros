@@ -9,15 +9,15 @@
                 <b-row>
                     <b-col>
                         <b-form-group label="Nome: " label-for="nomeAutor">
-                            <b-form-input
+                            <b-form-input size="sm"
                             :class="{'is-invalid': submitted && $v.autor.nomeAutor.$invalid, 'is-valid': submitted && !$v.autor.nomeAutor.$invalid}"
                              maxlength="100"
                             id="nomeAutor" v-model="autor.nomeAutor" placeholder="Informe o nome do autor" />
                         </b-form-group>
                     </b-col>
                 </b-row>
-                <b-button class="mr-2" type="submit" variant="success">Salvar</b-button>
-                <b-button type="button"   @click="$bvModal.hide('modal-autor')">Fechar</b-button>
+                <b-button size="sm" class="mr-2" type="submit" variant="success"><i class="fa fa-save mr-1"></i>Salvar</b-button>
+                <b-button size="sm" type="button"   @click="$bvModal.hide('modal-autor')"><i class="fa fa-arrow-left mr-1"></i>Fechar</b-button>
             </b-form>
             </div>
         </b-modal>

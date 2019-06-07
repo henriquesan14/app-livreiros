@@ -9,9 +9,9 @@
                 <div class="detalhes-livro">
                     <div class="box1">
                         <div class="infos1">
-                            <h5><strong>Id:</strong> {{livro.idLivro}}</h5>
-                            <h5><strong>Titulo:</strong> {{livro.tituloLivro}}</h5>
-                            <h5><strong>Autor:</strong> {{livro.autor.nomeAutor}}</h5>
+                            <h5 class="info-detalhes"><strong>Id:</strong> {{livro.idLivro}}</h5>
+                            <h5 class="info-detalhes"><strong>Titulo:</strong> {{livro.tituloLivro}}</h5>
+                            <h5 class="info-detalhes"><strong>Autor:</strong> {{livro.autor.nomeAutor}}</h5>
                             <span><strong>ISBN:</strong> {{livro.isbn ? livro.isbn : 'N/A'}}</span>
                             <span><strong>Editora:</strong> {{livro.editora.nomeEditora}}</span>
                             <span><strong>Assunto:</strong> {{livro.assunto.nomeAssunto ? livro.assunto.nomeAssunto : 'N/A'}}</span>
@@ -41,7 +41,7 @@
                         </div>
 
                         <div class="infos4">
-                            <h5><strong>Qtd. estoque:</strong> {{livro.qtdTotal}}</h5>
+                            <h5 class="qtd-estoque"><strong>Qtd. estoque:</strong> {{livro.qtdTotal}}</h5>
                         </div>
                     </div>
                     <div class="box3">
@@ -134,8 +134,13 @@ export default {
         font-size: .875rem;   
     }
 
-    h5{
+    h5.qtd-estoque{
         font-size: 1.2rem;
+    }
+
+    h5.info-detalhes{
+        font-size: 1.1rem;
+        text-align: left;
     }
 
     .detalhes-livro{
