@@ -146,11 +146,14 @@
 <script>
 import {mapGetters} from 'vuex'
 import { required, minLength, email, sameAs } from "vuelidate/lib/validators";
+import Estado from '../../services/estados';
 export default {
     name: 'FormUsuario',
     data(){
         return {
-            submitted: false
+            submitted: false, 
+            estados: [],
+            cidades: []
         }
     },
     props: {
@@ -159,7 +162,7 @@ export default {
             required: true
         }, 
     },
-    computed: mapGetters(['estados', 'cidades', 'grupos']),
+    computed: mapGetters(['grupos']),
     validations: {
         user: {
             nomeUsuario: {
@@ -208,23 +211,19 @@ export default {
         
     },
     mounted(){
-        this.$store.dispatch('GET_ESTADOS')
-        .then(() => {})
-            .catch(() => {});
+        Estado.getEstados().then(res => this.estados = res.data);
         this.$store.dispatch('GET_GRUPOS')
         .then(() => {})
         .catch(() => {});
     },
     methods:{
         loadCidades(){
-            this.$store.dispatch('GET_CIDADES', {id: this.user.idUf})
-            .then(() => {})
-            .catch(() => {})
+            Estado.getCidades(this.user.idUf).then(res => this.cidades = res.data);
         },
         zeraUser(){
             this.user = {grupos: [], idUf: null, idCidade: null};
             this.submitted = false;
-            this.$store.dispatch('RESET_CIDADES')
+            this.cidades = [];
         },
         submitUser() {
                 this.submitted = true;
