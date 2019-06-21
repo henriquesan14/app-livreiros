@@ -1,10 +1,14 @@
 <template>
     <div class="cadastro-user">
         <PageTitle icon="fa fa-cogs" main="Administração do Sistema" sub="Cadastro usuário"/>
-        <router-link tag="b-button" class="btn-dark btn-sm mb-1" to="/dashboard/usuarios"><i class="fa fa-arrow-left mr-1"></i>Voltar</router-link>
         <b-card >
             <template slot="header">
-                <h5 class="title-card">Novo usuário</h5>
+                <div class="header-card" >
+                    <h5 class="title-card">Novo usuário</h5>
+                    <router-link tag="b-button" class="btn-dark btn-sm mb-1" to="/dashboard/usuarios">
+                        <i class="fa fa-arrow-left mr-1"></i>Voltar
+                    </router-link>
+                </div>
             </template>
             <FormUsuario :user="user" @submit-user="saveUser()"/>
         </b-card>
@@ -12,8 +16,8 @@
 </template>
 
 <script>
-import axios from 'axios';
-import {showError, baseApiUrl} from '@/global';
+import Usuario from '../../services/usuarios';
+import {showError} from '@/global';
 import PageTitle from '../template/PageTitle'
 import FormUsuario from './FormUsuario'
 export default {
@@ -29,22 +33,27 @@ export default {
         }
     },
     methods:{
-        saveUser(){
-            const url = `${baseApiUrl}/usuarios`;
-            axios.post(url, this.user).then(() => {
+        async saveUser(){
+            try{
+                await Usuario.saveUsuario(this.user);
                 this.$toasted.global.defaultSuccess();
                 this.$router.push('/dashboard/usuarios');
-            }).catch(showError)
+            }catch(err){
+                showError(err);   
+            }
         },
         zeraUser(){
             this.user = {grupos: [], idUf: null, idCidade: null};
-            this.$store.dispatch('RESET_CIDADES')
         }
     }
 }
 </script>
 
 <style scoped>
- 
-
+.header-card{
+    display:flex;
+    justify-content:space-between;
+    align-items: center;
+}
+    
 </style>
