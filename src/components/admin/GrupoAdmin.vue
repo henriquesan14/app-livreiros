@@ -4,7 +4,7 @@
         <b-table class="table-sm" v-if="!loader && grupos.length > 0" hover striped :items="grupos" :fields="fields">
             <template slot="actions" slot-scope="data">
                 <b-button size="sm" v-hasRole="'ESCREVER_GRUPO'" variant="warning" @click="loadGrupo(data.item); $bvModal.show('modal-grupo')" class="mr-2"
-                v-b-tooltip.hover title="Alterar">
+                >
                     <i class="fa fa-cogs"></i>
                 </b-button>
             </template>

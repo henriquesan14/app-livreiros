@@ -54,13 +54,11 @@
                             <div class="info2-livro">
                                 <h4>{{'R$' + livro.precoLivro}}</h4>
                                 <div class="btns-livro">
-                                    <b-button size="sm" v-hasRole="'ESCREVER_LIVRO'" @click="loadLivro(livro.idLivro);zeraLivroDesc();$bvModal.show('new-livro-descrito')"
-                                     v-b-tooltip.hover title="Adicionar" 
+                                    <b-button size="sm" v-hasRole="'ESCREVER_LIVRO'" @click="loadLivro(livro.idLivro);zeraLivroDesc();$bvModal.show('new-livro-descrito')" 
                                     variant="primary" class="mr-2"><i class="fa fa-plus"></i></b-button>
-                                    <b-button size="sm" v-hasRole="'ESCREVER_LIVRO'" @click="navigate(livro.idLivro)" v-b-tooltip.hover title="Alterar" 
+                                    <b-button size="sm" v-hasRole="'ESCREVER_LIVRO'" @click="navigate(livro.idLivro)"  
                                     variant="warning" class="mr-2"><i class="fa fa-pencil"></i></b-button>
-                                    <b-button class="btn-plus" size="sm" @click="loadLivro(livro.idLivro);$bvModal.show('modal-detalhes-livro')"
-                                    v-b-tooltip.hover title="Detalhes" 
+                                    <b-button class="btn-plus" size="sm" @click="loadLivro(livro.idLivro);$bvModal.show('modal-detalhes-livro')" 
                                     variant="dark"><i class="fa fa-search-plus"></i></b-button>
                                 </div>
                                 
@@ -74,8 +72,7 @@
                                 <h4 class="text-center mt-1">Livros Descritos</h4>
                                 <b-table class="table-sm" :responsive="true" :items="livro.livrosDescritos" :fields="fields" hover striped >
                                     <template slot="actions" slot-scope="data">
-                                        <b-button size="sm" v-hasRole="'ESCREVER_LIVRO'" @click="loadLivroDesc(data.item);$bvModal.show('edit-livro-descrito')" variant="warning"
-                                            v-b-tooltip.hover title="Alterar">
+                                        <b-button size="sm" v-hasRole="'ESCREVER_LIVRO'" @click="loadLivroDesc(data.item);$bvModal.show('edit-livro-descrito')" variant="warning">
                                             <i class="fa fa-pencil"></i>
                                         </b-button>
                                     </template>

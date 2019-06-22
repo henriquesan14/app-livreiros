@@ -12,14 +12,18 @@
             </b-col>
         </b-row>
         <b-table class="table-sm" :responsive="true" v-if="!loader && pageUsers.rows.length > 0" hover striped :items="pageUsers.rows" :fields="fields">
+            <template slot="statusUsuario" slot-scope="data">
+                <b-badge :variant="data.item.statusUsuario ? 'success' : 'danger'"
+                >{{data.item.statusUsuario ? 'Ativo':'Desativado'}}</b-badge>
+            </template>
             <template slot="actions" slot-scope="data">
                 <b-button size="sm" v-hasRole="'ESCREVER_USUARIO'" variant="warning" class="mr-2" @click="navigate(data.item.idUsuario)"
-                v-b-tooltip.hover title="Alterar">
+                >
                     <i class="fa fa-pencil"></i>
                 </b-button>
-                <b-button size="sm" v-hasRole="'ESCREVER_USUARIO'" v-b-tooltip.hover :title="data.item.statusUsuario == true ? 'Desativar': 'Ativar'"
+                <b-button size="sm" v-hasRole="'ESCREVER_USUARIO'" 
                 :variant="data.item.statusUsuario == true ? 'danger': 'success'" @click="showMsgBoxTwo(data.item);" class="mr-2">
-                    <i class="fas" :class="data.item.statusUsuario == true ? 'fa-lock':'fa-lock-open'" ></i>
+                    <i class="fas" :class="data.item.statusUsuario == true ? 'fa-ban':'fa-lock-open'" ></i>
                 </b-button>
             </template>
         </b-table>
@@ -51,6 +55,7 @@ export default {
                 {key: 'idUsuario', label: 'Cód.', sortable: true},
                 {key: 'nomeUsuario', label: 'Nome', sortable: true},
                 {key: 'loginUsuario', label: 'Login', sortable: true},
+                {key: 'statusUsuario', label: 'Status', sortable: true},
                 {key: 'actions', label: 'Ações'}
             ],
             boxTwo: ''

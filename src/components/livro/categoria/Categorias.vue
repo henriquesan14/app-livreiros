@@ -19,18 +19,21 @@
                 </b-row>
 
                 <b-table class="table-sm" :responsive="true" :fields="fields" v-if="!loader && pageCategorias.rows.length > 0" hover striped :items="pageCategorias.rows" >
+                    <template slot="statusCategoriaDescricao" slot-scope="data">
+                        <b-badge :variant="data.item.statusCategoriaDescricao ? 'success' : 'danger'">
+                            {{data.item.statusCategoriaDescricao ? 'Ativa':'Desativada'}}</b-badge>
+                    </template>
                     <template slot="actions" slot-scope="data">
                         <b-button size="sm" v-hasRole="'ESCREVER_DESCRICAO'" @click="loadCategoria(data.item);$bvModal.show('modal-categoria')" variant="warning" class="mr-2"
-                        v-b-tooltip.hover title="Alterar">
+                       >
                             <i class="fa fa-pencil"></i>
                         </b-button>
-                        <b-button size="sm" v-hasRole="'ESCREVER_DESCRICAO'" variant="primary" @click="getDescricoes(data.item.idCategoriaDescricao)" v-b-tooltip.hover title="Adicionar" class="mr-2"><i class="fa fa-plus"></i></b-button>
+                        <b-button size="sm" v-hasRole="'ESCREVER_DESCRICAO'" variant="primary" @click="getDescricoes(data.item.idCategoriaDescricao)"  class="mr-2"><i class="fa fa-plus"></i></b-button>
                         <b-button size="sm" v-hasRole="'ESCREVER_DESCRICAO'"
-                        v-b-tooltip.hover :title="data.item.statusCategoriaDescricao == true ? 'Desativar': 'Ativar'"
                         :variant="data.item.statusCategoriaDescricao == true ? 'danger': 'success'"
                          @click="showMsgBoxTwo(data.item)"
                          >
-                            <i class="fas" :class="data.item.statusCategoriaDescricao == true ? 'fa-lock':'fa-lock-open'"></i>
+                            <i class="fas" :class="data.item.statusCategoriaDescricao == true ? 'fa-ban':'fa-lock-open'"></i>
                         </b-button>
                         
                     
@@ -67,6 +70,7 @@ export default {
             fields: [
                 {key: 'idCategoriaDescricao', label: 'Cód.', sortable: true},
                 {key: 'nomeCategoriaDescricao', label: 'Nome', sortable: true},
+                {key: 'statusCategoriaDescricao', label: 'Status', sortable: true},
                 {key: 'actions', label: 'Ações'}
             ],
             loaderDescricao: false

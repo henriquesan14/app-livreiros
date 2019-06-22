@@ -2,10 +2,10 @@ import axios from 'axios';
 import {baseApiUrl} from '@/global';
 
 export default {
-    saveUsuario: () => {
-        return axios.post(`${baseApiUrl}/usuarios`);
+    saveUsuario: (usuario) => {
+        return axios.post(`${baseApiUrl}/usuarios`, usuario);
     },
-    editUsuario: (idUsuario) => {
-        return axios.put(`${baseApiUrl}/usuarios/${idUsuario}`);
+    editUsuario: (usuario, idUsuario) => {
+        return axios.put(`${baseApiUrl}/usuarios/${idUsuario}`, usuario);
     }
 }

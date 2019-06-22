@@ -21,7 +21,7 @@
                 <b-table class="table-sm" :responsive="true" :fields="fields" v-if="!loader && pageEditoras.rows.length > 0" hover striped :items="pageEditoras.rows" >
                     <template slot="actions" slot-scope="data">
                         <b-button size="sm" v-hasRole="'ESCREVER_EDITORA'" @click="loadEditora(data.item);$bvModal.show('modal-editora')" variant="warning" class="mr-2"
-                        v-b-tooltip.hover title="Alterar">
+                        >
                             <i class="fa fa-pencil"></i>
                         </b-button>
                     
