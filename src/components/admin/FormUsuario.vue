@@ -75,9 +75,10 @@
                     </b-form-group>
                 </b-col>
                 <b-col md="6" sm="12">
-                    <b-form-group :invalid-feedback="invalidFeedBack($v.user.cepUsuario)"
+                    <b-form-group 
+                     :invalid-feedback="invalidFeedBack($v.user.cepUsuario)"
                      label="CEP: " label-for="cep">
-                        <the-mask class="form-control" :mask="'#####-###'" :masked="false" 
+                        <the-mask @blur.native="consumerCep()"  class="form-control" :mask="'#####-###'" :masked="false" 
                         :class="{'is-invalid': submitted && $v.user.cepUsuario.$invalid, 'is-valid': submitted && !$v.user.cepUsuario.$invalid}"
                          type="text" id="cep" v-model="user.cepUsuario"   placeholder="Informe o CEP do usuário" />
                     </b-form-group>
@@ -152,7 +153,7 @@
                 </b-col>
             </b-row>
             <b-button size="sm" type="submit" variant="success mr-2"><i class="fa fa-save mr-1"></i>Cadastrar</b-button>
-            <router-link tag="b-button" @click="zeraUser()" class="btn-dark btn-sm" to="/dashboard/usuarios" type="button" variant="light"><i class="fa fa-arrow-left mr-1"></i>Voltar</router-link>
+            <router-link tag="b-button" class="btn-dark btn-sm" to="/dashboard/usuarios" type="button" variant="light"><i class="fa fa-arrow-left mr-1"></i>Voltar</router-link>
         </b-form>
     </div>
 </template>
@@ -163,6 +164,7 @@ import { required, minLength, email, sameAs } from "vuelidate/lib/validators";
 import Estado from '../../services/estados';
 import {showError} from '@/global';
 import { validationMsg } from '../../config/validation-msgs';
+import WsCep from '../../services/ws-cep';
 export default {
     name: 'FormUsuario',
     data(){
@@ -250,19 +252,22 @@ export default {
                 showError(err);
             }
         },
-        zeraUser(){
-            this.user = {grupos: [], idUf: null, idCidade: null};
-            this.submitted = false;
-            this.cidades = [];
-        },
         submitUser() {
-                this.submitted = true;
-                this.$v.$touch();
-                if(this.$v.$invalid){
-                    return;
-                }
-                this.submitted = false;
-                this.$emit('submit-user')
+            this.submitted = true;
+            this.$v.$touch();
+            if(this.$v.$invalid){
+                return;
+            }
+            this.submitted = false;
+            this.$emit('submit-user', this.user);
+        },
+        async consumerCep(){
+            try{
+                const res = await WsCep.buscaCep(this.user.cepUsuario);
+                this.user.ruaUsuario = res.data.logradouro;
+            }catch(err){
+                showError(err);
+            }
         },
         invalidFeedBack(field){
             return validationMsg(field);

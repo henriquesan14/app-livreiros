@@ -10,7 +10,7 @@
                     </router-link>
                 </div>
             </template>
-            <FormUsuario :user="user" @submit-user="saveUser()"/>
+            <FormUsuario :user="user" @submit-user="saveUser"/>
         </b-card>
     </div>
 </template>
@@ -19,7 +19,7 @@
 import Usuario from '../../services/usuarios';
 import {showError} from '@/global';
 import PageTitle from '../template/PageTitle'
-import FormUsuario from './FormUsuario'
+import FormUsuario from './FormUsuario';
 export default {
     name: 'CadastroUsuario',
     components: {PageTitle, FormUsuario},
@@ -33,17 +33,14 @@ export default {
         }
     },
     methods:{
-        async saveUser(){
+        async saveUser(user){
             try{
-                await Usuario.saveUsuario(this.user);
+                await Usuario.saveUsuario(user);
                 this.$toasted.global.defaultSuccess();
                 this.$router.push('/dashboard/usuarios');
             }catch(err){
                 showError(err);   
             }
-        },
-        zeraUser(){
-            this.user = {grupos: [], idUf: null, idCidade: null};
         }
     }
 }
