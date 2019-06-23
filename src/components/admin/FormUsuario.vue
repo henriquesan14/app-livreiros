@@ -174,13 +174,7 @@ export default {
             cidades: []
         }
     },
-    props: {
-        user: {
-            type: Object,
-            required: true
-        }, 
-    },
-    computed: mapGetters(['grupos']),
+    computed: mapGetters(['grupos', 'user']),
     validations: {
         user: {
             nomeUsuario: {
@@ -262,12 +256,31 @@ export default {
             this.$emit('submit-user', this.user);
         },
         async consumerCep(){
-            try{
-                const res = await WsCep.buscaCep(this.user.cepUsuario);
-                this.user.ruaUsuario = res.data.logradouro;
-            }catch(err){
-                showError(err);
+            if(this.cepValido()){
+                let loader = this.$loading.show();
+                try{
+                    const res = await WsCep.buscaCep(this.user.cepUsuario);
+                    this.exportDadosWsCep(res.data);
+                }catch(err){
+                    showError(err);
+                }finally{
+                    loader.hide();
+                }
             }
+        },
+        cepValido(){
+            if(this.user.cepUsuario != ''){
+                let validacep = /^[0-9]{8}$/;
+                if(validacep.test(this.user.cepUsuario)){
+                    return true;
+                }
+            } 
+        },
+        exportDadosWsCep(data){
+            let user = {...this.user};
+            data.logradouro ? user.ruaUsuario = data.logradouro : user.ruaUsuario = '';
+            data.bairro ? user.bairroUsuario = data.bairro : data.bairro = '';
+            this.$store.dispatch('SET_USER', {user: user});
         },
         invalidFeedBack(field){
             return validationMsg(field);

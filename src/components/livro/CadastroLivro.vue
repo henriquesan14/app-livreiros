@@ -307,7 +307,7 @@ export default {
             this.$store.dispatch('RESET_AUTORES');
         },
         async searchIsbn(){
-            this.loaderIsbn = true;
+            let loader = this.$loading.show();
             const url = `${baseApiUrl}/livros/isbn/${this.livro.isbn}`
             try{
                 const res = await axios.get(url);
@@ -315,7 +315,7 @@ export default {
             }catch(err){
                 showError(err);
             }finally{
-                this.loaderIsbn = false;
+                loader.hide();
             }
         },
         importToInput(res){
@@ -337,43 +337,43 @@ export default {
             this.getAssuntos(this.assunto.nomeAssunto);
         },
         async getAutores(nome){
-            this.loaderAutor = true;
+            let loader = this.$loading.show();
             try{
                 await this.$store.dispatch('GET_AUTORES', {nome})
             }catch(err){
                 showError(err);
             }
             finally{
-                this.loaderAutor = false;
+                loader.hide();
                 this.subAutor = true;
             }
         },
         async getEditoras(nome){
-            this.loaderEditora = true;
+            let loader = this.$loading.show();
             try{
                 await this.$store.dispatch('GET_EDITORAS', {nome})
             }catch(err){
                 showError(err);
             }
             finally{
-                this.loaderEditora = false;
+                loader.hide();
                 this.subEditora = true;
             }
         },
         async getAssuntos(nome){
-            this.loaderAssunto = true;
+            let loader = this.$loading.show();
             try{
                 await this.$store.dispatch('GET_ASSUNTOS', {nome})
             }catch(err){
                 showError(err);
             }
             finally{
-                this.loaderAssunto = false;
+                loader.hide();
                 this.subAssunto = true;
             }
         },
         async saveLivro(){
-            const url = `${baseApiUrl}/livros`
+            const url = `${baseApiUrl}/livros`;
             try{
                 await axios.post(url, this.livro);
                 this.$router.push('/dashboard/livros');
@@ -384,7 +384,7 @@ export default {
         },
         async upload(){
             if(this.image){
-                this.loaderLivro = true;
+                let loader = this.$loading.show();
                 const fd = new FormData();
                 fd.append('image', this.image)
                 try{
@@ -394,10 +394,9 @@ export default {
                     this.livro.imagemLivro = res.data.imagemLivro;
                     this.saveLivro();
                 }catch(err){
-                    
                     showError(err);
                 }finally{
-                    this.loaderLivro = false;
+                    loader.hide();
                 }
             }else{
                 this.saveLivro();

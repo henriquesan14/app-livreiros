@@ -4,7 +4,8 @@ import {baseApiUrl} from '@/global'
 const state = {
   pageUsers: {rows: []},
   grupos: {},
-  permissoes: [] 
+  permissoes: [],
+  user: {idUf: null, idCidade: null, grupos: []}
 }
 
 const mutations = {
@@ -16,6 +17,9 @@ const mutations = {
   },
   RECEIVE_PERMISSOES(state, {permissoes}){
     state.permissoes = permissoes
+  },
+  RECEIVE_USER(state, {user}){
+    state.user = user
   }
 }
 
@@ -31,17 +35,20 @@ const actions = {
     commit('RECEIVE_GRUPOS',{ grupos: data});
   },
   async GET_PERMISSOES ({commit}, categoria) {
-    
     const url = `${baseApiUrl}/permissoes?categoria=${categoria}`;
     const { data } = await axios.get(url);
     commit('RECEIVE_PERMISSOES',{ permissoes: data});
+  },
+  SET_USER({commit}, user){
+    commit('RECEIVE_USER', user);
   }
 },
 
 getters =  {
     pageUsers: state => state.pageUsers,
     grupos: state => state.grupos,
-    permissoes: state => state.permissoes
+    permissoes: state => state.permissoes,
+    user: state => state.user
 }
 
 export default {

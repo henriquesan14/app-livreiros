@@ -10,7 +10,7 @@
                     </router-link>
                 </div>
             </template>
-            <FormUsuario :user="user" @submit-user="saveUser"/>
+            <FormUsuario @submit-user="saveUser"/>
         </b-card>
     </div>
 </template>
@@ -25,11 +25,6 @@ export default {
     components: {PageTitle, FormUsuario},
     data(){
         return {
-            user: {
-                idUf: null,
-                idCidade: null,
-                grupos: []
-            }
         }
     },
     methods:{

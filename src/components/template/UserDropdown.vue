@@ -1,9 +1,9 @@
 <template>
     <div class="user-dropdown">
         <div class="user-button">
-            <span class="d-none d-sm-block">{{user.user.nomeUsuario}}</span>
+            <span class="d-none d-sm-block">{{localUser.user.nomeUsuario}}</span>
             <div class="user-dropdown-img">
-                <Gravatar :email="user.email" alt="user" />
+                <Gravatar :email="localUser.email" alt="user" />
             </div>
             <i class="fa fa-angle-down"></i>
         </div>
@@ -22,7 +22,7 @@ import Gravatar from 'vue-gravatar'
 export default {
     name: 'UserDropdown',
     components: {Gravatar},
-    computed: mapGetters(['user']),
+    computed: mapGetters(['localUser']),
     methods: {
         logout(){
             this.$store.dispatch('LOGOUT')

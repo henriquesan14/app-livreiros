@@ -23,7 +23,7 @@ export default {
             windowWidth: 0
         }
     },
-    computed: mapGetters(['isMenuVisible', 'user']),
+    computed: mapGetters(['isMenuVisible']),
     mounted(){
         this.$nextTick(() => {
          window.addEventListener('resize', () => {
