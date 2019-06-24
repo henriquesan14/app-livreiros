@@ -41,6 +41,9 @@ const actions = {
   },
   SET_USER({commit}, user){
     commit('RECEIVE_USER', user);
+  },
+  RESET_USER({commit}){
+    commit('RECEIVE_USER', {user: {idUf: null, idCidade: null, grupos: []}});
   }
 },
 

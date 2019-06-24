@@ -23,7 +23,7 @@
             <b-row >
                 <b-col md="6" sm="12">
                     <b-form-group :invalid-feedback="invalidFeedBack($v.user.senhaUsuario)"
-                     label="Senha: " label-for="senha">
+                     :label="user.idUsuario ? 'Nova senha: ' : 'Senha: '" label-for="senha">
                         <b-form-input maxlength="100"
                         :class="{'is-invalid': submitted && $v.user.senhaUsuario.$invalid, 'is-valid': submitted && !$v.user.senhaUsuario.$invalid}"
                          type="password" id="senha" v-model="user.senhaUsuario"  placeholder="Informe a senha do usuário" />
@@ -160,7 +160,7 @@
 
 <script>
 import {mapGetters} from 'vuex'
-import { required, minLength, email, sameAs } from "vuelidate/lib/validators";
+import { required, minLength, email, sameAs, requiredIf } from "vuelidate/lib/validators";
 import Estado from '../../services/estados';
 import {showError} from '@/global';
 import { validationMsg } from '../../config/validation-msgs';
@@ -175,59 +175,69 @@ export default {
         }
     },
     computed: mapGetters(['grupos', 'user']),
-    validations: {
-        user: {
-            nomeUsuario: {
-                required,
-            },
-            loginUsuario: {
-                required,
-            },
-            senhaUsuario: {
-                required,
-                minLength: minLength(6)
-            },
-            confirmSenha: {required, sameAsPassword: sameAs('senhaUsuario')},
-            telefoneUsuario: {required, minLength: minLength(11)},
-            rgUsuario: {
-                required,
-            },
-            cpfUsuario: {
-                required,
-                minLength: minLength(11)
-            },
-            emailUsuario: {
-                required,
-                email
-            },
-            cepUsuario: {
-                required,
-                minLength: minLength(8)
-            },
-            ruaUsuario: {
-                required
-            },
-            numeroUsuario: {
-                required
-            },
-            bairroUsuario: {
-                required
-            },
-            idUf: {
-                required
-            },
-            idCidade: {
-                required
-            },
-            grupos: {required}
-        },
+    validations() {
+        return {
+            user: {
+                nomeUsuario: {
+                    required,
+                },
+                loginUsuario: {
+                    required,
+                },
+                senhaUsuario: {requiredIf: requiredIf(()=> !this.user.idUsuario),
+                minLength: minLength(6)},
+                confirmSenha: {requiredIf: requiredIf(() => {
+                    if(!this.user.idUsuario){
+                        return true;
+                    }else if(this.user.senhaUsuario){
+                        return true;
+                    }
+                } ), sameAsPassword: sameAs('senhaUsuario')},
+                telefoneUsuario: {required, minLength: minLength(11)},
+                rgUsuario: {
+                    required,
+                },
+                cpfUsuario: {
+                    required,
+                    minLength: minLength(11)
+                },
+                emailUsuario: {
+                    required,
+                    email
+                },
+                cepUsuario: {
+                    required,
+                    minLength: minLength(8)
+                },
+                ruaUsuario: {
+                    required
+                },
+                numeroUsuario: {
+                    required
+                },
+                bairroUsuario: {
+                    required
+                },
+                idUf: {
+                    required
+                },
+                idCidade: {
+                    required
+                },
+                grupos: {required}
+            }
+        }
         
     },
-    mounted(){
+    created(){
         this.loadEstados();
         this.$store.dispatch('GET_GRUPOS')
         .then(() => {})
         .catch(() => {});
+        if(this.user.idUsuario){
+            this.convertUser();
+        }
+        
     },
     methods:{
         async loadCidades(){
@@ -284,6 +294,13 @@ export default {
         },
         invalidFeedBack(field){
             return validationMsg(field);
+        },
+        convertUser(){
+            this.user.idUf = this.user.cidade.estado.idUf;
+            this.loadCidades(this.user.idUf);
+            this.user.idCidade = this.user.cidade.idCidade;
+            this.user.grupos = this.user.grupos.map(x => x.idGrupo);
+            this.$store.dispatch('SET_USER', {user: this.user});
         }
         
     }

@@ -23,10 +23,6 @@ import FormUsuario from './FormUsuario';
 export default {
     name: 'CadastroUsuario',
     components: {PageTitle, FormUsuario},
-    data(){
-        return {
-        }
-    },
     methods:{
         async saveUser(user){
             try{
@@ -37,6 +33,9 @@ export default {
                 showError(err);   
             }
         }
+    },
+    mounted(){
+        this.$store.dispatch('RESET_USER');
     }
 }
 </script>
