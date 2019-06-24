@@ -7,9 +7,9 @@
                     <b-tab active title="Usuários">
                         <UserAdmin />
                     </b-tab>
-                    <b-tab title="Grupos">
+                    <b-tab @click="getGrupos" title="Grupos">
                         <GrupoAdmin />
-                    </b-tab>  
+                    </b-tab>
                 </b-tabs>
             </b-card>
         </div>
@@ -23,7 +23,19 @@ import GrupoAdmin from './GrupoAdmin'
 
 export default {
     name: 'AdminPages',
-    components: {PageTitle, UserAdmin, GrupoAdmin}
+    components: {PageTitle, UserAdmin, GrupoAdmin},
+    methods: {
+        async getGrupos(){
+            let loader = this.$loading.show();
+            try{
+                await this.$store.dispatch('GET_GRUPOS');
+            }catch(e){
+                () => {}
+            }finally{
+                loader.hide();
+            }
+        }
+    }
 }
 </script>
 

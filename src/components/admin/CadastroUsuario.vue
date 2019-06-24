@@ -5,6 +5,7 @@
             <template slot="header">
                 <div class="header-card" >
                     <h5 class="title-card">Novo usuário</h5>
+                    <span>Os campos marcados com (*) são obrigatórios.</span>
                     <router-link tag="b-button" class="btn-dark btn-sm mb-1" to="/dashboard/usuarios">
                         <i class="fa fa-arrow-left mr-1"></i>Voltar
                     </router-link>
@@ -34,7 +35,7 @@ export default {
             }
         }
     },
-    mounted(){
+    created(){
         this.$store.dispatch('RESET_USER');
     }
 }

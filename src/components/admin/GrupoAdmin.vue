@@ -109,7 +109,6 @@ export default {
     },
     computed: mapGetters(['grupos', 'permissoes']),
     mounted(){
-        this.getGrupos();
         this.getPermissoes(this.categoriaSelecionada);
     },
     methods:{
@@ -152,7 +151,6 @@ export default {
         },
         submitGrupo() {
                 this.submitted = true;
-                // stop here if form is invalid
                 this.$v.$touch();
                 
                 if (this.$v.$invalid) {

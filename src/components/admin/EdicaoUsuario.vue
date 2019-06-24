@@ -1,8 +1,16 @@
 <template>
     <div class="edit-user">
         <PageTitle icon="fa fa-cogs" main="Administração do Sistema" sub="Alteração usuário"/>
-        <router-link tag="b-button" class="btn-dark btn-sm mb-1" to="/dashboard/usuarios"><i class="fa fa-arrow-left mr-1"></i>Voltar</router-link>
-        <b-card header="Alterar usuário">
+        <b-card>
+            <template slot="header">
+                <div class="header-card" >
+                    <h5 class="title-card">Alteração usuário</h5>
+                    <span>Os campos marcados com (*) são obrigatórios.</span>
+                    <router-link tag="b-button" class="btn-dark btn-sm mb-1" to="/dashboard/usuarios">
+                        <i class="fa fa-arrow-left mr-1"></i>Voltar
+                    </router-link>
+                </div>
+            </template>
             <Loading :loader="loader"/>
             <FormUsuario v-if="!loader" @submit-user="editUser"/>
         </b-card>
@@ -50,6 +58,10 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+    .header-card{
+        display:flex;
+        justify-content:space-between;
+        align-items: center;
+    }
 </style>
