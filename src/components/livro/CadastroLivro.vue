@@ -18,46 +18,46 @@
 
                 <b-row>
                     <b-col md="12" >
-                        <b-input-group prepend="ISBN" class="mb-3">
-                            <b-form-input maxLength="13"  v-model.trim="livro.isbn" type="text" placeholder="Informe o ISBN..." />
-                            <b-input-group-append>
-                                <b-button @click.prevent="searchIsbn()" variant="primary"><i class="fa fa-cloud-download mr-1"></i></b-button>
-                            </b-input-group-append>
-                        </b-input-group>
-                    </b-col>
-                </b-row>
-                <Loading class="mb-2" :loader="loaderIsbn"/>
-
-                <b-row>
-                    <b-col md="12">
-                        <b-input-group prepend="Titulo" class="mb-3">
-                            <b-form-input maxLength="100"
-                            :class="{'is-invalid': submitted && $v.livro.tituloLivro.$invalid, 'is-valid': submitted && !$v.livro.tituloLivro.$invalid}"
-                             v-model="livro.tituloLivro" type="text" placeholder="Titulo..." />
-                        </b-input-group>
+                        <b-form-group label="ISBN: ">
+                            <b-input-group>
+                                <b-form-input maxLength="13"  v-model.trim="livro.isbn" type="text" placeholder="Informe o ISBN..." />
+                                <b-input-group-append>
+                                    <b-button :disabled="!livro.isbn" @click.prevent="searchIsbn()" variant="primary"><i class="fa fa-cloud-download mr-1"></i></b-button>
+                                </b-input-group-append>
+                            </b-input-group>
+                        </b-form-group>
                     </b-col>
                 </b-row>
 
-                <span class="text-danger" v-if="submitted && $v.livro.idAutor.$invalid">Selecione um autor</span>
                 <b-row>
                     <b-col md="12">
-                        <b-input-group prepend="Autor" class="mb-3">
-                            <b-form-input maxLength="100"
-                             v-model="autor.nomeAutor"  placeholder="Autor..."></b-form-input>
-                            <b-input-group-append>
-                                <b-button @click.prevent="searchAutores()" class="mr-2" variant="primary"><i class="fa fa-search"></i></b-button>
-                                <b-button variant="primary" @click.prevent="$bvModal.show('modal-autor')"><i class="fa fa-plus"></i></b-button>
-                            </b-input-group-append>
-                        </b-input-group>
+                        <b-form-group :invalid-feedback="'ekapokepaç'" label="Título: *" >
+                                <b-form-input maxLength="100"
+                                :class="{'is-invalid': submitted && $v.livro.tituloLivro.$invalid, 'is-valid': submitted && !$v.livro.tituloLivro.$invalid}"
+                                v-model="livro.tituloLivro" type="text" placeholder="Titulo..." />
+                        </b-form-group>
+                    </b-col>
+                </b-row>
+
+                <!-- <span class="text-danger" v-if="submitted && $v.livro.idAutor.$invalid">Selecione um autor</span> -->
+                <b-row>
+                    <b-col md="12">
+                        <b-form-group label="Autor: *">
+                            <b-input-group >
+                                <b-form-input maxLength="100"
+                                v-model="autor.nomeAutor"  placeholder="Autor..."></b-form-input>
+                                <b-input-group-append>
+                                    <b-button :disabled="!autor.nomeAutor" @click.prevent="searchAutores()" class="mr-2" variant="primary"><i class="fa fa-search"></i></b-button>
+                                    <b-button variant="primary" @click.prevent="$bvModal.show('modal-autor')"><i class="fa fa-plus"></i></b-button>
+                                </b-input-group-append>
+                            </b-input-group>
+                        </b-form-group>
                         
                     </b-col>
                 </b-row>
                 <span class="text-primary" v-if="subAutor && pageAutores.rows.length < 1">Nenhum resultado...</span>
 
-                
-
-                <Loading class="mb-2" :loader="loaderAutor"/>
-                <b-row v-if="!loaderAutor && pageAutores.rows.length > 0">
+                <b-row v-if="pageAutores.rows.length > 0">
                     <b-col>
                         <b-form-group>
                             <b-form-radio v-model="livro.idAutor" v-for="autor in pageAutores.rows" :key="autor.idAutor" :value="autor.idAutor">{{autor.nomeAutor}}</b-form-radio>
@@ -68,19 +68,20 @@
                 <span class="text-danger" v-if="submitted && $v.livro.idAssunto.$invalid">Selecione um assunto</span>
                 <b-row>
                     <b-col md="12">
-                        <b-input-group prepend="Assunto" class="mb-3">
-                            <b-form-input maxLength="100" v-model="assunto.nomeAssunto" placeholder="Assunto..." />
-                            <b-input-group-append>
-                                <b-button @click.prevent="searchAssuntos()" class="mr-2" variant="primary"><i class="fa fa-search"></i></b-button>
-                                <b-button variant="primary" @click.prevent="$bvModal.show('modal-assunto')"><i class="fa fa-plus"></i></b-button>
-                            </b-input-group-append>
-                        </b-input-group>
+                        <b-form-group label="Assunto: *" >
+                            <b-input-group>
+                                <b-form-input maxLength="100" v-model="assunto.nomeAssunto" placeholder="Assunto..." />
+                                <b-input-group-append>
+                                    <b-button :disabled="!assunto.nomeAssunto" @click.prevent="searchAssuntos()" class="mr-2" variant="primary"><i class="fa fa-search"></i></b-button>
+                                    <b-button variant="primary" @click.prevent="$bvModal.show('modal-assunto')"><i class="fa fa-plus"></i></b-button>
+                                </b-input-group-append>
+                            </b-input-group>
+                        </b-form-group>
                     </b-col>
                 </b-row>
                 <span class="text-primary" v-if="subAssunto && pageAssuntos.rows.length < 1">Nenhum resultado...</span>
 
-                <Loading class="mb-2" :loader="loaderAssunto"/>
-                <b-row v-if="!loaderAssunto && pageAssuntos.rows.length > 0">
+                <b-row v-if="pageAssuntos.rows.length > 0">
                     <b-col>
                         <b-form-group>
                             <b-form-radio v-model="livro.idAssunto" v-for="assunto in pageAssuntos.rows" :key="assunto.idAssunto" :value="assunto.idAssunto">{{assunto.nomeAssunto}}</b-form-radio>
@@ -91,19 +92,20 @@
                 <span class="text-danger" v-if="submitted && $v.livro.idEditora.$invalid">Selecione uma editora</span>
                 <b-row>
                     <b-col md="12">
-                        <b-input-group prepend="Editora" class="mb-3">
-                            <b-form-input maxLength="100" v-model="editora.nomeEditora" placeholder="Editora..." />
-                            <b-input-group-append>
-                                <b-button @click.prevent="searchEditoras()" class="mr-2" variant="primary"><i class="fa fa-search"></i></b-button>
-                                <b-button variant="primary" @click.prevent="$bvModal.show('modal-editora')"><i class="fa fa-plus"></i></b-button>
-                            </b-input-group-append>
-                        </b-input-group>
+                        <b-form-group label="Editora: *">
+                            <b-input-group>
+                                <b-form-input maxLength="100" v-model="editora.nomeEditora" placeholder="Editora..." />
+                                <b-input-group-append>
+                                    <b-button :disabled="!editora.nomeEditora" @click.prevent="searchEditoras()" class="mr-2" variant="primary"><i class="fa fa-search"></i></b-button>
+                                    <b-button variant="primary" @click.prevent="$bvModal.show('modal-editora')"><i class="fa fa-plus"></i></b-button>
+                                </b-input-group-append>
+                            </b-input-group>
+                        </b-form-group>
                     </b-col>
                 </b-row>
                 <span class="text-primary" v-if="subEditora && pageEditoras.rows.length < 1">Nenhum resultado...</span>
 
-                <Loading class="mb-2" :loader="loaderEditora"/>
-                <b-row v-if="!loaderEditora && pageEditoras.rows.length > 0">
+                <b-row v-if="pageEditoras.rows.length > 0">
                     <b-col>
                         <b-form-group>
                             <b-form-radio v-model="livro.idEditora" v-for="editora in pageEditoras.rows" :key="editora.idEditora" :value="editora.idEditora">{{editora.nomeEditora}}</b-form-radio>
@@ -226,7 +228,6 @@
                 <b-button size="sm" type="submit" class="mr-2" variant="success"><i class="fa fa-save mr-1"></i>Salvar</b-button>  
                 <router-link tag="b-button" to="/dashboard/livros" class="btn-dark btn-sm"><i class="fa fa-arrow-left mr-1"></i>Voltar</router-link>
             </b-form>
-            <Loading :loader="loaderLivro" />
         </b-card>
 
         <FormAutor @zera-autor="getAutores(autor.nomeAutor)" :autor="autor"/>
@@ -266,11 +267,6 @@ export default {
                 nomeAutor: ''
             },
             image: null,
-            loaderAutor: false,
-            loaderEditora: false,
-            loaderAssunto: false,
-            loaderIsbn: false,
-            loaderLivro: false,
             submitted: false,
             money: {
                 decimal: '.',

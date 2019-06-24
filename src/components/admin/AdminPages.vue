@@ -26,13 +26,10 @@ export default {
     components: {PageTitle, UserAdmin, GrupoAdmin},
     methods: {
         async getGrupos(){
-            let loader = this.$loading.show();
             try{
                 await this.$store.dispatch('GET_GRUPOS');
             }catch(e){
                 () => {}
-            }finally{
-                loader.hide();
             }
         }
     }
