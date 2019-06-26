@@ -18,11 +18,11 @@
 </template>
 
 <script>
-import axios from 'axios';
-import {showError, baseApiUrl} from '@/global';
+import {showError} from '@/global';
 import PageTitle from '../template/PageTitle'
 import FormUsuario from './FormUsuario'
-import Loading from '../shared/Loading'
+import Loading from '../shared/Loading';
+import Usuario from '../../services/usuarios';
 export default {
     name: 'EdicaoUsuario',
     components: {PageTitle, FormUsuario, Loading},
@@ -37,9 +37,8 @@ export default {
     methods:{
         async getUser(id){
             this.loader = true;
-            const url = `${baseApiUrl}/usuarios/${id}`;
             try{
-                const res = await axios.get(url);
+                const res = await Usuario.getUsuario(id);
                 this.$store.dispatch('SET_USER', {user: res.data});
             }catch(err){
                 showError(err)
@@ -47,12 +46,14 @@ export default {
                 this.loader = false
             }
         },
-        editUser(user){
-            const url = `${baseApiUrl}/usuarios/${user.idUsuario}`;
-            axios.put(url, user).then(() => {
+        async editUser(user){
+            try{
+                await Usuario.editUsuario(user.idUsuario, user);
                 this.$toasted.global.defaultSuccess();
                 this.$router.push('/dashboard/usuarios');
-            }).catch(showError)
+            }catch(err){
+                showError(err);
+            }
         }
     }
 }

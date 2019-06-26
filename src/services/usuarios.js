@@ -7,5 +7,8 @@ export default {
     },
     editUsuario: (usuario, idUsuario) => {
         return axios.put(`${baseApiUrl}/usuarios/${idUsuario}`, usuario);
+    },
+    getUsuario: (id) => {
+        return axios.get(`${baseApiUrl}/usuarios/${id}`);
     }
 }

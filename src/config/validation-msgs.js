@@ -13,6 +13,8 @@ function validationMsg(field) {
     }
     else if(field.sameAsPassword != undefined && !field.sameAsPassword){
         return 'Senha e confirmação de senha não conferem';
+    }else if(field.minValue != undefined && !field.minValue){
+        return `Este campo deve ter o valor minimo de ${field.$params.minValue.min}`
     }
 }
 
