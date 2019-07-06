@@ -37,12 +37,16 @@
                     <b-col md="12">
                         <b-form-group label="Autor: *">
                             <div class="box-form">
-                                <b-form-input size="sm"  maxLength="100"
+                                <b-form-input @keyup="searchAutores()" size="sm"  maxLength="100"
                                 v-model="autor.nomeAutor"  placeholder="Autor..."></b-form-input>
-                                <b-button  size="sm" :disabled="!autor.nomeAutor" @click.prevent="searchAutores()" class="btn-form mr-2 ml-2" variant="primary"><i class="fa fa-search mr-1"></i>Buscar</b-button>
-                                <b-button  size="sm" class="btn-form" variant="primary" @click.prevent="$bvModal.show('modal-autor')"><i class="fa fa-plus mr-1"></i>Novo</b-button>
+                                <b-button  size="sm" class="btn-form ml-1" variant="primary" @click.prevent="$bvModal.show('modal-autor')"><i class="fa fa-plus mr-1"></i>Novo</b-button>
                             </div>
-                            <span class="text-primary font-menor" v-if="subAutor && pageAutores.rows.length < 1">Nenhum resultado...</span>
+                                
+                                <ul v-if="pageAutores.rows.length > 0" class="list">
+                                    <li @click.prevent="selecionaAutor(autor)" v-for="autor in pageAutores.rows" :key="autor.idAutor"><a href="#">{{'#' + autor.idAutor + ' - ' + autor.nomeAutor}}</a></li>
+                                </ul>
+                                
+                            <b-badge class="mt-2 selecionado" v-if="livro.idAutor" variant="primary" >{{'#' + livro.idAutor + ' - ' + livro.nomeAutor}}</b-badge>
                         </b-form-group>        
                     </b-col>
                         
@@ -54,11 +58,15 @@
                     <b-col md="12">
                         <b-form-group label="Assunto: *" >
                             <div class="box-form">
-                                <b-form-input size="sm" maxLength="100" v-model="assunto.nomeAssunto" placeholder="Assunto..." />
-                                    <b-button size="sm" :disabled="!assunto.nomeAssunto" @click.prevent="searchAssuntos()" class="btn-form mr-2 ml-2" variant="primary"><i class="fa fa-search mr-1"></i>Buscar</b-button>
+                                <b-form-input @keyup="searchAssuntos()" size="sm" maxLength="100" v-model="assunto.nomeAssunto" placeholder="Assunto..." />
                                     <b-button size="sm" variant="primary" class="btn-form" @click.prevent="$bvModal.show('modal-assunto')"><i class="fa fa-plus mr-1"></i>Novo</b-button>
                             </div>
-                            <span class="text-primary font-menor" v-if="subAssunto && pageAssuntos.rows.length < 1">Nenhum resultado...</span>
+
+                                <ul class="list" v-if="pageAssuntos.rows.length > 0">
+                                    <li @click.prevent="selecionaAssunto(assunto)" v-for="assunto in pageAssuntos.rows" :key="assunto.idAssunto"><a href="#">{{'#' + assunto.idAssunto + ' - ' + assunto.nomeAssunto}}</a></li>
+                                </ul>
+                            
+                            <b-badge class="mt-2 selecionado" variant="primary" v-if="livro.idAssunto">{{'#' + livro.idAssunto + ' - ' + livro.nomeAssunto}}</b-badge>
                         </b-form-group>
                     </b-col>
                 </b-row>
@@ -69,11 +77,17 @@
                     <b-col md="12">
                         <b-form-group label="Editora: *">
                                 <div class="box-form">
-                                    <b-form-input size="sm" maxLength="100" v-model="editora.nomeEditora" placeholder="Editora..." />
-                                    <b-button size="sm" :disabled="!editora.nomeEditora" @click.prevent="searchEditoras()" class="mr-2 btn-form ml-2" variant="primary"><i class="fa fa-search mr-1"></i>Buscar</b-button>
+                                    <b-form-input  @keyup="searchEditoras()" size="sm" maxLength="100" v-model="editora.nomeEditora" placeholder="Editora..." />
                                     <b-button size="sm" class="btn-form" variant="primary" @click.prevent="$bvModal.show('modal-editora')"><i class="fa fa-plus mr-1"></i>Nova</b-button>
                                 </div>
-                            <span class="text-primary font-menor" v-if="subEditora && pageEditoras.rows.length < 1">Nenhum resultado...</span>
+                                
+                                    <ul class="list" v-if="pageEditoras.rows.length > 0">
+                                        <li @click.prevent="selecionaEditora(editora)" v-for="editora in pageEditoras.rows" :key="editora.idEditora"><a href="#">{{'#' + editora.idEditora + ' - ' + editora.nomeEditora}}</a></li>
+                                    </ul>
+                            
+                                <b-badge class="mt-2 selecionado" variant="primary" v-if="livro.idEditora">
+                                    {{'#' + livro.idEditora + ' - ' + livro.nomeEditora}}
+                                </b-badge>
                         </b-form-group>
                     </b-col>
                 </b-row>
@@ -299,48 +313,60 @@ export default {
             this.assunto.nomeAssunto = this.livro.assunto.nomeAssunto;
         },
         searchAutores(){
-            this.getAutores(this.autor.nomeAutor);
+            if(this.autor.nomeAutor){
+                this.getAutores(this.autor.nomeAutor);
+            }else{
+                this.$store.dispatch('RESET_AUTORES');
+            }
+        },
+        selecionaAutor(autor){
+            this.livro.nomeAutor = autor.nomeAutor;
+            this.livro.idAutor = autor.idAutor;
+            this.$store.dispatch('RESET_AUTORES');
         },
         searchEditoras(){
-            this.getEditoras(this.editora.nomeEditora);
+            if(this.editora.nomeEditora){
+                this.getEditoras(this.editora.nomeEditora);
+            }else{
+                this.$store.dispatch('RESET_EDITORAS');
+            }
+        },
+        selecionaEditora(editora){
+            this.livro.nomeEditora = editora.nomeEditora;
+            this.livro.idEditora = editora.idEditora;
+            this.$store.dispatch('RESET_EDITORAS');
         },
         searchAssuntos(){
-            this.getAssuntos(this.assunto.nomeAssunto);
+            if(this.assunto.nomeAssunto){
+                this.getAssuntos(this.assunto.nomeAssunto);
+            }else{
+                this.$store.dispatch('RESET_ASSUNTOS');
+            }
+        },
+        selecionaAssunto(assunto){
+            this.livro.nomeAssunto = assunto.nomeAssunto;
+            this.livro.idAssunto = assunto.idAssunto;
+            this.$store.dispatch('RESET_ASSUNTOS');
         },
         async getAutores(nome){
-            let loader = this.$loading.show();
             try{
-                await this.$store.dispatch('GET_AUTORES', {nome})
+                await this.$store.dispatch('GET_AUTORES', {nome});
             }catch(err){
                 showError(err);
             }
-            finally{
-                loader.hide();
-                this.subAutor = true;
-            }
         },
         async getEditoras(nome){
-            let loader = this.$loading.show();
             try{
                 await this.$store.dispatch('GET_EDITORAS', {nome})
             }catch(err){
                 showError(err);
             }
-            finally{
-                loader.hide();
-                this.subEditora = true;
-            }
         },
         async getAssuntos(nome){
-            let loader = this.$loading.show();
             try{
                 await this.$store.dispatch('GET_ASSUNTOS', {nome})
             }catch(err){
                 showError(err);
-            }
-            finally{
-                loader.hide();
-                this.subAssunto = true;
             }
         },
         async upload(){
@@ -406,13 +432,13 @@ export default {
         border-radius: 5px;
     }
 
-    .list{
+    /* .list{
         width: auto;
         border-radius:3px;
-        border: 1px solid #0080FF;
-        background-color:#ccc;
+        border: 1px solid #ccc;
+        background-color:rgb(248, 244, 244);
         padding: 3px 5px;
-    }
+    } */
 
     .box-form{
         display:flex;
@@ -423,5 +449,48 @@ export default {
         display:flex;
         align-items:center;
     }
+
+    ul.list{ 
+        list-style:none;
+        border:1px solid #ccc;
+        background-color: #fff;
+        border-radius: 3px;
+        margin:1px 0 0 0;
+        padding:0;
+        max-height: 125px;
+        overflow: auto;
+    }
+
+    ul.list li {
+        padding:5px;
+        cursor:pointer;
+    }
+
+    ul.list li:hover{
+        background-color:#efefef;
+    }
+
+    ul.list li a{
+        text-decoration: none;
+        color:#000;
+        font-weight: bold;
+    }
+
+    .selecionado{
+        font-weight: bold;
+        font-size:1.1em;
+    }
+
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+  
+    ::-webkit-scrollbar-thumb {
+        -webkit-border-radius: 10px;
+        border-radius: 10px; 
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+        background-color: #0080FF;
+    }
+
 
 </style>
