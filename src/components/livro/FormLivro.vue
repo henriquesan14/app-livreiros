@@ -65,7 +65,7 @@
             <div class="box-form">
               <b-form-input
                 @keyup="searchAutores()"
-                @blur="resetAutores()"
+                autocomplete="off"
                 size="sm"
                 maxlength="100"
                 v-model="autor.nomeAutor"
@@ -110,7 +110,7 @@
             <div class="box-form">
               <b-form-input
                 @keyup="searchAssuntos()"
-                @blur="resetAssuntos()"
+                autocomplete="off"
                 size="sm"
                 maxlength="100"
                 v-model="assunto.nomeAssunto"
@@ -155,7 +155,7 @@
             <div class="box-form">
               <b-form-input
                 @keyup="searchEditoras()"
-                @blur="resetEditoras()"
+                autocomplete="off"
                 size="sm"
                 maxlength="100"
                 v-model="editora.nomeEditora"
@@ -446,9 +446,6 @@ export default {
         precision: 2,
         masked: false
       },
-      subAutor: false,
-      subEditora: false,
-      subAssunto: false,
       url: null
     };
   },
@@ -500,9 +497,9 @@ export default {
       this.$store.dispatch("SET_LIVRO", { livro: livro });
     },
     convertLivro() {
-      this.autor.nomeAutor = this.livro.autor.nomeAutor;
-      this.editora.nomeEditora = this.livro.editora.nomeEditora;
-      this.assunto.nomeAssunto = this.livro.assunto.nomeAssunto;
+      this.livro.nomeAutor = this.livro.autor.nomeAutor;
+      this.livro.nomeEditora = this.livro.editora.nomeEditora;
+      this.livro.nomeAssunto = this.livro.assunto.nomeAssunto;
     },
     searchAutores() {
       if (this.autor.nomeAutor) {
