@@ -4,7 +4,7 @@ import axios from 'axios'
 
   const state =  {
     isMenuVisible: true,
-    user: null || JSON.parse(localStorage.getItem(userKey))
+    localUser: null || JSON.parse(localStorage.getItem(userKey))
   }
 
   const mutations =  {
@@ -17,7 +17,7 @@ import axios from 'axios'
     },
     setUser(state, res){
       localStorage.setItem(userKey, res)
-      state.user = JSON.parse(res)
+      state.localUser = JSON.parse(res)
     },
     removeUser(){
         localStorage.removeItem(userKey)
@@ -43,7 +43,7 @@ import axios from 'axios'
 
   const getters = {
     isMenuVisible: state => state.isMenuVisible,
-    user: state => state.user
+    localUser: state => state.localUser
   }
 
   export default {

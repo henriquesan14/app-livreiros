@@ -1,460 +1,50 @@
 <template>
     <div class="cadastro-livro">
         <PageTitle icon="fa fa-book" main="Administração de livros" sub="Cadastro livro"/>
-        <router-link tag="b-button" class="btn-dark btn-sm mb-1" to="/dashboard/livros">Voltar</router-link>
-        <b-card header="Novo livro">
-            <b-form @submit.prevent="submitLivro()">
-
-                <img v-if="url" id="img-livro" :src="url">
-                <button type="button" v-if="url" @click.prevent="url = null; image=null" class="btn-danger btn-center"><i class="fa fa-times"></i></button>
-                <b-row>
-                    <b-col md="12">
-                        <b-form-group label="Imagem:">
-                            <b-form-file @change="onFileChange" v-model="image" accept="image/jpeg, image/png" browse-text="Procurar"  
-                            placeholder="Escolha uma imagem..."></b-form-file>
-                        </b-form-group>
-                    </b-col>
-                </b-row> 
-
-                <b-row>
-                    <b-col md="12" >
-                        <b-input-group prepend="ISBN" class="mb-3">
-                            <b-form-input maxLength="13"  v-model.trim="livro.isbn" type="text" placeholder="Informe o ISBN..." />
-                            <b-input-group-append>
-                                <b-button @click.prevent="searchIsbn()" variant="primary"><i class="fa fa-cloud-download mr-1"></i></b-button>
-                            </b-input-group-append>
-                        </b-input-group>
-                    </b-col>
-                </b-row>
-                <Loading class="mb-2" :loader="loaderIsbn"/>
-
-                <b-row>
-                    <b-col md="12">
-                        <b-input-group prepend="Titulo" class="mb-3">
-                            <b-form-input maxLength="100"
-                            :class="{'is-invalid': submitted && $v.livro.tituloLivro.$invalid, 'is-valid': submitted && !$v.livro.tituloLivro.$invalid}"
-                             v-model="livro.tituloLivro" type="text" placeholder="Titulo..." />
-                        </b-input-group>
-                    </b-col>
-                </b-row>
-
-                <span class="text-danger" v-if="submitted && $v.livro.idAutor.$invalid">Selecione um autor</span>
-                <b-row>
-                    <b-col md="12">
-                        <b-input-group prepend="Autor" class="mb-3">
-                            <b-form-input maxLength="100"
-                             v-model="autor.nomeAutor"  placeholder="Autor..."></b-form-input>
-                            <b-input-group-append>
-                                <b-button @click.prevent="searchAutores()" class="mr-2" variant="primary"><i class="fa fa-search"></i></b-button>
-                                <b-button variant="primary" @click.prevent="$bvModal.show('modal-autor')"><i class="fa fa-plus"></i></b-button>
-                            </b-input-group-append>
-                        </b-input-group>
-                        
-                    </b-col>
-                </b-row>
-                <span class="text-primary" v-if="subAutor && pageAutores.rows.length < 1">Nenhum resultado...</span>
-
-                
-
-                <Loading class="mb-2" :loader="loaderAutor"/>
-                <b-row v-if="!loaderAutor && pageAutores.rows.length > 0">
-                    <b-col>
-                        <b-form-group>
-                            <b-form-radio v-model="livro.idAutor" v-for="autor in pageAutores.rows" :key="autor.idAutor" :value="autor.idAutor">{{autor.nomeAutor}}</b-form-radio>
-                        </b-form-group>
-                    </b-col>
-                </b-row>
-
-                <span class="text-danger" v-if="submitted && $v.livro.idAssunto.$invalid">Selecione um assunto</span>
-                <b-row>
-                    <b-col md="12">
-                        <b-input-group prepend="Assunto" class="mb-3">
-                            <b-form-input maxLength="100" v-model="assunto.nomeAssunto" placeholder="Assunto..." />
-                            <b-input-group-append>
-                                <b-button @click.prevent="searchAssuntos()" class="mr-2" variant="primary"><i class="fa fa-search"></i></b-button>
-                                <b-button variant="primary" @click.prevent="$bvModal.show('modal-assunto')"><i class="fa fa-plus"></i></b-button>
-                            </b-input-group-append>
-                        </b-input-group>
-                    </b-col>
-                </b-row>
-                <span class="text-primary" v-if="subAssunto && pageAssuntos.rows.length < 1">Nenhum resultado...</span>
-
-                <Loading class="mb-2" :loader="loaderAssunto"/>
-                <b-row v-if="!loaderAssunto && pageAssuntos.rows.length > 0">
-                    <b-col>
-                        <b-form-group>
-                            <b-form-radio v-model="livro.idAssunto" v-for="assunto in pageAssuntos.rows" :key="assunto.idAssunto" :value="assunto.idAssunto">{{assunto.nomeAssunto}}</b-form-radio>
-                        </b-form-group>
-                    </b-col>
-                </b-row>
-
-                <span class="text-danger" v-if="submitted && $v.livro.idEditora.$invalid">Selecione uma editora</span>
-                <b-row>
-                    <b-col md="12">
-                        <b-input-group prepend="Editora" class="mb-3">
-                            <b-form-input maxLength="100" v-model="editora.nomeEditora" placeholder="Editora..." />
-                            <b-input-group-append>
-                                <b-button @click.prevent="searchEditoras()" class="mr-2" variant="primary"><i class="fa fa-search"></i></b-button>
-                                <b-button variant="primary" @click.prevent="$bvModal.show('modal-editora')"><i class="fa fa-plus"></i></b-button>
-                            </b-input-group-append>
-                        </b-input-group>
-                    </b-col>
-                </b-row>
-                <span class="text-primary" v-if="subEditora && pageEditoras.rows.length < 1">Nenhum resultado...</span>
-
-                <Loading class="mb-2" :loader="loaderEditora"/>
-                <b-row v-if="!loaderEditora && pageEditoras.rows.length > 0">
-                    <b-col>
-                        <b-form-group>
-                            <b-form-radio v-model="livro.idEditora" v-for="editora in pageEditoras.rows" :key="editora.idEditora" :value="editora.idEditora">{{editora.nomeEditora}}</b-form-radio>
-                        </b-form-group>
-                    </b-col>
-                </b-row>
-
-                <b-row>
-                    <b-col md="6">
-                        <b-form-group label="Idioma" class="mb-3">
-                            <b-form-input maxLength="35" v-model="livro.idiomaLivro" type="text" placeholder="Idioma..." />
-                        </b-form-group>
-                    </b-col>
-
-                    <b-col md="6">
-                        <b-form-group
-                         label="Ano de publicação" class="mb-3">
-                            <the-mask
-                            :class="{'is-invalid': submitted && $v.livro.anoLivro.$invalid, 'is-valid': submitted && !$v.livro.anoLivro.$invalid}"
-                             class="form-control" :mask="'####'" v-model="livro.anoLivro" type="text" placeholder="Ano..." />
-                        </b-form-group>
-                    </b-col>
-                </b-row>
-
-                <b-row>
-                    <b-col md="6">
-                        <b-form-group  label="Edição" class="mb-3">
-                            <b-form-input maxLength="5" v-model="livro.edicaoLivro" type="text" placeholder="Edição..." />
-                        </b-form-group>
-                    </b-col>
-
-                    <b-col md="6">
-                        <b-form-group label="Preço R$">                         
-                            <b-form-input
-                            :class="{'is-invalid': submitted && $v.livro.precoLivro.$invalid, 'is-valid': submitted && !$v.livro.precoLivro.$invalid}"
-                             maxLength="10" v-money="money" v-model="livro.precoLivro" type="text"  />
-                        </b-form-group>
-                    </b-col>
-                </b-row>
-
-                <b-row>
-                    <b-col md="6">
-                        <b-form-group label="Condição">
-                            <b-form-select
-                            :class="{'is-invalid': submitted && $v.livro.condicaoLivro.$invalid, 'is-valid': submitted && !$v.livro.condicaoLivro.$invalid}" 
-                            v-model="livro.condicaoLivro">
-                                <option :value="null">Selecione a condição</option>
-                                <option value="Usado">Usado</option>
-                                <option value="Novo">Novo</option>
-                            </b-form-select>
-                        </b-form-group>
-                    </b-col>
-
-                    <b-col md="6">
-                        <b-form-group label="Qtd. de páginas">
-                            <the-mask :mask="'#####'" class="form-control"  v-model="livro.paginasLivro" type="text" placeholder="Qtd. páginas..." />
-                        </b-form-group>
-                    </b-col>
-                </b-row>  
-
-                <b-row>
-                    <b-col md="6">
-                        <b-form-group label="Peso (g)">
-                            <the-mask :mask="'#####'" class="form-control"  v-model="livro.pesoLivro" type="text" placeholder="Peso..." />
-                        </b-form-group>
-                    </b-col>
-
-                    <b-col md="6">
-                        <b-form-group label="Coleção">
-                            <b-form-input maxLength="100" v-model="livro.colecaoLivro" type="text" placeholder="Coleção..." />
-                        </b-form-group>
-                    </b-col>
-                </b-row>
-
-                <b-row>
-                    <b-col md="6">
-                        <b-form-group label="Tradução">
-                            <b-form-input maxLength="100" v-model="livro.traducaoLivro" type="text" placeholder="Tradução..." />
-                        </b-form-group>
-                    </b-col>
-
-                    <b-col md="6">
-                        <b-form-group label="Ilustração">
-                            <b-form-input maxLength="100" v-model="livro.ilustracaoLivro" type="text" placeholder="Ilustração..." />
-                        </b-form-group>
-                    </b-col>
-                </b-row>
-
-                <b-row>
-                    <b-col md="6">
-                        <b-form-group label="Dimensões">
-                            <b-form-input maxLength="50" v-model="livro.dimensaoLivro" type="text" placeholder="Dimensões..." />
-                        </b-form-group>
-                    </b-col>
-
-                    <b-col md="6">
-                        <b-form-group label="Acabamento">
-                            <b-form-select
-                            :class="{'is-invalid': submitted && $v.livro.acabamentoLivro.$invalid, 'is-valid': submitted && !$v.livro.acabamentoLivro.$invalid}"
-                             v-model="livro.acabamentoLivro">
-                                <option :value="null">Selecione o acabamento</option>
-                                <option value="Capa comum">Capa comum</option>
-                                <option value="Capa dura">Capa dura</option>
-                                <option value="Aspiral">Aspiral</option>
-                                <option value="Livro de Bolso">Livro de bolso</option>
-                            </b-form-select>
-                        </b-form-group>
-                    </b-col>
-                </b-row>
-
-                <b-row>
-                    <b-col md="12">
-                        <b-form-group label="Sinopse">
-                            <b-form-textarea v-model="livro.sinopseLivro" placeholder="Sinopse..."
-      rows="8"></b-form-textarea>
-                        </b-form-group>
-                    </b-col>
-                </b-row>
-
-                <b-button size="sm" type="submit" class="mr-2" variant="success"><i class="fa fa-save mr-1"></i>Salvar</b-button>  
-                <router-link tag="b-button" to="/dashboard/livros" class="btn-dark btn-sm"><i class="fa fa-arrow-left mr-1"></i>Voltar</router-link>
-            </b-form>
-            <Loading :loader="loaderLivro" />
+        <b-card>
+            <FormLivro @submit-livro="saveLivro"/>
+            <template slot="header">
+                <div class="header-card" >
+                    <h5 class="title-card">Novo livro</h5>
+                    <span>Os campos marcados com (*) são obrigatórios.</span>
+                    <router-link tag="b-button" class="btn-dark btn-sm mb-1" to="/dashboard/livros">
+                        <i class="fa fa-arrow-left mr-1"></i>Voltar
+                    </router-link>
+                </div>
+            </template>
         </b-card>
-
-        <FormAutor @zera-autor="getAutores(autor.nomeAutor)" :autor="autor"/>
-        <FormEditora @zera-editora="getEditoras(editora.nomeEditora)" :editora="editora"/>
-        <FormAssunto @zera-assunto="getAssuntos(assunto.nomeAssunto)" :assunto="assunto"/>
     </div>
 </template>
 
 <script>
-import PageTitle from '../template/PageTitle'
-import FormAutor from './autor/FormAutor'
-import FormAssunto from './assunto/FormAssunto'
-import FormEditora from './editora/FormEditora'
-import axios from 'axios';
-import { baseApiUrl, showError} from '@/global';
-import { mapGetters } from 'vuex'
-import Loading from '../shared/Loading'
-import { required, minValue, minLength } from "vuelidate/lib/validators";
-import {VMoney} from 'v-money'
+import PageTitle from '../template/PageTitle';
+import FormLivro from './FormLivro';
+import Livro from '../../services/livros';
+import {showError} from '@/global';
 export default {
     name:'CadastroLivro',
-    components: {PageTitle, Loading, FormAutor, FormAssunto, FormEditora},
-    directives: {money: VMoney},
-    data(){
-        return {
-            livro: {
-                acabamentoLivro: null,
-                condicaoLivro: null
-            },
-            assunto: {
-                nomeAssunto: ''
-            },
-            editora: {
-                nomeEditora: ''
-            },
-            autor: {
-                nomeAutor: ''
-            },
-            image: null,
-            loaderAutor: false,
-            loaderEditora: false,
-            loaderAssunto: false,
-            loaderIsbn: false,
-            loaderLivro: false,
-            submitted: false,
-            money: {
-                decimal: '.',
-                thousands: '',
-                precision: 2,
-                masked: false
-            },
-            subAutor: false,
-            subEditora: false,
-            subAssunto: false,
-            url: null
-        }
-    },
-    validations: {
-        livro: {
-            tituloLivro: {required},
-            idAutor: {required},
-            idEditora: {required},
-            idAssunto: {required},
-            acabamentoLivro: {required},
-            condicaoLivro: {required},
-            anoLivro: {required, minLength: minLength(4)},
-            precoLivro: {required, minValue: minValue(5)}
-        }
-    },
-    computed: mapGetters(['pageAutores', 'pageEditoras', 'pageAssuntos']),
-    mounted(){
-        this.resetStore();
-    },
+    components: {PageTitle, FormLivro},
     methods: {
-        resetStore(){
-            this.$store.dispatch('RESET_ASSUNTOS');
-            this.$store.dispatch('RESET_EDITORAS');
-            this.$store.dispatch('RESET_AUTORES');
-        },
-        async searchIsbn(){
-            this.loaderIsbn = true;
-            const url = `${baseApiUrl}/livros/isbn/${this.livro.isbn}`
+        async saveLivro(livro){
             try{
-                const res = await axios.get(url);
-                this.importToInput(res);
-            }catch(err){
-                showError(err);
-            }finally{
-                this.loaderIsbn = false;
-            }
-        },
-        importToInput(res){
-                this.autor.nomeAutor = res.data.busca.autorLivro;
-                this.editora.nomeEditora = res.data.busca.editoraLivro;
-                this.livro.tituloLivro = res.data.busca.tituloLivro;
-                this.livro.paginasLivro = res.data.busca.paginasLivro;
-                this.livro.anoLivro ? this.livro.anoLivro = res.data.busca.anoLivro : null;
-                this.livro.sinopseLivro = res.data.busca.sinopseLivro;
-        },
-        searchAutores(){
-            this.getAutores(this.autor.nomeAutor);
-        },
-        searchEditoras(){
-            this.getEditoras(this.editora.nomeEditora);
-        },
-        searchAssuntos(){
-
-            this.getAssuntos(this.assunto.nomeAssunto);
-        },
-        async getAutores(nome){
-            this.loaderAutor = true;
-            try{
-                await this.$store.dispatch('GET_AUTORES', {nome})
-            }catch(err){
-                showError(err);
-            }
-            finally{
-                this.loaderAutor = false;
-                this.subAutor = true;
-            }
-        },
-        async getEditoras(nome){
-            this.loaderEditora = true;
-            try{
-                await this.$store.dispatch('GET_EDITORAS', {nome})
-            }catch(err){
-                showError(err);
-            }
-            finally{
-                this.loaderEditora = false;
-                this.subEditora = true;
-            }
-        },
-        async getAssuntos(nome){
-            this.loaderAssunto = true;
-            try{
-                await this.$store.dispatch('GET_ASSUNTOS', {nome})
-            }catch(err){
-                showError(err);
-            }
-            finally{
-                this.loaderAssunto = false;
-                this.subAssunto = true;
-            }
-        },
-        async saveLivro(){
-            const url = `${baseApiUrl}/livros`
-            try{
-                await axios.post(url, this.livro);
+                await Livro.saveLivro(livro);
+                this.$toasted.global.defaultSuccess();
                 this.$router.push('/dashboard/livros');
-                this.$toasted.global.defaultSuccess();              
             }catch(err){
                 showError(err);
             }
-        },
-        async upload(){
-            if(this.image){
-                this.loaderLivro = true;
-                const fd = new FormData();
-                fd.append('image', this.image)
-                try{
-                    const url = `${baseApiUrl}/livros/capa`
-                    const res = await axios.post(url, fd, {
-                    });
-                    this.livro.imagemLivro = res.data.imagemLivro;
-                    this.saveLivro();
-                }catch(err){
-                    
-                    showError(err);
-                }finally{
-                    this.loaderLivro = false;
-                }
-            }else{
-                this.saveLivro();
-            }
-            
-        },
-        submitLivro() {
-                this.submitted = true;
-                // stop here if form is invalid
-                this.$v.$touch();
-                
-                if (this.$v.$invalid) {
-                    return;
-                }
-                this.submitted = false;
-                this.upload();
-        },
-        onFileChange(e) {
-            const file = e.target.files[0];
-            this.url = URL.createObjectURL(file);
-        },
-        reset(){
-            this.submitted = false;
-            this.livro = {
-                acabamentoLivro: null,
-                condicaoLivro: null
-            };
-            this.image = null;
-            this.autor.nomeAutor = '';
-            this.editora.nomeEditora = '';
-            this.assunto.nomeAssunto = '';
-            this.url = null;
         }
+    },
+    created(){
+        this.$store.dispatch('RESET_LIVRO');
     }
 }
 </script>
 
-<style>
-#my-list-id option{
-    width: 600px;
-}
-
-#img-livro{
-    display: block;
-    margin: 0 auto;
-    width: 180px;
-    height: 200px;
-    border: 8px solid #ccc;
-    border-radius: 5px;
-}
-
-.btn-center{
-    display: block;
-    margin: 0 auto;
-    border: none;
-    padding: 8px 15px;
-    margin-top: 5px;
-    border-radius: 5px;
-}
+<style scoped>
+    .header-card{
+        display:flex;
+        justify-content:space-between;
+        align-items: center;
+    }
 </style>

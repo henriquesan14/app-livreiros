@@ -21,7 +21,7 @@
                 <b-table class="table-sm" :responsive="true" :fields="fields" v-if="!loader && pageAssuntos.rows.length > 0" hover striped :items="pageAssuntos.rows" >
                     <template slot="actions" slot-scope="data">
                         <b-button size="sm" v-hasRole="'ESCREVER_ASSUNTO'" @click="loadAssunto(data.item);$bvModal.show('modal-assunto')" variant="warning" class="mr-2"
-                        v-b-tooltip.hover title="Alterar">
+                        >
                             <i class="fa fa-pencil"></i>
                         </b-button>
                     

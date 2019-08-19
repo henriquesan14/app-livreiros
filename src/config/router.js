@@ -1,19 +1,5 @@
 import Vue from 'vue'
-import Router from 'vue-router'
-import Dashboard from '../views/Dashboard.vue'
-import Login from '../views/Login.vue'
-import Home from '../components/home/Home.vue'
-import Error403 from '../views/Error403.vue'
-import AdminPages from '../components/admin/AdminPages.vue'
-import CadastroUsuario from'../components/admin/CadastroUsuario.vue'
-import EdicaoUsuario from '../components/admin/EdicaoUsuario.vue'
-import CadastroLivro from '../components/livro/CadastroLivro.vue'
-import EdicaoLivro from '../components/livro/EdicaoLivro.vue'
-import Livros from '../components/livro/Livros.vue'
-import Assuntos from '../components/livro/assunto/Assuntos.vue'
-import Editoras from '../components/livro/editora/Editoras.vue'
-import Autores from '../components/livro/autor/Autores.vue'
-import Categorias from '../components/livro/categoria/Categorias.vue'
+import Router from 'vue-router' 
 import {userKey} from '@/global'
 
 Vue.use(Router)
@@ -25,7 +11,7 @@ export default new Router({
     {
       path: '/',
       name: 'login',
-      component: Login,
+      component: () => import('../views/Login.vue'),
       beforeEnter: function(to, from, next){
         if(isLogged()){
             next('/dashboard')
@@ -37,7 +23,7 @@ export default new Router({
     {
       path: '/dashboard',
       name: 'dashboard',
-      component: Dashboard,
+      component: () => import('../views/Dashboard.vue'),
       beforeEnter: function(to, from, next){
         if(isLogged()){
             next()
@@ -49,62 +35,62 @@ export default new Router({
         {
           path: 'error403',
           name: 'error403',
-          component: Error403
+          component: () => import('../views/Error403.vue')
         },
         {
           path: 'home',
           name: 'home',
-          component: Home
+          component: () => import('../components/home/Home.vue')
         },
         {
           path: 'usuarios',
           name: 'admin',
-          component: AdminPages,
+          component: () => import('../components/admin/AdminPages.vue'),
         },
         {
           path: 'usuarios/cadastro',
           name: 'cadastro-user',
-          component: CadastroUsuario
+          component: () => import('../components/admin/CadastroUsuario.vue')
         },
         {
           path: 'usuarios/:id',
           name: 'edicao-user',
-          component: EdicaoUsuario
+          component: () => import('../components/admin/EdicaoUsuario.vue')
         },
         {
           path: 'livros',
           name: 'livro',
-          component: Livros
+          component: () => import('../components/livro/Livros.vue')
         },
         {
           path: 'livros/cadastro',
           name: 'cadastro-livro',
-          component: CadastroLivro
+          component: () => import('../components/livro/CadastroLivro.vue')
         },
         {
           path: 'livros/edit/:id',
           name: 'edit-livro',
-          component: EdicaoLivro
+          component: () => import('../components/livro/EdicaoLivro.vue')
         },
         {
           path: 'assuntos',
           name: 'assunto',
-          component: Assuntos
+          component: () => import('../components/livro/assunto/Assuntos.vue')
         },
         {
           path: 'editoras',
           name: 'editora',
-          component: Editoras
+          component: () => import('../components/livro/editora/Editoras.vue')
         },
         {
           path: 'autores',
           name: 'autor',
-          component: Autores
+          component: () => import('../components/livro/autor/Autores.vue')
         },
         {
           path:'categorias',
           name: 'categorias-descricao',
-          component: Categorias
+          component: () => import('../components/livro/categoria/Categorias.vue')
         },
         {
           path: '',

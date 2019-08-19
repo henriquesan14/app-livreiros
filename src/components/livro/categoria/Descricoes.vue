@@ -28,17 +28,20 @@
                     <b-button size="sm" class="mb-3"  @click="$bvModal.hide('modal-descricoes')"><i class="fa fa-arrow-left mr-1"></i>Fechar</b-button>
                 </b-form>
                 <b-table class="table-sm" :responsive="true" :fields="fields" :items="descricoes"  hover striped>
+                    <template slot="statusDescricao" slot-scope="data">
+                        <b-badge :variant="data.item.statusDescricao ? 'success' : 'danger'">
+                            {{data.item.statusDescricao ? 'Ativa':'Desativada'}}</b-badge>
+                    </template>
                     <template slot="actions" slot-scope="data">
                         <b-button size="sm" @click="loadDescricao(data.item); $bvModal.show('modal-edit-descricoes')"
                          variant="warning" class="mr-2"
-                        v-b-tooltip.hover title="Alterar">
+                        >
                             <i class="fa fa-pencil"></i>
                         </b-button>
                         <b-button size="sm"
-                        v-b-tooltip.hover :title="data.item.statusDescricao == true ? 'Desativar': 'Ativar'"
                         :variant="data.item.statusDescricao == true ? 'danger': 'success'"
                          @click="showMsgBoxTwo(data.item)" class="mr-2">
-                            <i class="fas" :class="data.item.statusDescricao == true ? 'fa-lock':'fa-lock-open'"></i></b-button>
+                            <i class="fas" :class="data.item.statusDescricao == true ? 'fa-ban':'fa-lock-open'"></i></b-button>
                     
                     </template>
                 </b-table>
@@ -96,6 +99,7 @@ export default {
                 {key: 'idDescricao', label: 'Cód.', sortable: true},
                 {key: 'nomeDescricao', label: 'Nome', sortable: true},
                 {key: 'reducaoPreco', label: '( - ) R$', sortable: true},
+                {key:'statusDescricao', label: 'Status', sortable: true},
                 {key: 'actions', label: 'Ações'}
             ],
             money: {

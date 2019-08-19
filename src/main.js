@@ -9,6 +9,7 @@ import './config/mq'
 import './config/interceptors'
 import './config/role-directive'
 import './config/filter-totitle'
+import './config/loader'
 import store from './config/store/store'
 import VueTheMask from 'vue-the-mask'
 Vue.use(VueTheMask)
