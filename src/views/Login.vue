@@ -79,7 +79,8 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+@import '../sass/styles.scss';
     .auth-content{
         height: 100%;
         display: flex;
@@ -88,7 +89,7 @@ export default {
     }
 
     .auth-modal{
-        background-color: #fff;
+        background-color: $cor-teste;
         width: 400px;
         padding: 50px;
         box-shadow: 0 1px 5px rgba(0,0,0,0.5);
