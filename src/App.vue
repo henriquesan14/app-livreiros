@@ -1,21 +1,39 @@
 <template>
   <div id="app">
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
-<style>
-*{
-        font-family: "Lato", sans-serif;
-        
-    }
+<style lang="scss">
+* {
+  font-family: "Lato", sans-serif;
+}
 
-    body{
-        margin: 0;
-    }
+body {
+  margin: 0;
+}
 
-    #app{
-      height: 100vh;
-      background-color: #efefef;
-    }
+#app {
+  height: 100vh;
+  background-color: #efefef;
+}
+
+.header-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h5{
+    font-size: 1rem;
+  }
+
+  span{
+    font-size: 0.875rem;
+  }
+}
+
+h5.card-title{
+  text-align: center;
+  font-size: 1rem;
+}
 </style>

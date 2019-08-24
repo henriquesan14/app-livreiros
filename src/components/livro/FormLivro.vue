@@ -597,7 +597,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .font-menor {
   font-size: 0.785rem;
 }
@@ -639,21 +639,20 @@ ul.list {
   padding: 0;
   max-height: 125px;
   overflow: auto;
-}
 
-ul.list li {
-  padding: 5px;
-  cursor: pointer;
-}
+  li {
+    padding: 5px;
+    cursor: pointer;
+    &:hover {
+      background-color: #efefef;
+    }
 
-ul.list li:hover {
-  background-color: #efefef;
-}
-
-ul.list li a {
-  text-decoration: none;
-  color: #000;
-  font-weight: bold;
+    a {
+      text-decoration: none;
+      color: #000;
+      font-weight: bold;
+    }
+  }
 }
 
 .selecionado {
