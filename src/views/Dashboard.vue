@@ -56,29 +56,24 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
     #dashboard{
         -webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
-
         height: 100vh;
-
         display: grid;
         grid-template-rows: 55px 1fr 30px;
         grid-template-columns: 200px 1fr;
         grid-template-areas: 
             "header header"
             "menu content"
-            "menu footer"
+            "menu footer";
 
-    }
-
-
-    #dashboard.hide-menu{
+        .hide-menu{
         grid-template-areas:
             "header header"
             "content content"
             "footer footer"
+        }
     }
-
 </style>

@@ -80,33 +80,37 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../sass/styles.scss';
     .auth-content{
         height: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
+
+        .auth-modal{
+            width: 400px;
+            padding: 50px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .login-form{
+                width: 100%;
+            }
+
+            hr{
+                border: 0;
+                width: 100%;
+                height: 1px;
+                background: linear-gradient(to right, rgba(120,120,120, 0), rgba(120,120,120,075),rgba(120,120,120,0))
+            }
+        }
     }
 
-    .auth-modal{
-        background-color: $cor-teste;
-        width: 400px;
-        padding: 50px;
-        box-shadow: 0 1px 5px rgba(0,0,0,0.5);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+    
 
-    .login-form{
-        width: 100%;
-    }
+    
    
-    .auth-modal hr{
-        border: 0;
-        width: 100%;
-        height: 1px;
-        background: linear-gradient(to right, rgba(120,120,120, 0), rgba(120,120,120,075),rgba(120,120,120,0))
-    }
+    
 
 </style>
