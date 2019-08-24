@@ -1,29 +1,30 @@
 <template>
-    <div class="page-title">
-        <h1><i v-if="icon" :class="icon" class="mr-2"></i>{{main}}</h1>
-        <h2>{{sub}}</h2>
-        <hr>
-    </div>
+  <div class="page-title">
+    <h1>
+      <i v-if="icon" :class="icon" class="mr-2"></i>
+      {{main}}
+    </h1>
+    <h2>{{sub}}</h2>
+    <hr />
+  </div>
 </template>
 
 <script>
 export default {
-    name: 'PageTitle',
-    props: [
-        'icon', 'main', 'sub'
-    ]
-}
+  name: "PageTitle",
+  props: ["icon", "main", "sub"]
+};
 </script>
 
 <style>
-    .page-title h1{
-        margin: 0px;
-        font-size: 2.2rem;
-    }
+.page-title h1 {
+  margin: 0px;
+  font-size: 2.2rem;
+}
 
-    .page-title h2{
-        color: #777;
-        margin-top:5px;
-        font-size: .875rem;
-    }
+.page-title h2 {
+  color: #777;
+  margin-top: 5px;
+  font-size: 0.875rem;
+}
 </style>
