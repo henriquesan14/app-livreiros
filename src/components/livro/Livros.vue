@@ -39,125 +39,9 @@
       <Loading :loader="loader" />
       <div class="scroll-table" v-if="!loader">
         <div v-for="livro in pageLivros.rows" :key="livro.idLivro">
-          <div class="box-livro mb-2">
-            <div class="img-livro">
-              <img
-                :src="'https://imagens-capas-1.s3.amazonaws.com/'+ (livro.imagemLivro == null ? '1557681051638': livro.imagemLivro)"
-                alt="capa-livro"
-              />
-            </div>
-            <div class="info-livro">
-              <div class="title-livro">
-                <h4>
-                  <strong>{{livro.tituloLivro | toTitle}}</strong>
-                </h4>
-                <h4>{{livro.autor.nomeAutor | toTitle}}</h4>
-              </div>
-              <div class="desc-livro">
-                <div class="desc1">
-                  <span>
-                    <strong>Ano:</strong>
-                    {{livro.anoLivro}}
-                  </span>
-                  <span>
-                    <strong>Tipo:</strong>
-                    {{livro.condicaoLivro}}
-                  </span>
-                  <span>
-                    <strong>Qtd.:</strong>
-                    {{livro.qtdTotal}}
-                  </span>
-                </div>
-                <div class="desc2">
-                  <span>
-                    <strong>Editora:</strong>
-                    {{livro.editora.nomeEditora}}
-                  </span>
-                  <span>
-                    <strong>Assunto:</strong>
-                    {{livro.assunto.nomeAssunto}}
-                  </span>
-                  <span>
-                    <strong>ID:</strong>
-                    {{livro.idLivro}}
-                  </span>
-                </div>
-              </div>
-            </div>
-            <!--info-->
-
-            <div class="info2-livro">
-              <h4>{{'R$' + livro.precoLivro}}</h4>
-              <div class="btns-livro">
-                <b-button
-                  size="sm"
-                  v-hasRole="'ESCREVER_LIVRO'"
-                  @click="loadLivro(livro.idLivro);zeraLivroDesc();$bvModal.show('new-livro-descrito')"
-                  variant="primary"
-                  class="mr-2"
-                >
-                  <i class="fa fa-plus"></i>
-                </b-button>
-                <b-button
-                  size="sm"
-                  v-hasRole="'ESCREVER_LIVRO'"
-                  @click="navigate(livro.idLivro)"
-                  variant="warning"
-                  class="mr-2"
-                >
-                  <i class="fa fa-pencil"></i>
-                </b-button>
-                <b-button
-                  class="btn-plus"
-                  size="sm"
-                  @click="loadLivro(livro.idLivro);$bvModal.show('modal-detalhes-livro')"
-                  variant="dark"
-                >
-                  <i class="fa fa-search-plus"></i>
-                </b-button>
-              </div>
-
-              <b-button
-                size="sm"
-                :disabled="livro.livrosDescritos.length < 1"
-                @click="loadLivro(livro.idLivro);livro.showCollapse = !livro.showCollapse"
-                class="mt-2"
-                variant="secondary"
-              >
-                Descrição
-                <i class="fa fa-caret-down ml-2"></i>
-              </b-button>
-            </div>
-            <!--btn-->
-          </div>
-          <!--box-->
-          <div v-if="livro.livrosDescritos.length > 0">
-            <b-collapse id="collapse-livro" class="mb-3" v-model="livro.showCollapse">
-              <h4 class="text-center mt-1">Livros Descritos</h4>
-              <b-table
-                class="table-sm"
-                :responsive="true"
-                :items="livro.livrosDescritos"
-                :fields="fields"
-                hover
-                striped
-              >
-                <template slot="actions" slot-scope="data">
-                  <b-button
-                    size="sm"
-                    v-hasRole="'ESCREVER_LIVRO'"
-                    @click="loadLivroDesc(data.item);$bvModal.show('edit-livro-descrito')"
-                    variant="warning"
-                  >
-                    <i class="fa fa-pencil"></i>
-                  </b-button>
-                </template>
-              </b-table>
-            </b-collapse>
-          </div>
+          <BoxLivro :livro="livro"/>
         </div>
       </div>
-      <!--scroll-->
       <div v-if="!loader && pageLivros.rows.length < 1" class="mb-2">
         <span>Nenhum resultado...</span>
       </div>
@@ -170,7 +54,6 @@
         <FormLivroDescrito
           @submit-livro-desc="saveLivroDesc"
           :livroDescrito="livroDescrito"
-          :livroSelecionado="livroSelecionado"
         />
       </div>
     </b-modal>
@@ -180,29 +63,25 @@
       <div class="d-block">
         <FormLivroDescrito
           @submit-livro-desc="editLivroDesc"
-          :livroDescrito="livroDescrito"
-          :livroSelecionado="livroSelecionado"
+          
         />
       </div>
     </b-modal>
-
-    <ModalDetalhesLivro :livroSelecionado="livroSelecionado" />
   </div>
-  <!--component-->
 </template>
 
 <script>
 import PageTitle from "../template/PageTitle";
 import { mapGetters } from "vuex";
 import Loading from "../shared/Loading";
-import ModalDetalhesLivro from "./ModalDetalhesLivro";
 import FormLivroDescrito from "./FormLivroDescrito";
-import axios from "axios";
-import { baseApiUrl, showError } from "@/global";
+import { showError } from "@/global";
+import BoxLivro from './BoxLivro';
+import LivroDescrito from '../../services/livro-descrito';
 export default {
   name: "Livros",
-  components: { PageTitle, Loading, ModalDetalhesLivro, FormLivroDescrito },
-  computed: mapGetters(["pageLivros"]),
+  components: { PageTitle, Loading, FormLivroDescrito, BoxLivro },
+  computed: mapGetters(["pageLivros", "livroSelecionado", "livroDescrito"]),
   mounted() {
     this.getLivros();
   },
@@ -210,26 +89,6 @@ export default {
     return {
       loader: false,
       page: 1,
-      livroSelecionado: null,
-      fields: [
-        { key: "subIdLivro", label: "SubCód.", sortable: true },
-        {
-          key: "textLivroDescrito",
-          label: "Desc.",
-          sortable: true,
-          formatter: value => (value != null ? value : "N/A")
-        },
-        { key: "qtdLivro", label: "Qtd.", sortable: true },
-        {
-          key: "precoLivroDescrito",
-          label: "Preço",
-          sortable: true,
-          formatter: value => {
-            return "R$" + value;
-          }
-        },
-        { key: "actions", label: "Ações" }
-      ],
       options: [
         { name: "Título", value: "titulo" },
         { name: "Autor", value: "autor" },
@@ -237,7 +96,6 @@ export default {
       ],
       filtroSelecionado: "titulo",
       nomeFiltro: "",
-      livroDescrito: { descricoes: [] }
     };
   },
   watch: {
@@ -260,39 +118,27 @@ export default {
         this.loader = false;
       }
     },
-    loadLivro(id) {
-      this.livroSelecionado = id;
-    },
     async saveLivroDesc(livroDesc) {
-      const url = `${baseApiUrl}/livrosdescritos`;
       try {
-        await axios.post(url, livroDesc);
+        await LivroDescrito.saveLivroDescrito(livroDesc);
         this.$toasted.global.defaultSuccess();
         this.$bvModal.hide("new-livro-descrito");
         this.getLivros();
         this.zeraLivroDesc();
-        this.loadLivro(1);
       } catch (err) {
         showError(err);
       }
     },
     zeraLivroDesc() {
-      this.livroDescrito = { descricoes: [] };
-    },
-    loadLivroDesc(livroDesc) {
-      this.livroDescrito = livroDesc;
-      this.livroDescrito.movimento = "adicionar";
-      this.livroDescrito.descricoes = [];
+      this.$store.dispatch("RESET_LIVRO_DESCRITO");
     },
     async editLivroDesc(livroDesc) {
-      const url = `${baseApiUrl}/livrosdescritos/${this.livroDescrito.idLivroDescrito}`;
       try {
-        await axios.put(url, livroDesc);
+        await LivroDescrito.editLivroDescrito(this.livroDescrito.idLivroDescrito, livroDesc);
         this.$toasted.global.defaultSuccess();
         this.$bvModal.hide("edit-livro-descrito");
         this.getLivros();
         this.zeraLivroDesc();
-        this.loadLivro(1);
       } catch (err) {
         showError(err);
       }
@@ -303,14 +149,9 @@ export default {
   }
 };
 </script>
-
-<style scoped lang="scss">
+<style lang="scss">
 span {
   font-size: 0.875rem;
-}
-
-h4 {
-  font-size: 1.2rem;
 }
 
 h5 {
@@ -318,85 +159,4 @@ h5 {
   font-size: 1rem;
 }
 
-#collapse-livro {
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.box-livro {
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  display: flex;
-  height: auto;
-  padding: 5px;
-}
-.img-livro {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 2px;
-  margin-right: 5px;
-
-  img {
-    width: 120px;
-    height: 140px;
-  }
-}
-
-.info-livro {
-  display: flex;
-  padding: 5px;
-  flex-direction: column;
-  flex: 5;
-  margin-right: 5px;
-}
-
-.desc-livro {
-  display: flex;
-
-  span {
-    margin-right: 10px;
-  }
-}
-
-.desc1 {
-  display: flex;
-  flex-direction: column;
-  margin-right: 50px;
-}
-
-.desc2 {
-  display: flex;
-  flex-direction: column;
-}
-
-.info2-livro {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-
-.btns-livros {
-  display: flex;
-}
-
-@media (max-width: 500px) {
-  .scroll-table {
-    overflow-x: auto;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-
-  .box-livro {
-    border: none;
-  }
-
-  .btn-plus {
-    margin-top: 8px;
-  }
-}
 </style>

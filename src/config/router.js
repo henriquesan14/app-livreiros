@@ -83,6 +83,11 @@ export default new Router({
           component: () => import('../components/livro/EdicaoLivro.vue')
         },
         {
+          path: 'livros/:id',
+          name: 'livro-detalhes',
+          component: () => import('../components/livro/LivroDetail.vue')
+        },
+        {
           path: 'assuntos',
           name: 'assunto',
           component: () => import('../components/livro/assunto/Assuntos.vue')

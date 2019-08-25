@@ -6,7 +6,8 @@ const state = {
   livro: {
     acabamentoLivro: null,
     condicaoLivro: null
-  }
+  },
+  livroSelecionado: null
 }
 
 const mutations = {
@@ -15,6 +16,9 @@ const mutations = {
   },
   RECEIVE_LIVRO(state, {livro}){
     state.livro = livro
+  },
+  RECEIVE_LIVRO_SELECIONADO(state, {idLivro}){
+    state.livroSelecionado = idLivro
   }
 }
 
@@ -29,12 +33,16 @@ const actions = {
   },
   RESET_LIVRO({commit}){
     commit('RECEIVE_LIVRO', {livro: {acabamentoLivro: null, condicaoLivro: null}});
+  },
+  SET_LIVRO_SELECIONADO({commit}, idLivro){
+    commit('RECEIVE_LIVRO_SELECIONADO', idLivro);
   }
 },
 
 getters =  {
     pageLivros: state => state.pageLivros,
-    livro: state => state.livro
+    livro: state => state.livro,
+    livroSelecionado: state => state.livroSelecionado
 }
 
 export default {
