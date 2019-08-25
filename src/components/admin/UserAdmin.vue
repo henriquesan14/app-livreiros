@@ -72,7 +72,7 @@
 <script>
 import { mapGetters } from "vuex";
 import Loading from "../shared/Loading";
-import { baseApiUrl, showError } from "@/global";
+import { showError } from "@/global";
 import Usuario from "../../services/usuarios";
 export default {
   name: "UserAdmin",

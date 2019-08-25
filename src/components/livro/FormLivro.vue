@@ -397,12 +397,12 @@
 import FormAutor from "./autor/FormAutor";
 import FormAssunto from "./assunto/FormAssunto";
 import FormEditora from "./editora/FormEditora";
-import axios from "axios";
-import { baseApiUrl, showError } from "@/global";
+import { showError } from "@/global";
 import { mapGetters } from "vuex";
 import { required, minValue, minLength } from "vuelidate/lib/validators";
 import { VMoney } from "v-money";
 import { validationMsg } from "../../config/validation-msgs";
+import Livro from '../../services/livros';
 export default {
   name: "FormLivro",
   directives: { money: VMoney },
@@ -475,9 +475,8 @@ export default {
     async searchIsbn() {
       if (this.livro.isbn.length >= 10) {
         let loader = this.$loading.show();
-        const url = `${baseApiUrl}/livros/isbn/${this.livro.isbn}`;
         try {
-          const res = await axios.get(url);
+          const res = await Livro.searchIsbn(this.livro.isbn);
           this.importToInput(res);
         } catch (err) {
           showError(err);
@@ -564,8 +563,7 @@ export default {
         const fd = new FormData();
         fd.append("image", this.image);
         try {
-          const url = `${baseApiUrl}/livros/capa`;
-          const res = await axios.post(url, fd, {});
+          const res = await Livro.uploadImage(fd);
           this.livro.imagemLivro = res.data.imagemLivro;
           this.$emit("submit-livro", this.livro);
         } catch (err) {

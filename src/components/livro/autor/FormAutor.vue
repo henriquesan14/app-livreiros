@@ -32,8 +32,8 @@
 
 <script>
 import { required } from "vuelidate/lib/validators";
-import { baseApiUrl, showError } from "@/global";
-import axios from "axios";
+import { showError } from "@/global";
+import Autor from '../../../services/autores';
 export default {
   name: "FormAutor",
   data() {
@@ -54,9 +54,8 @@ export default {
   },
   methods: {
     async saveAutor() {
-      const url = `${baseApiUrl}/autores`;
       try {
-        await axios.post(url, this.autor);
+        await Autor.saveAutor(this.autor);
         this.reset();
         this.$bvModal.hide("modal-autor");
         this.$toasted.global.defaultSuccess();
@@ -66,9 +65,8 @@ export default {
       }
     },
     async editAutor() {
-      const url = `${baseApiUrl}/autores/${this.autor.idAutor}`;
       try {
-        await axios.put(url, this.autor);
+        await Autor.editAutor(this.autor.idAutor, this.autor);
         this.$bvModal.hide("modal-autor");
         this.$toasted.global.defaultSuccess();
         this.$emit("zera-autor");
