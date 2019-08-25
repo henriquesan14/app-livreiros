@@ -8,7 +8,7 @@
         <b-form @submit.prevent="submitCategoria()">
           <b-row>
             <b-col>
-              <b-form-group label="Nome: " label-for="nomeCategoriaDescricao">
+              <b-form-group label="Nome: " label-for="nomeCategoriaDescricao" :invalid-feedback="invalidFeedBack($v.categoria.nomeCategoriaDescricao)">
                 <b-form-input
                   size="sm"
                   :class="{'is-invalid': submitted && $v.categoria.nomeCategoriaDescricao.$invalid, 'is-valid': submitted && !$v.categoria.nomeCategoriaDescricao.$invalid}"
@@ -34,8 +34,9 @@
 
 <script>
 import { required } from "vuelidate/lib/validators";
-import { baseApiUrl, showError } from "@/global";
-import axios from "axios";
+import { showError } from "@/global";
+import {validationMsg} from '../../../config/validation-msgs';
+import Categoria from '../../../services/categorias';
 export default {
   name: "FormCategoria",
   data() {
@@ -56,9 +57,8 @@ export default {
   },
   methods: {
     async saveCategoria() {
-      const url = `${baseApiUrl}/categorias`;
       try {
-        await axios.post(url, this.categoria);
+        await Categoria.saveCategoria(this.categoria);
         this.reset();
         this.$bvModal.hide("modal-categoria");
         this.$toasted.global.defaultSuccess();
@@ -68,9 +68,8 @@ export default {
       }
     },
     async editCategoria() {
-      const url = `${baseApiUrl}/categorias/${this.categoria.idCategoriaDescricao}`;
       try {
-        await axios.put(url, this.categoria);
+        await Categoria.editCategoria(this.categoria.idCategoriaDescricao, this.categoria);
         this.$bvModal.hide("modal-categoria");
         this.$toasted.global.defaultSuccess();
         this.$emit("zera-categoria");
@@ -95,6 +94,9 @@ export default {
     },
     reset() {
       this.submitted = false;
+    },
+    invalidFeedBack(field) {
+      return validationMsg(field);
     }
   }
 };

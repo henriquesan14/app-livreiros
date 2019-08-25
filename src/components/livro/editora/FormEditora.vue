@@ -6,7 +6,7 @@
         <b-form @submit.prevent="submitEditora()">
           <b-row>
             <b-col>
-              <b-form-group label="Nome: " label-for="nomeEditora">
+              <b-form-group label="Nome: " label-for="nomeEditora" :invalid-feedback="invalidFeedBack($v.editora.nomeEditora)">
                 <b-form-input
                   size="sm"
                   :class="{'is-invalid': submitted && $v.editora.nomeEditora.$invalid, 'is-valid': submitted && !$v.editora.nomeEditora.$invalid}"
@@ -34,6 +34,7 @@
 import { required } from "vuelidate/lib/validators";
 import { showError } from "@/global";
 import Editora from '../../../services/editoras';
+import {validationMsg} from '../../../config/validation-msgs';
 export default {
   name: "FormEditora",
   data() {
@@ -91,6 +92,9 @@ export default {
     },
     reset() {
       this.submitted = false;
+    },
+    invalidFeedBack(field) {
+     return validationMsg(field);
     }
   }
 };

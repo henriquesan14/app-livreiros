@@ -116,9 +116,9 @@
 import { VMoney } from "v-money";
 import Loading from "../../shared/Loading";
 import { mapGetters } from "vuex";
-import { baseApiUrl, showError } from "@/global";
-import axios from "axios";
+import { showError } from "@/global";
 import { required } from "vuelidate/lib/validators";
+import Descricao from '../../../services/descricoes';
 export default {
   name: "Descricoes",
   components: { Loading },
@@ -192,9 +192,8 @@ export default {
         .catch(() => {});
     },
     async statusDescricao(id) {
-      const url = `${baseApiUrl}/descricoes/${id}/status`;
       try {
-        await axios.put(url);
+        await Descricao.statusDescricao(id);
         this.$toasted.global.defaultSuccess();
         this.getDescricoes();
       } catch (err) {
@@ -206,9 +205,8 @@ export default {
     },
     async saveDescricao() {
       this.descricao.idCategoriaDescricao = this.idCategoriaDescricao;
-      const url = `${baseApiUrl}/descricoes`;
       try {
-        await axios.post(url, this.descricao);
+        await Descricao.saveDescricao(this.descricao);
         this.$toasted.global.defaultSuccess();
         this.getDescricoes();
         this.zeraDescricao();
@@ -217,9 +215,8 @@ export default {
       }
     },
     async editDescricao() {
-      const url = `${baseApiUrl}/descricoes/${this.descricaoEdit.idDescricao}`;
       try {
-        await axios.put(url, this.descricaoEdit);
+        await Descricao.editDescricao(this.descricaoEdit.idDescricao, this.descricaoEdit);
         this.$toasted.global.defaultSuccess();
         this.getDescricoes();
         this.$bvModal.hide("modal-edit-descricoes");

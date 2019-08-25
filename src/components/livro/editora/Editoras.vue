@@ -13,7 +13,7 @@
         @click="zeraEditora();$bvModal.show('modal-editora')"
         class="mb-2"
       >
-        <i class="fa fa-plus-circle mr-1"></i> Editora
+        <i class="fa fa-plus-circle mr-1"></i> Nova Editora
       </b-button>
       <b-row>
         <b-col md="12" sm="12" class="mb-3">
