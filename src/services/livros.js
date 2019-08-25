@@ -10,5 +10,11 @@ export default {
     },
     getLivro: (id) => {
         return axios.get(`${baseApiUrl}/livros/${id}`);
+    },
+    uploadImage: (image) => {
+        return axios.post(`${baseApiUrl}/livros/capa`, image, {});
+    },
+    searchIsbn: (isbn) => {
+        return axios.get(`${baseApiUrl}/livros/isbn/${isbn}`);
     }
 }
