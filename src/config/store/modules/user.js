@@ -5,7 +5,8 @@ const state = {
   pageUsers: {rows: []},
   grupos: {},
   permissoes: [],
-  user: {idUf: null, idCidade: null, grupos: []}
+  user: {idUf: null, idCidade: null, grupos: []},
+  grupo: {permissoes: []}
 }
 
 const mutations = {
@@ -20,6 +21,9 @@ const mutations = {
   },
   RECEIVE_USER(state, {user}){
     state.user = user
+  },
+  RECEIVE_GRUPO(state, {grupo}){
+    state.grupo = grupo
   }
 }
 
@@ -34,7 +38,12 @@ const actions = {
     const { data } = await axios.get(url);
     commit('RECEIVE_GRUPOS',{ grupos: data});
   },
-  async GET_PERMISSOES ({commit}, categoria) {
+  async GET_PERMISSOES ({commit}) {
+    const url = `${baseApiUrl}/permissoes`;
+    const { data } = await axios.get(url);
+    commit('RECEIVE_PERMISSOES',{ permissoes: data});
+  },
+  async GET_PERMISSOES_CATEGORIA ({commit}, categoria) {
     const url = `${baseApiUrl}/permissoes?categoria=${categoria}`;
     const { data } = await axios.get(url);
     commit('RECEIVE_PERMISSOES',{ permissoes: data});
@@ -44,6 +53,12 @@ const actions = {
   },
   RESET_USER({commit}){
     commit('RECEIVE_USER', {user: {idUf: null, idCidade: null, grupos: []}});
+  },
+  SET_GRUPO({commit}, user){
+    commit('RECEIVE_GRUPO', user);
+  },
+  RESET_GRUPO({commit}){
+    commit('RECEIVE_GRUPO', {grupo: {permissoes: []}});
   }
 },
 
@@ -51,7 +66,8 @@ getters =  {
     pageUsers: state => state.pageUsers,
     grupos: state => state.grupos,
     permissoes: state => state.permissoes,
-    user: state => state.user
+    user: state => state.user,
+    grupo: state => state.grupo
 }
 
 export default {
