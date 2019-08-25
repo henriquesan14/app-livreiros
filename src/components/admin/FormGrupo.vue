@@ -71,8 +71,7 @@ export default {
   validations(){
     return {
       grupo: {
-        nomeGrupo: {required},
-        permissoes: {required}
+        nomeGrupo: {required}
       }
     }
   },
