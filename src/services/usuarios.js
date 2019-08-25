@@ -10,5 +10,8 @@ export default {
     },
     getUsuario: (id) => {
         return axios.get(`${baseApiUrl}/usuarios/${id}`);
+    },
+    statusUser: (idUsuario) => {
+        return axios.put(`${baseApiUrl}/usuarios/${idUsuario}/status`);
     }
 }

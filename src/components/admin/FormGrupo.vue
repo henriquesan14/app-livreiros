@@ -3,11 +3,14 @@
     <b-form @submit.prevent="submitGrupo()">
       <b-row>
         <b-col md="6">
-          <b-form-group label="Nome: "
-          :invalid-feedback="invalidFeedBack($v.grupo.nomeGrupo)">
-            <b-form-input :class="{'is-invalid': submitted && $v.grupo.nomeGrupo.$invalid, 'is-valid': submitted && !$v.grupo.nomeGrupo.$invalid}"
-            maxlength="100" placeholder="Informe o nome do grupo"
-             v-model="grupo.nomeGrupo" size="sm"></b-form-input>
+          <b-form-group label="Nome: " :invalid-feedback="invalidFeedBack($v.grupo.nomeGrupo)">
+            <b-form-input
+              :class="{'is-invalid': submitted && $v.grupo.nomeGrupo.$invalid, 'is-valid': submitted && !$v.grupo.nomeGrupo.$invalid}"
+              maxlength="100"
+              placeholder="Informe o nome do grupo"
+              v-model="grupo.nomeGrupo"
+              size="sm"
+            ></b-form-input>
           </b-form-group>
         </b-col>
         <b-col>
@@ -23,18 +26,22 @@
           </b-form-group>
         </b-col>
       </b-row>
-      <b-button type="submit" variant="success" size="sm" class="mb-2"><i class="fas fa-save mr-1"></i><span>Salvar</span></b-button>
+      <b-button type="submit" variant="success" size="sm" class="mb-2">
+        <i class="fas fa-save mr-1"></i>
+        <span>Salvar</span>
+      </b-button>
     </b-form>
 
     <b-badge class="mb-2" variant="primary">
-      <span v-if="categoriaSelecionada" id="title-perm">PERMISSÕES CATEGORIA: {{categoriaSelecionada.toUpperCase()}}</span>
+      <span
+        v-if="categoriaSelecionada"
+        id="title-perm"
+      >PERMISSÕES CATEGORIA: {{categoriaSelecionada.toUpperCase()}}</span>
     </b-badge>
     <b-table class="table-sm" :fields="fields" :items="permissoes" :responsive="true" hover striped>
       <template slot="check" slot-scope="data">
         <b-form-checkbox-group v-model="grupo.permissoes">
-          <b-form-checkbox
-            :value="data.item.idPermissao" :key="data.item.idPermissao"
-          ></b-form-checkbox>
+          <b-form-checkbox :value="data.item.idPermissao" :key="data.item.idPermissao"></b-form-checkbox>
         </b-form-checkbox-group>
       </template>
     </b-table>
@@ -43,7 +50,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import {required} from "vuelidate/lib/validators";
+import { required } from "vuelidate/lib/validators";
 import { validationMsg } from "../../config/validation-msgs";
 export default {
   name: "FormGrupo",
@@ -51,7 +58,7 @@ export default {
     return {
       submitted: false,
       options: [
-        {value: null, text: "Selecione uma categoria...", disabled: true},
+        { value: null, text: "Selecione uma categoria...", disabled: true },
         { value: "usuario", text: "USUÁRIOS" },
         { value: "livro", text: "LIVROS" },
         { value: "assunto", text: "ASSUNTOS" },
@@ -68,12 +75,12 @@ export default {
     };
   },
   computed: mapGetters(["permissoes", "grupo"]),
-  validations(){
+  validations() {
     return {
       grupo: {
-        nomeGrupo: {required}
+        nomeGrupo: { required }
       }
-    }
+    };
   },
   created() {
     this.getPermissoes();
@@ -85,8 +92,11 @@ export default {
     async getPermissoes() {
       await this.$store.dispatch("GET_PERMISSOES");
     },
-    async getPermissoesCategoria(){
-      await this.$store.dispatch("GET_PERMISSOES_CATEGORIA", this.categoriaSelecionada);
+    async getPermissoesCategoria() {
+      await this.$store.dispatch(
+        "GET_PERMISSOES_CATEGORIA",
+        this.categoriaSelecionada
+      );
     },
     submitGrupo() {
       this.submitted = true;

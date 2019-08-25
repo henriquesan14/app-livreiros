@@ -72,9 +72,8 @@
 <script>
 import { mapGetters } from "vuex";
 import Loading from "../shared/Loading";
-import axios from "axios";
 import { baseApiUrl, showError } from "@/global";
-
+import Usuario from "../../services/usuarios";
 export default {
   name: "UserAdmin",
   components: { Loading },
@@ -145,15 +144,14 @@ export default {
         })
         .catch(() => {});
     },
-    statusUser(idUsuario) {
-      const url = `${baseApiUrl}/usuarios/${idUsuario}/status`;
-      axios
-        .put(url)
-        .then(() => {
-          this.getUsers();
-          this.$toasted.global.defaultSuccess();
-        })
-        .catch(showError);
+    async statusUser(idUsuario) {
+      try {
+        await Usuario.statusUser(idUsuario);
+        this.getUsers();
+        this.$toasted.global.defaultSuccess();
+      } catch (err) {
+        showError(err);
+      }
     },
     navigate(id) {
       this.$router.push({ name: "edicao-user", params: { id } });
