@@ -50,7 +50,7 @@ const actions = {
     commit('RECEIVE_USER', {user: {idUf: null, idCidade: null, grupos: []}});
   },
   SET_GRUPO({commit}, user){
-    commit('RECEICE_GRUPO', user);
+    commit('RECEIVE_GRUPO', user);
   },
   RESET_GRUPO({commit}){
     commit('RECEIVE_GRUPO', {grupo: {permissoes: []}});

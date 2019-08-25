@@ -22,10 +22,10 @@
           size="sm"
           v-hasRole="'ESCREVER_GRUPO'"
           variant="warning"
-          @click="loadGrupo(data.item); $bvModal.show('modal-grupo')"
+          @click="navigate(data.item.idGrupo)"
           class="mr-2"
         >
-          <i class="fa fa-cogs"></i>
+          <i class="fa fa-pencil"></i>
         </b-button>
       </template>
     </b-table>
@@ -248,6 +248,9 @@ export default {
           showError(err);
           this.$bvModal.hide("modal-grupo");
         });
+    },
+    navigate(id) {
+      this.$router.push({ name: "edicao-grupo", params: { id } });
     }
   }
 };

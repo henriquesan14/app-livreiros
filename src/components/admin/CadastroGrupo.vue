@@ -20,6 +20,7 @@
 import FormGrupo from "./FormGrupo";
 import PageTitle from "../template/PageTitle";
 import Grupo from "../../services/grupos";
+import {showError} from '@/global';
 export default {
   name: "CadastroGrupo",
   components: { FormGrupo, PageTitle },

@@ -5,7 +5,7 @@ export default {
     saveGrupo: (grupo) => {
         return axios.post(`${baseApiUrl}/grupos`, grupo);
     },
-    editGrupo: (grupo, idGrupo) => {
+    editGrupo: (idGrupo, grupo) => {
         return axios.put(`${baseApiUrl}/grupos/${idGrupo}`, grupo);
     },
     getGrupo: (id) => {

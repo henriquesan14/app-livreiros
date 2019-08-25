@@ -76,8 +76,11 @@ export default {
       }
     }
   },
-  mounted() {
+  created() {
     this.getPermissoes(this.categoriaSelecionada);
+    if (this.grupo.idGrupo) {
+      this.convertGrupo();
+    }
   },
   methods: {
     async getPermissoes(categoria) {
@@ -95,6 +98,10 @@ export default {
     invalidFeedBack(field) {
       return validationMsg(field);
     },
+    convertGrupo() {
+      this.grupo.permissoes = this.grupo.permissoes.map(x => x.idPermissao);
+      this.$store.dispatch("SET_GRUPO", { grupo: this.grupo });
+    }
   }
 };
 </script>
