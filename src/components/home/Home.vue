@@ -32,7 +32,7 @@
 import PageTitle from "../template/PageTitle";
 import Chart from "./Chart";
 import LineChart from "./LineChart";
-import { baseApiUrl, showError } from "@/global";
+import { showError } from "@/global";
 import Stats from '../../services/stats';
 export default {
   name: "Home",

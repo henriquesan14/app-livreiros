@@ -32,8 +32,8 @@
 
 <script>
 import { required } from "vuelidate/lib/validators";
-import { baseApiUrl, showError } from "@/global";
-import axios from "axios";
+import { showError } from "@/global";
+import Editora from '../../../services/editoras';
 export default {
   name: "FormEditora",
   data() {
@@ -54,9 +54,8 @@ export default {
   },
   methods: {
     async saveEditora() {
-      const url = `${baseApiUrl}/editoras`;
       try {
-        await axios.post(url, this.editora);
+        await Editora.saveEditora(this.editora);
         this.reset();
         this.$bvModal.hide("modal-editora");
         this.$toasted.global.defaultSuccess();
@@ -66,9 +65,8 @@ export default {
       }
     },
     async editEditora() {
-      const url = `${baseApiUrl}/editoras/${this.editora.idEditora}`;
       try {
-        await axios.put(url, this.editora);
+        await Editora.editEditora(this.editora.idEditora, this.editora);
         this.$bvModal.hide("modal-editora");
         this.$toasted.global.defaultSuccess();
         this.$emit("zera-editora");

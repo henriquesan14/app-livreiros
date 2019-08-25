@@ -32,8 +32,8 @@
 
 <script>
 import { required } from "vuelidate/lib/validators";
-import { baseApiUrl, showError } from "@/global";
-import axios from "axios";
+import { showError } from "@/global";
+import Assunto from '../../../services/assuntos';
 export default {
   name: "FormAssunto",
   data() {
@@ -54,9 +54,8 @@ export default {
   },
   methods: {
     async saveAssunto() {
-      const url = `${baseApiUrl}/assuntos`;
       try {
-        await axios.post(url, this.assunto);
+        await Assunto.saveAssunto(this.assunto);
         this.reset();
         this.$bvModal.hide("modal-assunto");
         this.$toasted.global.defaultSuccess();
@@ -66,9 +65,8 @@ export default {
       }
     },
     async editAssunto() {
-      const url = `${baseApiUrl}/assuntos/${this.assunto.idAssunto}`;
       try {
-        await axios.put(url, this.assunto);
+        await Assunto.editAssunto(this.assunto.idAssunto, this.assunto);
         this.$bvModal.hide("modal-assunto");
         this.$toasted.global.defaultSuccess();
         this.$emit("zera-assunto");
