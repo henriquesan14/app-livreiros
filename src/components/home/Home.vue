@@ -32,9 +32,8 @@
 import PageTitle from "../template/PageTitle";
 import Chart from "./Chart";
 import LineChart from "./LineChart";
-import axios from "axios";
 import { baseApiUrl, showError } from "@/global";
-
+import Stats from '../../services/stats';
 export default {
   name: "Home",
   components: { PageTitle, Chart, LineChart },
@@ -88,7 +87,7 @@ export default {
     async getStats() {
       this.loaded = false;
       try {
-        const res = await axios.get(`${baseApiUrl}/estatisticas`);
+        const res = await Stats.getStats();
         let labels = res.data.totalPorCondicao.map(x => x.condicaoLivro);
         let data = res.data.totalPorCondicao
           .map(x => x.livrosDescritos)
@@ -110,8 +109,7 @@ export default {
     async getStats2() {
       this.loaded2 = false;
       try {
-        const res = await axios.get(`${baseApiUrl}/estatisticas`);
-
+        const res = await Stats.getStats();
         let labels = res.data.adicionadosMesPorDia.map(x => x.dia);
         let data = res.data.adicionadosMesPorDia.map(x => x.totalAdiconado);
         let listDias = labels.map(x => new Date(x).getUTCDate());
