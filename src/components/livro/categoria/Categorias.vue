@@ -101,8 +101,8 @@ import Loading from "../../shared/Loading";
 import PageTitle from "../../template/PageTitle";
 import FormCategoria from "./FormCategoria";
 import Descricoes from "./Descricoes";
-import { baseApiUrl, showError } from "@/global";
-import axios from "axios";
+import { showError } from "@/global";
+import Categoria from "../../../services/categorias";
 export default {
   name: "Categorias",
   components: { Loading, PageTitle, FormCategoria, Descricoes },
@@ -183,15 +183,14 @@ export default {
         })
         .catch(() => {});
     },
-    statusCategoria(id) {
-      const url = `${baseApiUrl}/categorias/${id}/status`;
-      axios
-        .put(url)
-        .then(() => {
-          this.getCategorias();
-          this.$toasted.global.defaultSuccess();
-        })
-        .catch(showError);
+    async statusCategoria(id) {
+      try {
+        await Categoria.statusCategoria(id);
+        this.getCategorias();
+        this.$toasted.global.defaultSuccess();
+      } catch (err) {
+        showError(err);
+      }
     },
     zeraCategoria() {
       this.categoria = {};

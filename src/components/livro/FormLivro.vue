@@ -588,8 +588,8 @@ export default {
       const file = e.target.files[0];
       this.url = URL.createObjectURL(file);
     },
-    invalidFeedBack(field) {
-      return validationMsg(field);
+     invalidFeedBack(field) {
+     return validationMsg(field);
     }
   }
 };

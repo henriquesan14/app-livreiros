@@ -6,7 +6,7 @@
         <b-form @submit.prevent="submitAutor()">
           <b-row>
             <b-col>
-              <b-form-group label="Nome: " label-for="nomeAutor">
+              <b-form-group label="Nome: " label-for="nomeAutor" :invalid-feedback="invalidFeedBack($v.autor.nomeAutor)">
                 <b-form-input
                   size="sm"
                   :class="{'is-invalid': submitted && $v.autor.nomeAutor.$invalid, 'is-valid': submitted && !$v.autor.nomeAutor.$invalid}"
@@ -34,6 +34,7 @@
 import { required } from "vuelidate/lib/validators";
 import { showError } from "@/global";
 import Autor from '../../../services/autores';
+import {validationMsg} from '../../../config/validation-msgs';
 export default {
   name: "FormAutor",
   data() {
@@ -91,6 +92,9 @@ export default {
     },
     reset() {
       this.submitted = false;
+    },
+    invalidFeedBack(field) {
+      return validationMsg(field);
     }
   }
 };
