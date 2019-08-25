@@ -16,7 +16,7 @@
               size="sm"
               class="input-perm"
               id="categoriaPermissao"
-              @change="getPermissoes(categoriaSelecionada)"
+              @change="getPermissoesCategoria()"
               v-model="categoriaSelecionada"
               :options="options"
             ></b-form-select>
@@ -27,7 +27,7 @@
     </b-form>
 
     <b-badge class="mb-2" variant="primary">
-      <span id="title-perm">PERMISSÕES CATEGORIA: {{categoriaSelecionada.toUpperCase()}}</span>
+      <span v-if="categoriaSelecionada" id="title-perm">PERMISSÕES CATEGORIA: {{categoriaSelecionada.toUpperCase()}}</span>
     </b-badge>
     <b-table class="table-sm" :fields="fields" :items="permissoes" :responsive="true" hover striped>
       <template slot="check" slot-scope="data">
@@ -43,7 +43,6 @@
 
 <script>
 import { mapGetters } from "vuex";
-import Grupo from "../../services/grupos";
 import {required} from "vuelidate/lib/validators";
 import { validationMsg } from "../../config/validation-msgs";
 export default {
@@ -52,6 +51,7 @@ export default {
     return {
       submitted: false,
       options: [
+        {value: null, text: "Selecione uma categoria...", disabled: true},
         { value: "usuario", text: "USUÁRIOS" },
         { value: "livro", text: "LIVROS" },
         { value: "assunto", text: "ASSUNTOS" },
@@ -60,7 +60,7 @@ export default {
         { value: "grupo", text: "GRUPOS" },
         { value: "descricao", text: "DESCRIÇÃO" }
       ],
-      categoriaSelecionada: "usuario",
+      categoriaSelecionada: null,
       fields: [
         { key: "check", label: "Ativa" },
         { key: "nomePermissao", label: "Nome", sortable: true }
@@ -77,14 +77,17 @@ export default {
     }
   },
   created() {
-    this.getPermissoes(this.categoriaSelecionada);
+    this.getPermissoes();
     if (this.grupo.idGrupo) {
       this.convertGrupo();
     }
   },
   methods: {
-    async getPermissoes(categoria) {
-      await this.$store.dispatch("GET_PERMISSOES", categoria);
+    async getPermissoes() {
+      await this.$store.dispatch("GET_PERMISSOES");
+    },
+    async getPermissoesCategoria(){
+      await this.$store.dispatch("GET_PERMISSOES_CATEGORIA", this.categoriaSelecionada);
     },
     submitGrupo() {
       this.submitted = true;

@@ -43,6 +43,11 @@ const actions = {
     const { data } = await axios.get(url);
     commit('RECEIVE_PERMISSOES',{ permissoes: data});
   },
+  async GET_PERMISSOES_CATEGORIA ({commit}, categoria) {
+    const url = `${baseApiUrl}/permissoes?categoria=${categoria}`;
+    const { data } = await axios.get(url);
+    commit('RECEIVE_PERMISSOES',{ permissoes: data});
+  },
   SET_USER({commit}, user){
     commit('RECEIVE_USER', user);
   },
