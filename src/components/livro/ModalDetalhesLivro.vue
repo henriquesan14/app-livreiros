@@ -132,10 +132,10 @@
 </template>
 
 <script>
-import axios from "axios";
-import { baseApiUrl, showError } from "@/global";
+import { showError } from "@/global";
 import Loading from "../shared/Loading";
 import moment from "moment";
+import Livro from '../../services/livros';
 export default {
   name: "ModalDetalhesLivro",
   components: { Loading },
@@ -176,9 +176,8 @@ export default {
   methods: {
     async getLivro() {
       this.loader = true;
-      const url = `${baseApiUrl}/livros/${this.livroSelecionado}`;
       try {
-        const res = await axios.get(url);
+        const res = await Livro.getLivro(this.livroSelecionado);
         this.livro = res.data;
       } catch (err) {
         showError(err);
