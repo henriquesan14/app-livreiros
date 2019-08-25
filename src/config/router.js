@@ -58,6 +58,16 @@ export default new Router({
           component: () => import('../components/admin/EdicaoUsuario.vue')
         },
         {
+          path: 'usuarios/grupos/cadastro',
+          name: 'cadastro-grupo',
+          component: () => import('../components/admin/CadastroGrupo.vue')
+        },
+        {
+          path: 'usuarios/grupos/:id',
+          name: 'edicao-grupo',
+          component: () => import('../components/admin/EdicaoGrupo.vue')
+        },
+        {
           path: 'livros',
           name: 'livro',
           component: () => import('../components/livro/Livros.vue')
