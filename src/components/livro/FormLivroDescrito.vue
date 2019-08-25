@@ -67,7 +67,7 @@
         </b-col>
         <b-col v-if="livroDescrito.idLivroDescrito">
           <b-form-group label="Tipo Movimento">
-            <b-form-select v-model="livroDescrito.movimento">
+            <b-form-select size="sm" v-model="livroDescrito.movimento">
               <option v-for="op in options" :key="op.name" :value="op.value">{{op.name}}</option>
             </b-form-select>
           </b-form-group>
@@ -117,21 +117,22 @@
 </template>
 <script>
 import { mapGetters } from "vuex";
-import axios from "axios";
-import { baseApiUrl, showError } from "@/global";
+import Livro from '../../services/livros';
+import { showError } from "@/global";
 import Loading from "../shared/Loading";
 import { required } from "vuelidate/lib/validators";
 export default {
   name: "FormLivroDescrito",
   components: { Loading },
-  computed: mapGetters(["categoriasAtivas"]),
+  computed: mapGetters(["categoriasAtivas", "livroSelecionado", "livroDescrito"]),
   mounted() {
     this.$store.dispatch("GET_CATEGORIAS_ATIVAS");
   },
-  props: ["livroSelecionado", "livroDescrito"],
   watch: {
     livroSelecionado() {
-      this.getLivro();
+      if(this.livroSelecionado){
+        this.getLivro();
+      }
     }
   },
   data() {
@@ -160,9 +161,8 @@ export default {
   methods: {
     async getLivro() {
       this.loader = true;
-      const url = `${baseApiUrl}/livros/${this.livroSelecionado}`;
       try {
-        const res = await axios.get(url);
+        const res = await Livro.getLivro(this.livroSelecionado);
         this.livro = res.data;
       } catch (err) {
         showError(err);
