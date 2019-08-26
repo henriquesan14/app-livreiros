@@ -5,7 +5,7 @@ export default {
     saveUsuario: (usuario) => {
         return axios.post(`${baseApiUrl}/usuarios`, usuario);
     },
-    editUsuario: (usuario, idUsuario) => {
+    editUsuario: (idUsuario, usuario) => {
         return axios.put(`${baseApiUrl}/usuarios/${idUsuario}`, usuario);
     },
     getUsuario: (id) => {
