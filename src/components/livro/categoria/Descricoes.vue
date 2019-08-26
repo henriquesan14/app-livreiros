@@ -1,6 +1,19 @@
 <template>
   <div class="descricoes">
-    <b-modal size="lg" id="modal-descricoes" hide-footer>
+    <PageTitle
+      icon="fas fa-file-alt"
+      main="Administração de descrições"
+      sub="Gerenciar descrições"
+    />
+    <b-card>
+      <template slot="header">
+        <div class="header-card">
+          <h5 class="title-card">{{categoria.nomeCategoriaDescricao}}</h5>
+          <router-link tag="b-button" class="btn-dark btn-sm mb-1" to="/dashboard/categorias">
+            <i class="fa fa-arrow-left mr-1"></i>Voltar
+          </router-link>
+        </div>
+      </template>
       <template slot="modal-title">Gerenciar Descrições</template>
       <Loading :loader="loader || loaderDesc" />
       <div v-if="!loader && !loaderDesc" class="d-block">
@@ -33,10 +46,7 @@
           </b-button>
           <b-button size="sm" variant="danger" class="mb-3 mr-2" @click="zeraDescricao()">
             <i class="fa fa-times-circle mr-1"></i>Limpar
-          </b-button>
-          <b-button size="sm" class="mb-3" @click="$bvModal.hide('modal-descricoes')">
-            <i class="fa fa-arrow-left mr-1"></i>Fechar
-          </b-button>
+          </b-button>    
         </b-form>
         <b-table
           class="table-sm"
@@ -71,7 +81,7 @@
           </template>
         </b-table>
       </div>
-    </b-modal>
+    </b-card>
 
     <b-modal size="dm" id="modal-edit-descricoes" hide-footer>
       <template slot="modal-title">Alterar descrição Cód.</template>
@@ -119,13 +129,15 @@ import { mapGetters } from "vuex";
 import { showError } from "@/global";
 import { required } from "vuelidate/lib/validators";
 import Descricao from '../../../services/descricoes';
+import PageTitle from '../../template/PageTitle';
 export default {
   name: "Descricoes",
-  components: { Loading },
+  components: { Loading, PageTitle },
   computed: mapGetters(["descricoes"]),
   directives: { money: VMoney },
   data() {
     return {
+      categoria: {},
       descricao: {},
       descricaoEdit: {},
       fields: [
@@ -163,6 +175,9 @@ export default {
       type: Number
     }
   },
+  mounted(){
+    this.getDescricoes(this.$route.params.id);
+  },
   methods: {
     loadDescricao(descricao) {
       this.descricaoEdit = { ...descricao };
@@ -195,7 +210,7 @@ export default {
       try {
         await Descricao.statusDescricao(id);
         this.$toasted.global.defaultSuccess();
-        this.getDescricoes();
+        this.getDescricoes(this.$route.params.id);
       } catch (err) {
         showError(err);
       }
@@ -204,11 +219,10 @@ export default {
       this.descricao = {};
     },
     async saveDescricao() {
-      this.descricao.idCategoriaDescricao = this.idCategoriaDescricao;
       try {
         await Descricao.saveDescricao(this.descricao);
         this.$toasted.global.defaultSuccess();
-        this.getDescricoes();
+        this.getDescricoes(this.$route.params.id);
         this.zeraDescricao();
       } catch (err) {
         showError(err);
@@ -218,16 +232,18 @@ export default {
       try {
         await Descricao.editDescricao(this.descricaoEdit.idDescricao, this.descricaoEdit);
         this.$toasted.global.defaultSuccess();
-        this.getDescricoes();
+        this.getDescricoes(this.$route.params.id);
         this.$bvModal.hide("modal-edit-descricoes");
       } catch (err) {
         showError(err);
       }
     },
-    async getDescricoes() {
+    async getDescricoes(id) {
       this.loaderDesc = true;
       try {
-        await this.$store.dispatch("GET_DESCRICOES", this.idCategoriaDescricao);
+        await this.$store.dispatch("GET_DESCRICOES", id);
+        this.categoria = this.descricoes[0].categoria_descricao;
+        this.descricao.idCategoriaDescricao = this.$route.params.id;
       } catch (err) {
         showError(err);
       } finally {

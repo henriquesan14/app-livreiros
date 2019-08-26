@@ -6,7 +6,7 @@ export default {
         return axios.get(`${baseApiUrl}/categorias`, categoria);
     },
     editCategoria: (idCategoria, categoria) => {
-        return axios.get(`${baseApiUrl}/categorias/${idCategoria}`, categoria);
+        return axios.put(`${baseApiUrl}/categorias/${idCategoria}`, categoria);
     },
     statusCategoria: (idCategoria) => {
         return axios.put(`${baseApiUrl}/categorias/${idCategoria}/status`);

@@ -108,6 +108,11 @@ export default new Router({
           component: () => import('../components/livro/categoria/Categorias.vue')
         },
         {
+          path:'categorias/:id',
+          name: 'descricoes',
+          component: () => import('../components/livro/categoria/Descricoes.vue')
+        },
+        {
           path: '',
           redirect: '/dashboard/home'
         },
