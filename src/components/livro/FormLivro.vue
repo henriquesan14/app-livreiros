@@ -98,10 +98,12 @@
               v-if="livro.idAutor"
               variant="primary"
             >{{'#' + livro.idAutor + ' - ' + livro.nomeAutor}}</b-badge>
-            <span
-              class="text-danger mt-2 font-menor"
-              v-if="submitted && $v.livro.idAutor.$invalid"
-            >Selecione um autor</span>
+            <div>
+              <span
+                class="text-danger mt-2 font-menor"
+                v-if="submitted && $v.livro.idAutor.$invalid"
+              >Selecione um autor</span>
+            </div>
           </b-form-group>
         </b-col>
       </b-row>
@@ -143,10 +145,12 @@
               variant="primary"
               v-if="livro.idAssunto"
             >{{'#' + livro.idAssunto + ' - ' + livro.nomeAssunto}}</b-badge>
-            <span
-              class="text-danger font-menor"
-              v-if="submitted && $v.livro.idAssunto.$invalid"
-            >Selecione um assunto</span>
+            <div>
+              <span
+                class="text-danger font-menor"
+                v-if="submitted && $v.livro.idAssunto.$invalid"
+              >Selecione um assunto</span>
+            </div>
           </b-form-group>
         </b-col>
       </b-row>
@@ -188,10 +192,12 @@
               variant="primary"
               v-if="livro.idEditora"
             >{{'#' + livro.idEditora + ' - ' + livro.nomeEditora}}</b-badge>
-            <span
-              class="text-danger font-menor"
-              v-if="submitted && $v.livro.idEditora.$invalid"
-            >Selecione uma editora</span>
+            <div>
+              <span
+                class="text-danger font-menor"
+                v-if="submitted && $v.livro.idEditora.$invalid"
+              >Selecione uma editora</span>
+            </div>
           </b-form-group>
         </b-col>
       </b-row>
