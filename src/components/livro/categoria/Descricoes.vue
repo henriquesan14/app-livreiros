@@ -33,6 +33,8 @@
           </template>
           <template slot="actions" slot-scope="data">
             <b-button
+              v-b-tooltip.hover 
+              title="Editar"
               size="sm"
               @click="loadDescricao(data.item); $bvModal.show('modal-edit-descricoes')"
               variant="warning"
@@ -41,6 +43,8 @@
               <i class="fa fa-pencil"></i>
             </b-button>
             <b-button
+              v-b-tooltip.hover 
+              :title="data.item.statusDescricao == true ? 'Desativar':'Ativar'"
               size="sm"
               :variant="data.item.statusDescricao == true ? 'danger': 'success'"
               @click="showMsgBoxTwo(data.item)"

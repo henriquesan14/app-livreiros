@@ -54,6 +54,8 @@
         </template>
         <template slot="actions" slot-scope="data">
           <b-button
+            v-b-tooltip.hover 
+            title="Editar"
             size="sm"
             v-hasRole="'ESCREVER_DESCRICAO'"
             @click="loadCategoria(data.item);$bvModal.show('modal-categoria')"
@@ -63,6 +65,8 @@
             <i class="fa fa-pencil"></i>
           </b-button>
           <b-button
+            v-b-tooltip.hover 
+            title="Adicionar"
             size="sm"
             v-hasRole="'ESCREVER_DESCRICAO'"
             variant="primary"
@@ -72,6 +76,8 @@
             <i class="fa fa-plus"></i>
           </b-button>
           <b-button
+            v-b-tooltip.hover 
+            :title="data.item.statusCategoriaDescricao == true ? 'Desativar': 'Ativar'"
             size="sm"
             v-hasRole="'ESCREVER_DESCRICAO'"
             :variant="data.item.statusCategoriaDescricao == true ? 'danger': 'success'"

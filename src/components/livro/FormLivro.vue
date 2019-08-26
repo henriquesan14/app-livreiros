@@ -8,6 +8,8 @@
       />
 
       <button
+        v-b-tooltip.hover 
+        title="Remover"
         type="button"
         v-if="url"
         @click.prevent="url = null; image=null"

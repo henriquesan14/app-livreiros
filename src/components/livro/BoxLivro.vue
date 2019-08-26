@@ -51,6 +51,8 @@
         <h4>{{'R$' + livro.precoLivro}}</h4>
         <div class="btns-livro">
           <b-button
+            v-b-tooltip.hover 
+            title="Adicionar"
             size="sm"
             v-hasRole="'ESCREVER_LIVRO'"
             @click="loadLivro(livro.idLivro);zeraLivroDesc();$bvModal.show('new-livro-descrito')"
@@ -60,6 +62,8 @@
             <i class="fa fa-plus"></i>
           </b-button>
           <b-button
+            v-b-tooltip.hover 
+            title="Editar"
             size="sm"
             v-hasRole="'ESCREVER_LIVRO'"
             @click="navigateLivro(livro.idLivro);"
@@ -69,6 +73,8 @@
             <i class="fa fa-pencil"></i>
           </b-button>
           <b-button
+            v-b-tooltip.hover 
+            title="Visualizar"
             class="btn-plus"
             size="sm"
             @click="navigate(livro.idLivro)"
