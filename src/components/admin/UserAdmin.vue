@@ -42,6 +42,8 @@
       </template>
       <template slot="actions" slot-scope="data">
         <b-button
+          v-b-tooltip.hover 
+          title="Editar"
           size="sm"
           v-hasRole="'ESCREVER_USUARIO'"
           variant="warning"
@@ -51,6 +53,8 @@
           <i class="fa fa-pencil"></i>
         </b-button>
         <b-button
+          v-b-tooltip.hover 
+          :title="data.item.statusUsuario == true ? 'Desativar': 'Ativar'"
           size="sm"
           v-hasRole="'ESCREVER_USUARIO'"
           :variant="data.item.statusUsuario == true ? 'danger': 'success'"

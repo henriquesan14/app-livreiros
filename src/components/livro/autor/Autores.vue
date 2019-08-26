@@ -45,6 +45,8 @@
       >
         <template slot="actions" slot-scope="data">
           <b-button
+            v-b-tooltip.hover 
+            title="Editar"
             size="sm"
             v-hasRole="'ESCREVER_AUTOR'"
             @click="loadAutor(data.item);$bvModal.show('modal-autor')"

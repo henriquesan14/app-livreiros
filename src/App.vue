@@ -36,4 +36,6 @@ h5.card-title{
   text-align: center;
   font-size: 1rem;
 }
+
+.tooltip { pointer-events: none; }
 </style>
