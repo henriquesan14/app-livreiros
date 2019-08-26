@@ -402,7 +402,7 @@ import { mapGetters } from "vuex";
 import { required, minValue, minLength } from "vuelidate/lib/validators";
 import { VMoney } from "v-money";
 import { validationMsg } from "../../config/validation-msgs";
-import Livro from '../../services/livros';
+import Livro from "../../services/livros";
 export default {
   name: "FormLivro",
   directives: { money: VMoney },
@@ -588,8 +588,8 @@ export default {
       const file = e.target.files[0];
       this.url = URL.createObjectURL(file);
     },
-     invalidFeedBack(field) {
-     return validationMsg(field);
+    invalidFeedBack(field) {
+      return validationMsg(field);
     }
   }
 };

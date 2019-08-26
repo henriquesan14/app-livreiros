@@ -66,7 +66,7 @@
             size="sm"
             v-hasRole="'ESCREVER_DESCRICAO'"
             variant="primary"
-            @click="getDescricoes(data.item.idCategoriaDescricao)"
+            @click="navigate(data.item.idCategoriaDescricao)"
             class="mr-2"
           >
             <i class="fa fa-plus"></i>
@@ -91,7 +91,6 @@
       <b-pagination size="sm" v-model="page" :total-rows="pageCategorias.count" :per-page="10"></b-pagination>
     </b-card>
     <FormCategoria @zera-categoria="getCategorias()" :categoria="categoria" />
-    <Descricoes :idCategoriaDescricao="categoria.idCategoriaDescricao" :loader="loaderDescricao" />
   </div>
 </template>
 
@@ -100,12 +99,11 @@ import { mapGetters } from "vuex";
 import Loading from "../../shared/Loading";
 import PageTitle from "../../template/PageTitle";
 import FormCategoria from "./FormCategoria";
-import Descricoes from "./Descricoes";
 import { showError } from "@/global";
 import Categoria from "../../../services/categorias";
 export default {
   name: "Categorias",
-  components: { Loading, PageTitle, FormCategoria, Descricoes },
+  components: { Loading, PageTitle, FormCategoria },
   data() {
     return {
       categoria: {},
@@ -194,6 +192,9 @@ export default {
     },
     zeraCategoria() {
       this.categoria = {};
+    },
+    navigate(id) {
+      this.$router.push({ name: "descricoes", params: { id } });
     }
   }
 };
