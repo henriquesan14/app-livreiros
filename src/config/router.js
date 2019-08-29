@@ -113,6 +113,11 @@ export default new Router({
           component: () => import('../components/livro/categoria/Descricoes.vue')
         },
         {
+          path:'solicitacoes',
+          name: 'solicitacoes',
+          component: () => import('../components/solicitacoes/Solicitacoes.vue')
+        },
+        {
           path: '',
           redirect: '/dashboard/home'
         },

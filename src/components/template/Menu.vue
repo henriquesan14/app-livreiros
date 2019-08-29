@@ -73,7 +73,13 @@ export default {
           path: "/dashboard/categorias",
           icon: "fas fa-file-alt",
           visible: "BUSCAR_DESCRICAO"
-        }
+        },
+        {
+          text: "Solicitações",
+          path: "/dashboard/solicitacoes",
+          icon: "fas fa-box-open",
+          visible: "BUSCAR_DESCRICAO"
+        },
       ]
     };
   },
