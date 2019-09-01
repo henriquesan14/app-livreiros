@@ -48,7 +48,7 @@
       <!--info-->
 
       <div class="info2-livro">
-        <h4>{{'R$' + livro._source.precoLivro}}</h4>
+        <h4>{{livro._source.precoLivro | currency}}</h4>
         <div class="btns-livro">
           <b-button
             v-b-tooltip.hover 
@@ -109,6 +109,9 @@
           hover
           striped
         >
+          <template slot="precoLivroDescrito" slot-scope="data">
+            {{data.item.precoLivroDescrito | currency}}
+          </template>
           <template slot="actions" slot-scope="data">
             <b-button
               size="sm"
