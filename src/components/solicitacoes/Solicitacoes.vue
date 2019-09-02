@@ -73,39 +73,46 @@
 <script>
 import PageTitle from '../template/PageTitle';
 import Loading from '../shared/Loading';
+import Solicitacoes from '../../services/solicitacoes';
+import moment from 'moment';
 export default {
     name: 'Solicitacoes',
     components: {PageTitle, Loading},
     data(){
         return {
             page: 1,
-            pageSolicitacoes: {
-                count: 50,
-                rows: [
-                    {id: 1, data: '01/02/2019 12:00',obs: 'N/A', qtd: 1, status: 'PENDENTE', usuario: 'Vladmir'},
-                    {id: 2, data: '01/02/2019 12:00',obs: 'N/A', qtd: 1, status: 'PENDENTE', usuario: 'Vladmir'},
-                    {id: 3, data: '01/02/2019 12:00',obs: 'N/A', qtd: 1, status: 'PENDENTE', usuario: 'Vladmir'},
-                    {id: 4, data: '01/02/2019 12:00',obs: 'N/A', qtd: 1, status: 'PENDENTE', usuario: 'Vladmir'},
-                    {id: 5, data: '01/02/2019 12:00',obs: 'N/A', qtd: 1, status: 'PENDENTE', usuario: 'Vladmir'},
-                    {id: 6, data: '01/02/2019 12:00',obs: 'N/A', qtd: 1, status: 'PENDENTE', usuario: 'Vladmir'},
-                    {id: 7, data: '01/02/2019 12:00',obs: 'N/A', qtd: 1, status: 'PENDENTE', usuario: 'Vladmir'},
-                    {id: 8, data: '01/02/2019 12:00',obs: 'N/A', qtd: 1, status: 'PENDENTE', usuario: 'Vladmir'},
-                    {id: 9, data: '01/02/2019 12:00',obs: 'N/A', qtd: 1, status: 'PENDENTE', usuario: 'Vladmir'},
-                    {id: 10, data: '01/02/2019 12:00',obs: 'N/A', qtd: 1, status: 'PENDENTE', usuario: 'Vladmir'},
-                    {id: 11, data: '01/02/2019 12:00',obs: 'N/A', qtd: 1, status: 'PENDENTE', usuario: 'Vladmir'},
-                    {id: 12, data: '01/02/2019 12:00',obs: 'N/A', qtd: 1, status: 'PENDENTE', usuario: 'Vladmir'},
-                    ]
-            },
             fields: [
-                { key: "id", label: "Cód.", sortable: true },
-                { key: "data", label: "Data/hora", sortable: true },
-                { key: "obs", label: "Obs.", sortable: true },
-                { key: "qtd", label: "Qtd.", sortable: true },
-                { key: "status", label: "Status", sortable: true },
-                { key: "usuario", label: "Usuário", sortable: true },
+                { key: "idSolicitacao", label: "Cód.", sortable: true },
+                { key: "createdAt", label: "Data/hora", sortable: true, 
+                formatter: value => {
+                  return moment(String(value)).format("DD/MM/YYYY HH:mm");
+                } },
+                { key: "obsSolicitacao", label: "Obs.", sortable: true },
+                { key: "qtdSolicitada", label: "Qtd.", sortable: true },
+                { key: "statusSolicitacao", label: "Status", sortable: true },
+                { key: "usuario.loginUsuario", label: "Usuário", sortable: true },
                 { key: "actions", label: "Ações" }
-            ]
+            ],
+            loader: false,
+            nome: "",
+            pageSolicitacoes: {rows: []}
         }
+    },
+    methods: {
+      async getSolicitacoes(){
+        this.loader = true;
+        try{
+          const res = await Solicitacoes.getSolicitacoes(this.page -1);
+          this.pageSolicitacoes = res.data;
+        }catch(err){
+          showError(err);
+        }finally{
+          this.loader = false;
+        }
+      }
+    },
+    mounted(){
+      this.getSolicitacoes();
     }
 }
 </script>

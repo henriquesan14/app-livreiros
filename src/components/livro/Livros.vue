@@ -37,15 +37,18 @@
       </b-row>
 
       <Loading :loader="loader" />
-      <div class="scroll-table" v-if="!loader">
-        <div v-for="livro in resultLivros.body.hits.hits" :key="livro.idLivro">
-          <BoxLivro :livro="livro"/>
+      <div v-if="!loader">
+        <div class="scroll-table" >
+          <div v-for="livro in resultLivros.body.hits.hits" :key="livro.idLivro">
+            <BoxLivro :livro="livro"/>
+          </div>
         </div>
+        <b-pagination size="sm" v-model="page" :total-rows="resultLivros.body.hits.total.value" :per-page="resultLivros.limite"></b-pagination>
       </div>
       <div v-if="!loader && resultLivros.body.hits.hits.length < 1" class="mb-2">
         <span>Nenhum resultado...</span>
       </div>
-      <b-pagination size="sm" v-model="page" :total-rows="resultLivros.body.hits.total.value" :per-page="resultLivros.limite"></b-pagination>
+      
     </b-card>
 
     <b-modal size="lg" id="new-livro-descrito" hide-footer>
