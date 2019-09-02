@@ -3,44 +3,44 @@
     <div class="box-livro mb-2">
       <div class="img-livro">
         <img
-          :src="'https://imagens-capas-1.s3.amazonaws.com/'+ (livro.imagemLivro == null ? '1557681051638': livro.imagemLivro)"
+          :src="'https://imagens-capas-1.s3.amazonaws.com/'+ (livro._source.imagemLivro == null ? '1557681051638': livro._source.imagemLivro)"
           alt="capa-livro"
         />
       </div>
       <div class="info-livro">
         <div class="title-livro">
           <h4>
-            <strong>{{livro.tituloLivro | toTitle}}</strong>
+            <strong>{{livro._source.tituloLivro | toTitle}}</strong>
           </h4>
-          <h4>{{livro.autor.nomeAutor | toTitle}}</h4>
+          <h4>{{livro._source.autor.nomeAutor | toTitle}}</h4>
         </div>
         <div class="desc-livro">
           <div class="desc1">
             <span>
               <strong>Ano:</strong>
-              {{livro.anoLivro}}
+              {{livro._source.anoLivro}}
             </span>
             <span>
               <strong>Tipo:</strong>
-              {{livro.condicaoLivro}}
+              {{livro._source.condicaoLivro}}
             </span>
             <span>
               <strong>Qtd.:</strong>
-              {{livro.qtdTotal}}
+              {{livro._source.qtdTotal}}
             </span>
           </div>
           <div class="desc2">
             <span>
               <strong>Editora:</strong>
-              {{livro.editora.nomeEditora}}
+              {{livro._source.editora.nomeEditora}}
             </span>
             <span>
               <strong>Assunto:</strong>
-              {{livro.assunto.nomeAssunto}}
+              {{livro._source.assunto.nomeAssunto}}
             </span>
             <span>
               <strong>Cód.:</strong>
-              {{livro.idLivro}}
+              {{livro._source.idLivro}}
             </span>
           </div>
         </div>
@@ -48,14 +48,14 @@
       <!--info-->
 
       <div class="info2-livro">
-        <h4>{{'R$' + livro.precoLivro}}</h4>
+        <h4>{{livro._source.precoLivro | currency}}</h4>
         <div class="btns-livro">
           <b-button
             v-b-tooltip.hover 
             title="Adicionar"
             size="sm"
             v-hasRole="'ESCREVER_LIVRO'"
-            @click="loadLivro(livro.idLivro);zeraLivroDesc();$bvModal.show('new-livro-descrito')"
+            @click="loadLivro(livro._source.idLivro);zeraLivroDesc();$bvModal.show('new-livro-descrito')"
             variant="primary"
             class="mr-2"
           >
@@ -66,7 +66,7 @@
             title="Editar"
             size="sm"
             v-hasRole="'ESCREVER_LIVRO'"
-            @click="navigateLivro(livro.idLivro);"
+            @click="navigateLivro(livro._source.idLivro);"
             variant="warning"
             class="mr-2"
           >
@@ -77,7 +77,7 @@
             title="Visualizar"
             class="btn-plus"
             size="sm"
-            @click="navigate(livro.idLivro)"
+            @click="navigate(livro._source.idLivro)"
             variant="dark"
           >
             <i class="fa fa-search-plus"></i>
@@ -86,8 +86,8 @@
 
         <b-button
           size="sm"
-          :disabled="livro.livrosDescritos.length < 1"
-          @click="loadLivro(livro.idLivro);livro.showCollapse = !livro.showCollapse"
+          :disabled="livro._source.livrosDescritos.length < 1"
+          @click="loadLivro(livro._source.idLivro);livro.showCollapse = !livro.showCollapse"
           class="mt-2"
           variant="secondary"
         >
@@ -98,17 +98,20 @@
       <!--btn-->
     </div>
     <!--box-->
-    <div v-if="livro.livrosDescritos.length > 0">
+    <div v-if="livro._source.livrosDescritos.length > 0">
       <b-collapse id="collapse-livro" class="mb-3" v-model="livro.showCollapse">
         <h4 class="text-center mt-1">Livros Descritos</h4>
         <b-table
           class="table-sm"
           :responsive="true"
-          :items="livro.livrosDescritos"
+          :items="livro._source.livrosDescritos"
           :fields="fields"
           hover
           striped
         >
+          <template slot="precoLivroDescrito" slot-scope="data">
+            {{data.item.precoLivroDescrito | currency}}
+          </template>
           <template slot="actions" slot-scope="data">
             <b-button
               size="sm"
