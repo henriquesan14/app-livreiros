@@ -39,13 +39,13 @@
       <Loading :loader="loader" />
       <div v-if="!loader">
         <div class="scroll-table" >
-          <div v-for="livro in resultLivros.body.hits.hits" :key="livro.idLivro">
+          <div v-for="livro in pageLivros.rows" :key="livro.idLivro">
             <BoxLivro :livro="livro"/>
           </div>
         </div>
-        <b-pagination size="sm" v-model="page" :total-rows="resultLivros.body.hits.total.value" :per-page="resultLivros.limite"></b-pagination>
+        <b-pagination size="sm" v-model="page" :total-rows="pageLivros.count" :per-page="pageLivros.limite"></b-pagination>
       </div>
-      <div v-if="!loader && resultLivros.body.hits.hits.length < 1" class="mb-2">
+      <div v-if="!loader && pageLivros.rows.length < 1" class="mb-2">
         <span>Nenhum resultado...</span>
       </div>
       
@@ -84,7 +84,7 @@ import LivroDescrito from '../../services/livro-descrito';
 export default {
   name: "Livros",
   components: { PageTitle, Loading, FormLivroDescrito, BoxLivro },
-  computed: mapGetters(["resultLivros", "livroSelecionado", "livroDescrito"]),
+  computed: mapGetters(["pageLivros", "livroSelecionado", "livroDescrito"]),
   mounted() {
     this.getLivros();
   },
@@ -110,7 +110,7 @@ export default {
     async getLivros() {
       this.loader = true;
       try {
-        await this.$store.dispatch("GET_LIVROS", {busca: "teste", pagina: this.page -1});
+        await this.$store.dispatch("GET_LIVROS", {busca: this.nomeFiltro, pagina: this.page -1});
       } catch (err) {
         () => {};
       } finally {

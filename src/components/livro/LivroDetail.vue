@@ -179,7 +179,7 @@ export default {
   },
   watch: {
     page() {
-      console.log('page');
+      window.console.log('page');
     }
   },
   mounted() {

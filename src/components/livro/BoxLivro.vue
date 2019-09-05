@@ -3,44 +3,44 @@
     <div class="box-livro mb-2">
       <div class="img-livro">
         <img
-          :src="'https://imagens-capas-1.s3.amazonaws.com/'+ (livro._source.imagemLivro == null ? '1557681051638': livro._source.imagemLivro)"
+          :src="'https://imagens-capas-1.s3.amazonaws.com/'+ (livro.imagemLivro == null ? '1557681051638': livro.imagemLivro)"
           alt="capa-livro"
         />
       </div>
       <div class="info-livro">
         <div class="title-livro">
           <h4>
-            <strong>{{livro._source.tituloLivro | toTitle}}</strong>
+            <strong>{{livro.tituloLivro | toTitle}}</strong>
           </h4>
-          <h4>{{livro._source.autor.nomeAutor | toTitle}}</h4>
+          <h4>{{livro.autor.nomeAutor | toTitle}}</h4>
         </div>
         <div class="desc-livro">
           <div class="desc1">
             <span>
               <strong>Ano:</strong>
-              {{livro._source.anoLivro}}
+              {{livro.anoLivro}}
             </span>
             <span>
               <strong>Tipo:</strong>
-              {{livro._source.condicaoLivro}}
+              {{livro.condicaoLivro}}
             </span>
             <span>
               <strong>Qtd.:</strong>
-              {{livro._source.qtdTotal}}
+              {{livro.qtdTotal}}
             </span>
           </div>
           <div class="desc2">
             <span>
               <strong>Editora:</strong>
-              {{livro._source.editora.nomeEditora}}
+              {{livro.editora.nomeEditora}}
             </span>
             <span>
               <strong>Assunto:</strong>
-              {{livro._source.assunto.nomeAssunto}}
+              {{livro.assunto.nomeAssunto}}
             </span>
             <span>
               <strong>Cód.:</strong>
-              {{livro._source.idLivro}}
+              {{livro.idLivro}}
             </span>
           </div>
         </div>
@@ -48,14 +48,14 @@
       <!--info-->
 
       <div class="info2-livro">
-        <h4>{{livro._source.precoLivro | currency}}</h4>
+        <h4>{{livro.precoLivro | currency}}</h4>
         <div class="btns-livro">
           <b-button
             v-b-tooltip.hover 
             title="Adicionar"
             size="sm"
             v-hasRole="'ESCREVER_LIVRO'"
-            @click="loadLivro(livro._source.idLivro);zeraLivroDesc();$bvModal.show('new-livro-descrito')"
+            @click="loadLivro(livro.idLivro);zeraLivroDesc();$bvModal.show('new-livro-descrito')"
             variant="primary"
             class="mr-2"
           >
@@ -66,7 +66,7 @@
             title="Editar"
             size="sm"
             v-hasRole="'ESCREVER_LIVRO'"
-            @click="navigateLivro(livro._source.idLivro);"
+            @click="navigateLivro(livro.idLivro);"
             variant="warning"
             class="mr-2"
           >
@@ -77,7 +77,7 @@
             title="Visualizar"
             class="btn-plus"
             size="sm"
-            @click="navigate(livro._source.idLivro)"
+            @click="navigate(livro.idLivro)"
             variant="dark"
           >
             <i class="fa fa-search-plus"></i>
@@ -86,8 +86,8 @@
 
         <b-button
           size="sm"
-          :disabled="livro._source.livrosDescritos.length < 1"
-          @click="loadLivro(livro._source.idLivro);livro.showCollapse = !livro.showCollapse"
+          :disabled="livro.livrosDescritos.length < 1"
+          @click="loadLivro(livro.idLivro);livro.showCollapse = !livro.showCollapse"
           class="mt-2"
           variant="secondary"
         >
@@ -98,13 +98,13 @@
       <!--btn-->
     </div>
     <!--box-->
-    <div v-if="livro._source.livrosDescritos.length > 0">
+    <div v-if="livro.livrosDescritos.length > 0">
       <b-collapse id="collapse-livro" class="mb-3" v-model="livro.showCollapse">
         <h4 class="text-center mt-1">Livros Descritos</h4>
         <b-table
           class="table-sm"
           :responsive="true"
-          :items="livro._source.livrosDescritos"
+          :items="livro.livrosDescritos"
           :fields="fields"
           hover
           striped

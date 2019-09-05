@@ -2,7 +2,7 @@ import axios from 'axios';
 import {baseApiUrl} from '@/global'
 
 const state = {
-  resultLivros: {body: {hits: {hits: []}}},
+  pageLivros: {rows: []},
   livro: {
     acabamentoLivro: null,
     condicaoLivro: null
@@ -11,8 +11,8 @@ const state = {
 }
 
 const mutations = {
-  RECEIVE_LIVROS(state, {resultLivros}) {
-    state.resultLivros = resultLivros
+  RECEIVE_LIVROS(state, {pageLivros}) {
+    state.pageLivros = pageLivros
   },
   RECEIVE_LIVRO(state, {livro}){
     state.livro = livro
@@ -26,7 +26,7 @@ const actions = {
   async GET_LIVROS ({commit}, params) {
     const url = `${baseApiUrl}/livros?busca=${params.busca}&pagina=${params.pagina}`;
     const { data } = await axios.get(url);
-    commit('RECEIVE_LIVROS',{ resultLivros: data});
+    commit('RECEIVE_LIVROS',{ pageLivros: data});
   },
   SET_LIVRO({commit}, livro){
     commit('RECEIVE_LIVRO', livro);
@@ -40,7 +40,7 @@ const actions = {
 },
 
 getters =  {
-    resultLivros: state => state.resultLivros,
+    pageLivros: state => state.pageLivros,
     livro: state => state.livro,
     livroSelecionado: state => state.livroSelecionado
 }

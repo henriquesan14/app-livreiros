@@ -49,6 +49,7 @@
               :class="{'is-invalid': submitted && $v.user.senhaUsuario.$invalid, 'is-valid': submitted && !$v.user.senhaUsuario.$invalid}"
               type="password"
               id="senha"
+              autocomplete="false"
               v-model="user.senhaUsuario"
               placeholder="Informe a senha do usuário"
             />
@@ -61,6 +62,7 @@
             label-for="confirmSenha"
           >
             <b-form-input
+            autocomplete="false"
               size="sm"
               maxlength="100"
               :class="{'is-invalid': submitted && $v.user.confirmSenha.$invalid, 'is-valid': submitted && !$v.user.confirmSenha.$invalid}"
