@@ -114,12 +114,25 @@
           </template>
           <template slot="actions" slot-scope="data">
             <b-button
+              v-b-tooltip.hover
+              title="Editar"
+              class="mr-2"
               size="sm"
               v-hasRole="'ESCREVER_LIVRO'"
               @click="loadLivroDesc(data.item);$bvModal.show('edit-livro-descrito')"
               variant="warning"
             >
               <i class="fa fa-pencil"></i>
+            </b-button>
+            <b-button
+              v-b-tooltip.hover
+              title="Solicitar"
+              size="sm"
+              v-hasRole="'ESCREVER_LIVRO'"
+              variant="success"
+              @click="$bvModal.show('modal-solicitacao')"
+            >
+              <i class="fas fa-list-alt"></i>
             </b-button>
           </template>
         </b-table>

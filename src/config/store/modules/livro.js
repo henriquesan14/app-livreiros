@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {baseApiUrl} from '@/global'
+import {baseApiUrl, showError} from '@/global'
 
 const state = {
   pageLivros: {rows: []},
@@ -25,8 +25,12 @@ const mutations = {
 const actions = {
   async GET_LIVROS ({commit}, params) {
     const url = `${baseApiUrl}/livros?busca=${params.busca}&pagina=${params.pagina}`;
-    const { data } = await axios.get(url);
-    commit('RECEIVE_LIVROS',{ pageLivros: data});
+    try{
+      const { data } = await axios.get(url);
+      commit('RECEIVE_LIVROS',{ pageLivros: data});
+    }catch(err){
+      showError(err);
+    }
   },
   SET_LIVRO({commit}, livro){
     commit('RECEIVE_LIVRO', livro);

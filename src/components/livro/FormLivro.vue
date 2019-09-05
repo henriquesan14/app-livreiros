@@ -564,7 +564,7 @@ export default {
   margin: 0 auto;
   width: 180px;
   height: 200px;
-  border: 8px solid #0080ff;
+  border: 4px solid #0080ff;
   border-radius: 5px;
 }
 
