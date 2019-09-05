@@ -8,7 +8,7 @@
       />
 
       <button
-        v-b-tooltip.hover 
+        v-b-tooltip.hover
         title="Remover"
         type="button"
         v-if="url"
@@ -65,14 +65,16 @@
         <b-col md="12">
           <b-form-group label="Autor: *">
             <div class="box-form">
-              <b-form-input
-                @keyup="searchAutores()"
-                autocomplete="off"
-                size="sm"
-                maxlength="100"
-                v-model="autor.nomeAutor"
-                placeholder="Autor..."
-              ></b-form-input>
+              <Autocomplete
+                :valorInicial="livro.nomeAutor"
+                :idAutocomplete="1"
+                :shouldReset="false"
+                title="Selecione um autor..."
+                :items="pageAutores.rows"
+                filterby="nomeAutor"
+                @selected="autorSelected"
+                @change="onChangeAutor"
+              />
               <b-button
                 size="sm"
                 class="btn-form ml-1"
@@ -83,21 +85,6 @@
               </b-button>
             </div>
 
-            <ul v-if="pageAutores.rows.length > 0" class="list">
-              <li
-                @click.prevent="selecionaAutor(autor)"
-                v-for="autor in pageAutores.rows"
-                :key="autor.idAutor"
-              >
-                <a href="#">{{'#' + autor.idAutor + ' - ' + autor.nomeAutor}}</a>
-              </li>
-            </ul>
-
-            <b-badge
-              class="mt-2 selecionado"
-              v-if="livro.idAutor"
-              variant="primary"
-            >{{'#' + livro.idAutor + ' - ' + livro.nomeAutor}}</b-badge>
             <div>
               <span
                 class="text-danger mt-2 font-menor"
@@ -112,39 +99,25 @@
         <b-col md="12">
           <b-form-group label="Assunto: *">
             <div class="box-form">
-              <b-form-input
-                @keyup="searchAssuntos()"
-                autocomplete="off"
-                size="sm"
-                maxlength="100"
-                v-model="assunto.nomeAssunto"
-                placeholder="Assunto..."
+              <Autocomplete
+                :valorInicial="livro.nomeAssunto"
+                :idAutocomplete="2"
+                :shouldReset="false"
+                title="Selecione um assunto..."
+                :items="pageAssuntos.rows"
+                filterby="nomeAssunto"
+                @selected="assuntoSelected"
+                @change="onChangeAssunto"
               />
               <b-button
                 size="sm"
                 variant="primary"
-                class="btn-form"
+                class="btn-form ml-1"
                 @click.prevent="$bvModal.show('modal-assunto')"
               >
                 <i class="fa fa-plus mr-1"></i>Novo
               </b-button>
             </div>
-
-            <ul class="list" v-if="pageAssuntos.rows.length > 0">
-              <li
-                @click.prevent="selecionaAssunto(assunto)"
-                v-for="assunto in pageAssuntos.rows"
-                :key="assunto.idAssunto"
-              >
-                <a href="#">{{'#' + assunto.idAssunto + ' - ' + assunto.nomeAssunto}}</a>
-              </li>
-            </ul>
-
-            <b-badge
-              class="mt-2 selecionado"
-              variant="primary"
-              v-if="livro.idAssunto"
-            >{{'#' + livro.idAssunto + ' - ' + livro.nomeAssunto}}</b-badge>
             <div>
               <span
                 class="text-danger font-menor"
@@ -159,39 +132,25 @@
         <b-col md="12">
           <b-form-group label="Editora: *">
             <div class="box-form">
-              <b-form-input
-                @keyup="searchEditoras()"
-                autocomplete="off"
-                size="sm"
-                maxlength="100"
-                v-model="editora.nomeEditora"
-                placeholder="Editora..."
+              <Autocomplete
+                :valorInicial="livro.nomeEditora"
+                :idAutocomplete="3"
+                :shouldReset="false"
+                title="Selecione uma editora..."
+                :items="pageEditoras.rows"
+                filterby="nomeEditora"
+                @selected="editoraSelected"
+                @change="onChangeEditora"
               />
               <b-button
                 size="sm"
-                class="btn-form"
+                class="btn-form ml-1"
                 variant="primary"
                 @click.prevent="$bvModal.show('modal-editora')"
               >
                 <i class="fa fa-plus mr-1"></i>Nova
               </b-button>
             </div>
-
-            <ul class="list" v-if="pageEditoras.rows.length > 0">
-              <li
-                @click.prevent="selecionaEditora(editora)"
-                v-for="editora in pageEditoras.rows"
-                :key="editora.idEditora"
-              >
-                <a href="#">{{'#' + editora.idEditora + ' - ' + editora.nomeEditora}}</a>
-              </li>
-            </ul>
-
-            <b-badge
-              class="mt-2 selecionado"
-              variant="primary"
-              v-if="livro.idEditora"
-            >{{'#' + livro.idEditora + ' - ' + livro.nomeEditora}}</b-badge>
             <div>
               <span
                 class="text-danger font-menor"
@@ -411,10 +370,11 @@ import { required, minValue, minLength } from "vuelidate/lib/validators";
 import { VMoney } from "v-money";
 import { validationMsg } from "../../config/validation-msgs";
 import Livro from "../../services/livros";
+import Autocomplete from "../shared/Autocomplete";
 export default {
   name: "FormLivro",
   directives: { money: VMoney },
-  components: { FormAutor, FormAssunto, FormEditora },
+  components: { FormAutor, FormAssunto, FormEditora, Autocomplete },
   computed: mapGetters([
     "livro",
     "pageAutores",
@@ -508,42 +468,6 @@ export default {
       this.livro.nomeEditora = this.livro.editora.nomeEditora;
       this.livro.nomeAssunto = this.livro.assunto.nomeAssunto;
     },
-    searchAutores() {
-      if (this.autor.nomeAutor) {
-        this.getAutores(this.autor.nomeAutor);
-      } else {
-        this.resetAutores();
-      }
-    },
-    selecionaAutor(autor) {
-      this.livro.nomeAutor = autor.nomeAutor;
-      this.livro.idAutor = autor.idAutor;
-      this.resetAutores();
-    },
-    searchEditoras() {
-      if (this.editora.nomeEditora) {
-        this.getEditoras(this.editora.nomeEditora);
-      } else {
-        this.resetEditoras();
-      }
-    },
-    selecionaEditora(editora) {
-      this.livro.nomeEditora = editora.nomeEditora;
-      this.livro.idEditora = editora.idEditora;
-      this.resetEditoras();
-    },
-    searchAssuntos() {
-      if (this.assunto.nomeAssunto) {
-        this.getAssuntos(this.assunto.nomeAssunto);
-      } else {
-        this.resetAssuntos();
-      }
-    },
-    selecionaAssunto(assunto) {
-      this.livro.nomeAssunto = assunto.nomeAssunto;
-      this.livro.idAssunto = assunto.idAssunto;
-      this.resetAssuntos();
-    },
     async getAutores(nome) {
       try {
         await this.$store.dispatch("GET_AUTORES", { nome });
@@ -598,6 +522,33 @@ export default {
     },
     invalidFeedBack(field) {
       return validationMsg(field);
+    },
+    autorSelected(autor) {
+      this.livro.nomeAutor = autor.nomeAutor;
+      this.livro.idAutor = autor.idAutor;
+      let livro = {...this.livro};
+      this.$store.dispatch("SET_LIVRO", { livro: livro });
+    },
+    onChangeAutor(nomeAutor) {
+      this.getAutores(nomeAutor);
+    },
+    editoraSelected(editora) {
+      this.livro.nomeEditora = editora.nomeEditora;
+      this.livro.idEditora = editora.idEditora;
+      let livro = {...this.livro};
+      this.$store.dispatch("SET_LIVRO", { livro: livro });
+    },
+    onChangeEditora(nomeEditora) {
+      this.getEditoras(nomeEditora);
+    },
+    assuntoSelected(assunto) {
+      this.livro.nomeAssunto = assunto.nomeAssunto;
+      this.livro.idAssunto = assunto.idAssunto;
+      let livro = {...this.livro};
+      this.$store.dispatch("SET_LIVRO", { livro: livro });
+    },
+    onChangeAssunto(nomeAssunto) {
+      this.getAssuntos(nomeAssunto);
     }
   }
 };
@@ -636,44 +587,4 @@ export default {
   align-items: center;
 }
 
-ul.list {
-  list-style: none;
-  border: 1px solid #ccc;
-  background-color: #fff;
-  border-radius: 3px;
-  margin: 1px 0 0 0;
-  padding: 0;
-  max-height: 125px;
-  overflow: auto;
-
-  li {
-    padding: 5px;
-    cursor: pointer;
-    &:hover {
-      background-color: #efefef;
-    }
-
-    a {
-      text-decoration: none;
-      color: #000;
-      font-weight: bold;
-    }
-  }
-}
-
-.selecionado {
-  font-weight: bold;
-  font-size: 1.1em;
-}
-
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-thumb {
-  -webkit-border-radius: 10px;
-  border-radius: 10px;
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
-  background-color: #0080ff;
-}
 </style>
