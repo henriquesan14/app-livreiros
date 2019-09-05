@@ -40,6 +40,11 @@
         striped
         :items="pageSolicitacoes.rows"
       >
+      <template slot="statusSolicitacao" slot-scope="data">
+        <b-badge
+            :variant="data.item.statusSolicitacao === 'pendente' ? 'success' : 'success'"
+          >{{data.item.statusSolicitacao.toUpperCase()}}</b-badge>
+      </template>
         <template slot="actions" slot-scope="data">
           <b-button
             v-b-tooltip.hover 

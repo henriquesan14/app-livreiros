@@ -101,7 +101,7 @@
               </div>
             </div>
             <div class="box3">
-              <b-form-group>
+              <b-form-group id="sinopse-livro">
                 <label>
                   <strong>Sinopse:</strong>
                 </label>
@@ -179,7 +179,7 @@ export default {
   },
   watch: {
     page() {
-      window.console.log('page');
+      window.console.log("page");
     }
   },
   mounted() {
@@ -201,7 +201,7 @@ export default {
 };
 </script>
 
-<style >
+<style lang="scss">
 textarea.text-sinopse {
   font-size: 0.875rem;
 }
@@ -218,7 +218,7 @@ h5.qtd-estoque {
 }
 
 h5.info-detalhes {
-  font-size: 1.1rem;
+  font-size: 1.4rem;
   text-align: left;
 }
 
@@ -227,6 +227,7 @@ h5.info-detalhes {
   flex-direction: column;
   padding: 10px;
   border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 .box1 {
@@ -238,7 +239,10 @@ h5.info-detalhes {
 .infos1 {
   display: flex;
   flex-direction: column;
-  font-size: 18px;
+
+  span {
+    font-size: 1rem;
+  }
 }
 
 .box2 {
@@ -251,19 +255,35 @@ h5.info-detalhes {
 .infos2 {
   display: flex;
   flex-direction: column;
+
+  span {
+    font-size: 1rem;
+  }
 }
 
 .infos3 {
   display: flex;
   flex-direction: column;
+
+  span {
+    font-size: 1rem;
+  }
 }
 
 .box3 {
   display: flex;
+
+  span {
+    font-size: 1rem;
+  }
+
+  #sinopse-livro {
+    width: 100%;
+  }
 }
 
 img.img-livro {
-  width: 190px;
-  height: 220px;
+  width: 300px;
+  height: 260px;
 }
 </style>
