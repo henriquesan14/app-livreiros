@@ -38,36 +38,38 @@
 
       <Loading :loader="loader" />
       <div v-if="!loader">
-        <div class="scroll-table" >
+        <b-badge class="mb-1">
+          <span v-if="pageLivros.tipoResultado === 'todos resultados'" class="info-result">Foram encontrados {{pageLivros.count}} resultados para sua busca: </span>
+          <span v-if="pageLivros.tipoResultado === 'outros resultados'" class="info-result">Foram encontrados 0 resultados para sua busca, outros resultados relacionados: </span>
+        </b-badge>
+        <div class="scroll-table">
           <div v-for="livro in pageLivros.rows" :key="livro.idLivro">
-            <BoxLivro :livro="livro"/>
+            <BoxLivro :livro="livro" />
           </div>
         </div>
-        <b-pagination size="sm" v-model="page" :total-rows="pageLivros.count" :per-page="pageLivros.limite"></b-pagination>
+        <b-pagination
+          size="sm"
+          v-model="page"
+          :total-rows="pageLivros.count"
+          :per-page="pageLivros.limite"
+        ></b-pagination>
       </div>
       <div v-if="!loader && pageLivros.rows.length < 1" class="mb-2">
         <span>Nenhum resultado...</span>
       </div>
-      
     </b-card>
 
     <b-modal size="lg" id="new-livro-descrito" hide-footer>
       <template slot="modal-title">Cadastro Livro Descrito</template>
       <div class="d-block">
-        <FormLivroDescrito
-          @submit-livro-desc="saveLivroDesc"
-          :livroDescrito="livroDescrito"
-        />
+        <FormLivroDescrito @submit-livro-desc="saveLivroDesc" :livroDescrito="livroDescrito" />
       </div>
     </b-modal>
 
     <b-modal size="lg" id="edit-livro-descrito" hide-footer>
       <template slot="modal-title">Edição Livro Descrito</template>
       <div class="d-block">
-        <FormLivroDescrito
-          @submit-livro-desc="editLivroDesc"
-          
-        />
+        <FormLivroDescrito @submit-livro-desc="editLivroDesc" />
       </div>
     </b-modal>
   </div>
@@ -79,8 +81,8 @@ import { mapGetters } from "vuex";
 import Loading from "../shared/Loading";
 import FormLivroDescrito from "./FormLivroDescrito";
 import { showError } from "@/global";
-import BoxLivro from './BoxLivro';
-import LivroDescrito from '../../services/livro-descrito';
+import BoxLivro from "./BoxLivro";
+import LivroDescrito from "../../services/livro-descrito";
 export default {
   name: "Livros",
   components: { PageTitle, Loading, FormLivroDescrito, BoxLivro },
@@ -98,7 +100,7 @@ export default {
         { name: "Editora", value: "editora" }
       ],
       filtroSelecionado: "titulo",
-      nomeFiltro: "",
+      nomeFiltro: ""
     };
   },
   watch: {
@@ -110,7 +112,10 @@ export default {
     async getLivros() {
       this.loader = true;
       try {
-        await this.$store.dispatch("GET_LIVROS", {busca: this.nomeFiltro, pagina: this.page -1});
+        await this.$store.dispatch("GET_LIVROS", {
+          busca: this.nomeFiltro,
+          pagina: this.page - 1
+        });
       } catch (err) {
         () => {};
       } finally {
@@ -133,7 +138,10 @@ export default {
     },
     async editLivroDesc(livroDesc) {
       try {
-        await LivroDescrito.editLivroDescrito(this.livroDescrito.idLivroDescrito, livroDesc);
+        await LivroDescrito.editLivroDescrito(
+          this.livroDescrito.idLivroDescrito,
+          livroDesc
+        );
         this.$toasted.global.defaultSuccess();
         this.$bvModal.hide("edit-livro-descrito");
         this.getLivros();
@@ -158,4 +166,7 @@ h5 {
   font-size: 1rem;
 }
 
+.info-result {
+  font-size: 1rem;
+}
 </style>
