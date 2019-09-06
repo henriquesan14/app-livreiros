@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="text-center" v-if="loader">
-      <img src="@/assets/loading.svg" />
+    <div v-if="loader" class="text-center">
+      <b-spinner variant="primary" label="Text Centered"></b-spinner>
     </div>
   </div>
 </template>
