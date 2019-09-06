@@ -130,7 +130,7 @@
               size="sm"
               v-hasRole="'ESCREVER_LIVRO'"
               variant="success"
-              @click="$bvModal.show('modal-solicitacao')"
+              @click="loadLivroDesc(data.item);$bvModal.show('modal-solicitacao')"
             >
               <i class="fas fa-list-alt"></i>
             </b-button>

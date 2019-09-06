@@ -1,17 +1,19 @@
 <template>
   <div class="solicitacao-livro">
-      <b-modal size="lg" id="modal-solicitacao" hide-footer>
+    <b-modal size="md" id="modal-solicitacao" hide-footer>
       <template slot="modal-title">Solicitação Livro</template>
       <div class="d-block">
-        <b-form>
+        <b-form @submit.prevent="submitSolicitacao">
           <b-row>
-            <b-col>
-              <b-form-group label="Qtd.: " label-for="qtdSolicitacao">
-                <b-form-input
-                  size="sm"
-                  maxlength="100"
-                  id="qtdSolicitacao"
-                  placeholder="Informe a quantidade solicitada"
+            <b-col md="4">
+              <b-form-group label="Qtd.: " label-for="qtdSolicitacao" 
+              :invalid-feedback="invalidFeedBack($v.solicitacao.qtdSolicitada)">
+                <the-mask 
+                  :class="{'is-invalid': submitted && $v.solicitacao.qtdSolicitada.$invalid, 'is-valid': submitted && !$v.solicitacao.qtdSolicitada.$invalid}"
+                  v-model="solicitacao.qtdSolicitada"
+                  placeholder="Qtd."
+                  mask="#####"
+                  class="form-control form-control-sm"
                 />
               </b-form-group>
             </b-col>
@@ -20,6 +22,7 @@
             <b-col>
               <b-form-group label="Obs.: " label-for="obsSolicitacao">
                 <b-form-textarea
+                  v-model="solicitacao.obsSolicitacao"
                   size="sm"
                   maxlength="100"
                   id="obsSolicitacao"
@@ -43,11 +46,58 @@
 </template>
 
 <script>
+import Solicitacao from "../../services/solicitacoes";
+import { showError } from "@/global";
+import { mapGetters } from "vuex";
+import { required, minValue } from "vuelidate/lib/validators";
+import { validationMsg } from "../../config/validation-msgs";
 export default {
-    name: 'SolicitacaoLivro'
-}
+  name: "SolicitacaoLivro",
+  computed: mapGetters(["livroDescrito"]),
+  data() {
+    return {
+      solicitacao: {},
+      submitted: false
+    };
+  },
+  validations() {
+    return {
+      solicitacao: {
+        qtdSolicitada: { required, minValue: minValue(1) }
+      }
+    };
+  },
+  methods: {
+    submitSolicitacao() {
+      this.submitted = true;
+      this.$v.$touch();
+      if (this.$v.$invalid) {
+        return;
+      }
+      this.submitted = false;
+      this.saveSolicitacao();
+    },
+    async saveSolicitacao() {
+      this.solicitacao.idLivroDescrito = this.livroDescrito.idLivroDescrito;
+      try {
+        await Solicitacao.saveSolicitacao(this.solicitacao);
+        this.$toasted.global.defaultSuccess();
+        this.$bvModal.hide('modal-solicitacao');
+        this.reset();
+      } catch (err) {
+        showError(err);
+      }
+    },
+    reset(){
+      this.solicitacao = {};
+      this.submitted = false;
+    },
+    invalidFeedBack(field) {
+      return validationMsg(field);
+    },
+  }
+};
 </script>
 
 <style>
-
 </style>
