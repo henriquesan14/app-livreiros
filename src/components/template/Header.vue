@@ -1,10 +1,10 @@
 <template>
   <header class="header">
     <div class="box-logo">
+      <i @click="toggleMenu()" class="fas fa-bars"></i>
       <router-link to="/dashboard">
         <img src="@/assets/logo.png" width="200" alt="logo" id="logo-header"/>
       </router-link>
-      <i @click="toggleMenu()" class="fas fa-bars"></i>
     </div>
     <UserDropdown />
   </header>
@@ -17,10 +17,7 @@ export default {
   name: "Header",
   components: { UserDropdown },
   computed: {
-    ...mapGetters(["isMenuVisible"]),
-    icon() {
-      return this.isMenuVisible ? "fa fa-angle-left" : "fa fa-angle-down";
-    }
+    ...mapGetters(["isMenuVisible"])
   },
   methods: {
     toggleMenu() {
@@ -43,7 +40,6 @@ img#logo-header{
   align-items: center;
   border-bottom:1px solid #c2c2c2;
   justify-content: space-between;
-  padding:0 0 0 20px;
 }
 
 .box-logo{
@@ -52,10 +48,10 @@ img#logo-header{
 }
 
 .box-logo i{
-  margin-left:40px;
   cursor: pointer;
   color: #767575;
   font-size: 25px;
+  margin: 0 30px 0 20px;
   &:hover{
     color: #2f353a;
   }

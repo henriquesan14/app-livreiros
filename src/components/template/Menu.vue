@@ -80,6 +80,18 @@ export default {
           icon: "fas fa-box-open",
           visible: "BUSCAR_DESCRICAO"
         },
+        {
+          text: "Clientes",
+          path: "/dashboard/clientes",
+          icon: "far fa-user",
+          visible: "BUSCAR_DESCRICAO"
+        },
+        {
+          text: "Pedidos",
+          path: "/dashboard/pedidos",
+          icon: "fas fa-shopping-cart",
+          visible: "BUSCAR_DESCRICAO"
+        },
       ]
     };
   },
