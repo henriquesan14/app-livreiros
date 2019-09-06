@@ -47,6 +47,7 @@
       </template>
         <template slot="actions" slot-scope="data">
           <b-button
+            @click="confirmarSolicitacao(data.item.idSolicitacao)"
             v-b-tooltip.hover 
             title="Confirmar"
             size="sm"
@@ -56,6 +57,7 @@
             <i class="fa fa-check"></i>
           </b-button>
           <b-button
+            @click="cancelarSolicitacao(data.item.idSolicitacao)"
             v-b-tooltip.hover 
             title="Cancelar"
             size="sm"
@@ -80,6 +82,7 @@ import PageTitle from '../template/PageTitle';
 import Loading from '../shared/Loading';
 import Solicitacoes from '../../services/solicitacoes';
 import moment from 'moment';
+import { showError } from '@/global';
 export default {
     name: 'Solicitacoes',
     components: {PageTitle, Loading},
@@ -103,6 +106,9 @@ export default {
             pageSolicitacoes: {rows: []}
         }
     },
+    mounted(){
+      this.getSolicitacoes();
+    },
     methods: {
       async getSolicitacoes(){
         this.loader = true;
@@ -114,10 +120,23 @@ export default {
         }finally{
           this.loader = false;
         }
+      },
+      async confirmarSolicitacao(id){
+        try{
+          await Solicitacoes.confirmarSolicitacao(id);
+          this.getSolicitacoes();
+        }catch(err){
+          showError(err);
+        }
+      },
+      async cancelarSolicitacao(id){
+        try{
+          await Solicitacoes.cancelarSolicitacao(id);
+          this.getSolicitacoes();
+        }catch(err){
+          showError(err);
+        }
       }
-    },
-    mounted(){
-      this.getSolicitacoes();
     }
 }
 </script>
