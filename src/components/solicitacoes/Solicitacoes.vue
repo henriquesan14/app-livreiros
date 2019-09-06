@@ -1,15 +1,15 @@
 <template>
-    <div class="solicitacoes">
-        <PageTitle icon="fas fa-box-open" main="Administração de solicitações" sub="Gerenciar solicitações de livros" />
-        <b-card header="Editoras">
+  <div class="solicitacoes">
+    <PageTitle
+      icon="fas fa-box-open"
+      main="Administração de solicitações"
+      sub="Gerenciar solicitações de livros"
+    />
+    <b-card header="Editoras">
       <template slot="header">
         <h5 class="card-title">Solicitações de livros</h5>
       </template>
-      <b-button
-        size="sm"
-        variant="dark"
-        class="mb-2"
-      >
+      <b-button size="sm" variant="dark" class="mb-2">
         <i class="fa fa-plus-circle mr-1"></i> Nova Solicitação
       </b-button>
       <b-row>
@@ -40,15 +40,15 @@
         striped
         :items="pageSolicitacoes.rows"
       >
-      <template slot="statusSolicitacao" slot-scope="data">
-        <b-badge
+        <template slot="statusSolicitacao" slot-scope="data">
+          <b-badge
             :variant="data.item.statusSolicitacao === 'pendente' ? 'success' : 'success'"
           >{{data.item.statusSolicitacao.toUpperCase()}}</b-badge>
-      </template>
+        </template>
         <template slot="actions" slot-scope="data">
           <b-button
-            @click="confirmarSolicitacao(data.item.idSolicitacao)"
-            v-b-tooltip.hover 
+            @click="showMsgConfirmacao(data.item)"
+            v-b-tooltip.hover
             title="Confirmar"
             size="sm"
             variant="success"
@@ -57,8 +57,8 @@
             <i class="fa fa-check"></i>
           </b-button>
           <b-button
-            @click="cancelarSolicitacao(data.item.idSolicitacao)"
-            v-b-tooltip.hover 
+            @click="showMsgCancelamento(data.item)"
+            v-b-tooltip.hover
             title="Cancelar"
             size="sm"
             variant="danger"
@@ -74,73 +74,124 @@
       <Loading :loader="loader" />
       <b-pagination size="sm" v-model="page" :total-rows="pageSolicitacoes.count" :per-page="10"></b-pagination>
     </b-card>
-    </div>
+  </div>
 </template>
 
 <script>
-import PageTitle from '../template/PageTitle';
-import Loading from '../shared/Loading';
-import Solicitacoes from '../../services/solicitacoes';
-import moment from 'moment';
-import { showError } from '@/global';
+import PageTitle from "../template/PageTitle";
+import Loading from "../shared/Loading";
+import Solicitacoes from "../../services/solicitacoes";
+import moment from "moment";
+import { showError } from "@/global";
 export default {
-    name: 'Solicitacoes',
-    components: {PageTitle, Loading},
-    data(){
-        return {
-            page: 1,
-            fields: [
-                { key: "idSolicitacao", label: "Cód.", sortable: true },
-                { key: "createdAt", label: "Data/hora", sortable: true, 
-                formatter: value => {
-                  return moment(String(value)).format("DD/MM/YYYY HH:mm");
-                } },
-                { key: "obsSolicitacao", label: "Obs.", sortable: true },
-                { key: "qtdSolicitada", label: "Qtd.", sortable: true },
-                { key: "statusSolicitacao", label: "Status", sortable: true },
-                { key: "usuario.loginUsuario", label: "Usuário", sortable: true },
-                { key: "actions", label: "Ações" }
-            ],
-            loader: false,
-            nome: "",
-            pageSolicitacoes: {rows: []}
-        }
-    },
-    mounted(){
-      this.getSolicitacoes();
-    },
-    methods: {
-      async getSolicitacoes(){
-        this.loader = true;
-        try{
-          const res = await Solicitacoes.getSolicitacoes(this.page -1);
-          this.pageSolicitacoes = res.data;
-        }catch(err){
-          showError(err);
-        }finally{
-          this.loader = false;
-        }
-      },
-      async confirmarSolicitacao(id){
-        try{
-          await Solicitacoes.confirmarSolicitacao(id);
-          this.getSolicitacoes();
-        }catch(err){
-          showError(err);
-        }
-      },
-      async cancelarSolicitacao(id){
-        try{
-          await Solicitacoes.cancelarSolicitacao(id);
-          this.getSolicitacoes();
-        }catch(err){
-          showError(err);
-        }
+  name: "Solicitacoes",
+  components: { PageTitle, Loading },
+  data() {
+    return {
+      page: 1,
+      fields: [
+        { key: "idSolicitacao", label: "Cód.", sortable: true },
+        {
+          key: "createdAt",
+          label: "Data/hora",
+          sortable: true,
+          formatter: value => {
+            return moment(String(value)).format("DD/MM/YYYY HH:mm");
+          }
+        },
+        { key: "obsSolicitacao", label: "Obs.", sortable: true },
+        { key: "qtdSolicitada", label: "Qtd.", sortable: true },
+        { key: "statusSolicitacao", label: "Status", sortable: true },
+        { key: "usuario.loginUsuario", label: "Usuário", sortable: true },
+        { key: "actions", label: "Ações" }
+      ],
+      loader: false,
+      nome: "",
+      pageSolicitacoes: { rows: [] }
+    };
+  },
+  mounted() {
+    this.getSolicitacoes();
+  },
+  methods: {
+    async getSolicitacoes() {
+      this.loader = true;
+      try {
+        const res = await Solicitacoes.getSolicitacoes(this.page - 1);
+        this.pageSolicitacoes = res.data;
+      } catch (err) {
+        showError(err);
+      } finally {
+        this.loader = false;
       }
-    }
-}
+    },
+    async confirmarSolicitacao(id) {
+      try {
+        await Solicitacoes.confirmarSolicitacao(id);
+        this.getSolicitacoes();
+      } catch (err) {
+        showError(err);
+      }
+    },
+    async cancelarSolicitacao(id) {
+      try {
+        await Solicitacoes.cancelarSolicitacao(id);
+        this.getSolicitacoes();
+      } catch (err) {
+        showError(err);
+      }
+    },
+    showMsgConfirmacao(solicitacao) {
+      this.boxTwo = "";
+      this.$bvModal
+        .msgBoxConfirm(
+          `Tem certeza que deseja confirmar a solicitação de Cód. ${solicitacao.idSolicitacao}?`,
+          {
+            title: "Confirmação",
+            size: "md",
+            buttonSize: "sm",
+            okVariant: "danger",
+            okTitle: "SIM",
+            cancelTitle: "NÃO",
+            footerClass: "p-2",
+            hideHeaderClose: false,
+            centered: true
+          }
+        )
+        .then(res => {
+          if (res) {
+            this.confirmarSolicitacao(solicitacao.idSolicitacao);
+          }
+        })
+        .catch(() => {});
+    },
+    showMsgCancelamento(solicitacao) {
+      this.boxTwo = "";
+      this.$bvModal
+        .msgBoxConfirm(
+          `Tem certeza que deseja cancelar a solicitação de Cód. ${solicitacao.idSolicitacao}?`,
+          {
+            title: "Cancelamento",
+            size: "md",
+            buttonSize: "sm",
+            okVariant: "danger",
+            okTitle: "SIM",
+            cancelTitle: "NÃO",
+            footerClass: "p-2",
+            hideHeaderClose: false,
+            centered: true
+          }
+        )
+        .then(res => {
+          if (res) {
+            this.cancelarSolicitacao(solicitacao.idSolicitacao);
+          }
+        })
+        .catch(() => {});
+    },
+  }
+};
 </script>
 
 <style>
-
 </style>
