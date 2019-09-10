@@ -1,6 +1,13 @@
 <template>
   <div class="home">
     <PageTitle icon="fa fa-home" main="Home" sub="Analytics" />
+    <div class="box-cards-dashboard">
+      <Card cor="#007bff" icon="fas fa-shopping-cart" value="102" desc="Pedidos diário"/>
+       <Card cor="#28a745" icon="fas fa-dollar-sign" value="R$ 1200,00" desc="Ganho diário"/>
+        <Card cor="#dc3545" icon="fas fa-chart-bar" value="R$ 20000,00" desc="Média mensal"/>
+         <Card cor="#343a40" icon="fas fa-chart-line" value="500" desc="Total clientes"/>
+      </div>
+      
     <b-card>
       <template slot="header">
         <h5 class="title-card-main">{{infosDia()}}</h5>
@@ -33,10 +40,11 @@ import PageTitle from "../template/PageTitle";
 import Chart from "./Chart";
 import LineChart from "./LineChart";
 import { showError } from "@/global";
-import Stats from '../../services/stats';
+import Stats from "../../services/stats";
+import Card from './Card';
 export default {
   name: "Home",
-  components: { PageTitle, Chart, LineChart },
+  components: { PageTitle, Chart, LineChart, Card },
   data() {
     return {
       loaded: false,
@@ -145,5 +153,13 @@ export default {
 .title-card {
   text-align: center;
   font-size: 0.875rem;
+}
+
+.box-cards-dashboard{
+  width: auto;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
 }
 </style>

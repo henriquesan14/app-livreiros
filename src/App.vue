@@ -9,6 +9,15 @@
   font-family: "Lato", sans-serif;
 }
 
+.card{
+  border: 1px solid #c8ced3 !important;
+}
+
+.card-header{
+  background-color:#f0f3f5 !important;
+  color: #23282c;
+}
+
 body {
   margin: 0;
 }

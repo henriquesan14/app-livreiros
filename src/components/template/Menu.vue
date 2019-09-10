@@ -80,6 +80,18 @@ export default {
           icon: "fas fa-box-open",
           visible: "BUSCAR_DESCRICAO"
         },
+        {
+          text: "Clientes",
+          path: "/dashboard/clientes",
+          icon: "far fa-user",
+          visible: "BUSCAR_DESCRICAO"
+        },
+        {
+          text: "Pedidos",
+          path: "/dashboard/pedidos",
+          icon: "fas fa-shopping-cart",
+          visible: "BUSCAR_DESCRICAO"
+        },
       ]
     };
   },
@@ -109,10 +121,10 @@ nav ul {
     cursor: pointer;
     padding: 8px;
     &:hover {
-      background-color: rgba(255, 255, 255, 0.2);
+      background-color: #20a8d8;
 
       i {
-        color: #20a8d8;
+        color: #fff;
       }
     }
 
@@ -130,7 +142,7 @@ nav ul {
   }
 
   .active {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: #3a4248;
 
     i {
       color: #20a8d8;
@@ -145,7 +157,7 @@ nav ul li span:hover {
 
 .menu {
   grid-area: menu;
-  background: linear-gradient(to right, #232526, #414345);
+  background-color: #2f353a;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;

@@ -17,9 +17,10 @@ export default {
 </script>
 
 <style>
+
 .page-title h1 {
   margin: 0px;
-  font-size: 2.2rem;
+  font-size: 1.8rem;
 }
 
 .page-title h2 {

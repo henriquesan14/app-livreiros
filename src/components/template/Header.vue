@@ -1,11 +1,11 @@
 <template>
   <header class="header">
-    <a @click="toggleMenu()" class="toggle">
-      <i class="fa fa-lg" :class="icon"></i>
-    </a>
-    <h1 class="title">
-      <router-link to="/dashboard">{{title}}</router-link>
-    </h1>
+    <div class="box-logo">
+      <i @click="toggleMenu()" class="fas fa-bars"></i>
+      <router-link to="/dashboard">
+        <img src="@/assets/logo.png" width="200" alt="logo" id="logo-header"/>
+      </router-link>
+    </div>
     <UserDropdown />
   </header>
 </template>
@@ -16,14 +16,8 @@ import { mapGetters } from "vuex";
 export default {
   name: "Header",
   components: { UserDropdown },
-  props: {
-    title: String
-  },
   computed: {
-    ...mapGetters(["isMenuVisible"]),
-    icon() {
-      return this.isMenuVisible ? "fa fa-angle-left" : "fa fa-angle-down";
-    }
+    ...mapGetters(["isMenuVisible"])
   },
   methods: {
     toggleMenu() {
@@ -34,45 +28,32 @@ export default {
 </script>
 
 <style lang="scss">
+
+img#logo-header{
+  height:30px;
+  width:100px;
+}
 .header {
   grid-area: header;
-  background: linear-gradient(to right, #1e469a, #49a7c1);
-
+  background-color: #fff;
   display: flex;
   align-items: center;
-  justify-content: center;
+  border-bottom:1px solid #c2c2c2;
+  justify-content: space-between;
 }
 
-.title {
-  font-size: 1rem;
-  color: #fff;
-  font-weight: 100;
-  flex-grow: 1;
-  text-align: center;
-
-  a {
-    color: #fff;
-    text-decoration: none;
-    &:hover {
-      color: #fff;
-      text-decoration: none;
-    }
-  }
-}
-
-header.header > a.toggle {
-  width: 60px;
-  height: 100%;
-  color: #fff;
-  justify-self: flex-start;
-  text-decoration: none;
-  font-size: 0.875rem;
+.box-logo{
   display: flex;
-  justify-content: center;
   align-items: center;
-  &:hover {
-    color: #fff;
-    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.box-logo i{
+  cursor: pointer;
+  color: #767575;
+  font-size: 25px;
+  margin: 0 30px 0 20px;
+  &:hover{
+    color: #2f353a;
   }
 }
 </style>

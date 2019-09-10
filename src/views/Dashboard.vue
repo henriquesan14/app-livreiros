@@ -1,6 +1,6 @@
 <template>
   <div id="dashboard" :class="{'hide-menu': !isMenuVisible}">
-    <Header title="SGSL - Sistema Livreiros" />
+    <Header />
     <Menu />
     <Content></Content>
     <Footer />
@@ -67,12 +67,17 @@ export default {
     "header header"
     "menu content"
     "menu footer";
+}
 
-  .hide-menu {
-    grid-template-areas:
-      "header header"
-      "content content"
-      "footer footer";
-  }
+.hide-menu {
+  grid-template-areas:
+    "header header"
+    "content content"
+    "footer footer" !important;
+  grid-template-columns: 200px 1fr !important;
+}
+
+#dashboard.hide-menu .menu {
+  display: none;
 }
 </style>

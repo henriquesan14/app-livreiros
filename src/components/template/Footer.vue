@@ -16,7 +16,8 @@ export default {
 <style lang="scss">
 .footer {
   grid-area: footer;
-  background-color: #ddd;
+  background-color: rgb(240, 243, 245);
+  border-top:1px solid #c8ced3;
   color: #333;
   display: flex;
   align-items: center;
