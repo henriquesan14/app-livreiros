@@ -13,7 +13,20 @@
         <i class="fa fa-plus-circle mr-1"></i> Nova Solicitação
       </b-button>
       <b-row>
-        <b-col md="12" sm="12" class="mb-3">
+        <b-col>
+          <b-form-select
+            @change="getSolicitacoes"
+            size="sm"
+            v-model="status"
+          >
+            <option :value="''" disabled>Selecione um status</option>
+            <option :value="''">Todos</option>
+            <option value="pendente">Pendente</option>
+            <option value="confirmado">Confirmado</option>
+            <option value="cancelado">Cancelado</option>
+          </b-form-select>
+        </b-col>
+        <b-col md="10" class="mb-3">
           <b-input-group>
             <b-form-input
               size="sm"
@@ -47,7 +60,7 @@
         </template>
         <template slot="actions" slot-scope="data">
           <b-button
-            
+            :disabled="data.item.statusSolicitacao !== 'pendente'"
             @click="showMsgConfirmacao(data.item)"
             v-b-tooltip.hover
             title="Confirmar"
@@ -58,7 +71,7 @@
             <i class="fa fa-check"></i>
           </b-button>
           <b-button
-            
+            :disabled="data.item.statusSolicitacao !== 'pendente'"
             @click="showMsgCancelamento(data.item)"
             v-b-tooltip.hover
             title="Cancelar"
@@ -109,17 +122,23 @@ export default {
       ],
       loader: false,
       nome: "",
-      pageSolicitacoes: { rows: [] }
+      pageSolicitacoes: { rows: [] },
+      status: ''
     };
   },
   mounted() {
     this.getSolicitacoes();
   },
+  watch: {
+    page() {
+      this.getSolicitacoes();
+    }
+  },
   methods: {
     async getSolicitacoes() {
       this.loader = true;
       try {
-        const res = await Solicitacoes.getSolicitacoes(this.page - 1);
+        const res = await Solicitacoes.getSolicitacoes(this.page - 1, 10, this.status);
         this.pageSolicitacoes = res.data;
       } catch (err) {
         showError(err);
@@ -154,7 +173,9 @@ export default {
         )
         .then(res => {
           if (res) {
-            this.statusSolicitacao(solicitacao.idSolicitacao, {status: 'confirmado'});
+            this.statusSolicitacao(solicitacao.idSolicitacao, {
+              status: "confirmado"
+            });
           }
         })
         .catch(() => {});
@@ -178,11 +199,13 @@ export default {
         )
         .then(res => {
           if (res) {
-            this.statusSolicitacao(solicitacao.idSolicitacao, {status: 'cancelado'});
+            this.statusSolicitacao(solicitacao.idSolicitacao, {
+              status: "cancelado"
+            });
           }
         })
         .catch(() => {});
-    },
+    }
   }
 };
 </script>
