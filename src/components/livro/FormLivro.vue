@@ -441,7 +441,7 @@ export default {
       this.$store.dispatch("RESET_EDITORAS");
     },
     async searchIsbn() {
-      if (this.livro.isbn.length >= 10) {
+      if (this.livro.isbn && this.livro.isbn.length >= 10) {
         let loader = this.$loading.show();
         try {
           const res = await Livro.searchIsbn(this.livro.isbn);
@@ -457,10 +457,22 @@ export default {
       this.autor.nomeAutor = res.data.busca.autorLivro;
       this.editora.nomeEditora = res.data.busca.editoraLivro;
       let livro = { ...this.livro };
-      livro.tituloLivro = res.data.busca.tituloLivro;
-      livro.paginasLivro = res.data.busca.paginasLivro;
-      livro.anoLivro ? (livro.anoLivro = res.data.busca.anoLivro) : null;
-      livro.sinopseLivro = res.data.busca.sinopseLivro;
+      res.data.busca.titulo ? (livro.tituloLivro = res.data.busca.titulo) : null;
+      res.data.busca.anoLivro ? (livro.anoLivro = res.data.busca.anoLivro) : null;
+      res.data.busca.idiomaLivro ? (livro.idiomaLivro = res.data.busca.idiomaLivro) : null;
+      res.data.busca.paginasLivro ? (livro.paginasLivro = res.data.busca.paginasLivro) : null;
+      res.data.busca.sinopseLivro ? (livro.sinopseLivro = res.data.busca.sinopseLivro) : null;
+      res.data.busca.taducaoLivro ? (livro.traducaoLivro = res.data.busca.taducaoLivro) : null;
+      res.data.busca.pesoLivro ? (livro.pesoLivro = res.data.busca.pesoLivro) : null;
+      res.data.busca.edicaoLivro ? (livro.edicaoLivro = res.data.busca.edicaoLivro) : null;
+      if(res.data.busca.autorLivro){
+        livro.nomeAutor = res.data.busca.autorLivro;
+        this.getAutores(livro.nomeAutor);
+      }
+      if(res.data.busca.editoraLivro){
+        livro.nomeEditora = res.data.busca.editoraLivro;
+        this.getEditoras(livro.nomeEditora);
+      }
       this.$store.dispatch("SET_LIVRO", { livro: livro });
     },
     convertLivro() {
