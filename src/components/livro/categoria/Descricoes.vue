@@ -29,7 +29,7 @@
           <template slot="statusDescricao" slot-scope="data">
             <b-badge
               :variant="data.item.statusDescricao ? 'success' : 'danger'"
-            >{{data.item.statusDescricao ? 'Ativa':'Desativada'}}</b-badge>
+            >{{data.item.statusDescricao ? 'ATIVA':'DESATIVADA'}}</b-badge>
           </template>
           <template slot="actions" slot-scope="data">
             <b-button

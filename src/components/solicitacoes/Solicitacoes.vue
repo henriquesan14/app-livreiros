@@ -42,11 +42,12 @@
       >
         <template slot="statusSolicitacao" slot-scope="data">
           <b-badge
-            :variant="data.item.statusSolicitacao === 'pendente' ? 'success' : 'success'"
+            :variant="data.item.statusSolicitacao === 'confirmado' ? 'success' : 'danger'"
           >{{data.item.statusSolicitacao.toUpperCase()}}</b-badge>
         </template>
         <template slot="actions" slot-scope="data">
           <b-button
+            
             @click="showMsgConfirmacao(data.item)"
             v-b-tooltip.hover
             title="Confirmar"
@@ -57,6 +58,7 @@
             <i class="fa fa-check"></i>
           </b-button>
           <b-button
+            
             @click="showMsgCancelamento(data.item)"
             v-b-tooltip.hover
             title="Cancelar"
@@ -125,17 +127,9 @@ export default {
         this.loader = false;
       }
     },
-    async confirmarSolicitacao(id) {
+    async statusSolicitacao(id, status) {
       try {
-        await Solicitacoes.confirmarSolicitacao(id);
-        this.getSolicitacoes();
-      } catch (err) {
-        showError(err);
-      }
-    },
-    async cancelarSolicitacao(id) {
-      try {
-        await Solicitacoes.cancelarSolicitacao(id);
+        await Solicitacoes.statusSolicitacao(id, status);
         this.getSolicitacoes();
       } catch (err) {
         showError(err);
@@ -160,7 +154,7 @@ export default {
         )
         .then(res => {
           if (res) {
-            this.confirmarSolicitacao(solicitacao.idSolicitacao);
+            this.statusSolicitacao(solicitacao.idSolicitacao, {status: 'confirmado'});
           }
         })
         .catch(() => {});
@@ -184,7 +178,7 @@ export default {
         )
         .then(res => {
           if (res) {
-            this.cancelarSolicitacao(solicitacao.idSolicitacao);
+            this.statusSolicitacao(solicitacao.idSolicitacao, {status: 'cancelado'});
           }
         })
         .catch(() => {});

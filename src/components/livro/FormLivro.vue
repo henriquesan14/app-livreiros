@@ -542,6 +542,7 @@ export default {
       this.$store.dispatch("SET_LIVRO", { livro: livro });
     },
     onChangeAutor(nomeAutor) {
+      this.autor.nomeAutor = nomeAutor;
       this.getAutores(nomeAutor);
     },
     editoraSelected(editora) {
@@ -551,6 +552,7 @@ export default {
       this.$store.dispatch("SET_LIVRO", { livro: livro });
     },
     onChangeEditora(nomeEditora) {
+      this.editora.nomeEditora = nomeEditora;
       this.getEditoras(nomeEditora);
     },
     assuntoSelected(assunto) {
@@ -560,6 +562,7 @@ export default {
       this.$store.dispatch("SET_LIVRO", { livro: livro });
     },
     onChangeAssunto(nomeAssunto) {
+      this.assunto.nomeAssunto = nomeAssunto;
       this.getAssuntos(nomeAssunto);
     }
   }

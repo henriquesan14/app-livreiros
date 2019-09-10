@@ -38,7 +38,7 @@
       <template slot="statusUsuario" slot-scope="data">
         <b-badge
           :variant="data.item.statusUsuario ? 'success' : 'danger'"
-        >{{data.item.statusUsuario ? 'Ativo':'Desativado'}}</b-badge>
+        >{{data.item.statusUsuario ? 'ATIVO':'DESATIVADO'}}</b-badge>
       </template>
       <template slot="actions" slot-scope="data">
         <b-button

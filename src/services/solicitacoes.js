@@ -8,10 +8,7 @@ export default {
     saveSolicitacao: (solicitacao) => {
         return axios.post(`${baseApiUrl}/solicitacoes`, solicitacao);
     },
-    confirmarSolicitacao: (id) => {
-        return axios.put(`${baseApiUrl}/solicitacoes/${id}/confirmar`);
-    },
-    cancelarSolicitacao: (id) => {
-        return axios.put(`${baseApiUrl}/solicitacoes/${id}/cancelar`);
+    statusSolicitacao: (id, status) => {
+        return axios.put(`${baseApiUrl}/solicitacoes/${id}/status`, status);
     }
 }

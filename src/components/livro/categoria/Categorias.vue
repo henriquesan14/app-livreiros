@@ -50,7 +50,7 @@
         <template slot="statusCategoriaDescricao" slot-scope="data">
           <b-badge
             :variant="data.item.statusCategoriaDescricao ? 'success' : 'danger'"
-          >{{data.item.statusCategoriaDescricao ? 'Ativa':'Desativada'}}</b-badge>
+          >{{data.item.statusCategoriaDescricao ? 'ATIVA':'DESATIVADA'}}</b-badge>
         </template>
         <template slot="actions" slot-scope="data">
           <b-button
