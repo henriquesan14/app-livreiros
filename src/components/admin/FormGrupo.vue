@@ -35,7 +35,7 @@
     <b-badge class="mb-2" variant="primary">
       <span
         v-if="categoriaSelecionada"
-        id="title-perm"
+        class="title-badge"
       >PERMISSÕES CATEGORIA: {{categoriaSelecionada.toUpperCase()}}</span>
     </b-badge>
     <b-table class="table-sm" :fields="fields" :items="permissoes" :responsive="true" hover striped>
@@ -119,7 +119,4 @@ export default {
 </script>
     
 <style>
-#title-perm {
-  font-size: 1rem;
-}
 </style>

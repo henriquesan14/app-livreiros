@@ -39,8 +39,8 @@
       <Loading :loader="loader" />
       <div v-if="!loader">
         <b-badge class="mb-1">
-          <span v-if="pageLivros.tipoResultado === 'todos resultados'" class="info-result">Foram encontrados {{pageLivros.count}} resultados para sua busca: </span>
-          <span v-if="pageLivros.tipoResultado === 'outros resultados'" class="info-result">Foram encontrados {{pageLivros.count}} resultados relacionados para sua busca: </span>
+          <span v-if="pageLivros.tipoResultado === 'todos resultados'" class="title-badge">Foram encontrados {{pageLivros.count}} resultados para sua busca: </span>
+          <span v-if="pageLivros.tipoResultado === 'outros resultados'" class="title-badge">Foram encontrados {{pageLivros.count}} resultados relacionados para sua busca: </span>
         </b-badge>
         <div class="scroll-table">
           <div v-for="livro in pageLivros.rows" :key="livro.idLivro">
@@ -168,7 +168,4 @@ h5 {
   font-size: 1rem;
 }
 
-.info-result {
-  font-size: 1rem;
-}
 </style>

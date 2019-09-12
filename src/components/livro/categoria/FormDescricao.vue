@@ -25,7 +25,7 @@
         </b-col>
       </b-row>
       <b-button size="sm" type="submit" class="mb-3 mr-2" variant="success">
-        <i class="fa fa-save mr-1"></i>Alterar
+        <i class="fa fa-save mr-1"></i>Salvar
       </b-button>
       <b-button
         v-if="descricao.idDescricao"

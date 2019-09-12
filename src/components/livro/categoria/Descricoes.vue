@@ -17,6 +17,7 @@
       <template slot="modal-title">Gerenciar Descrições</template>
       <Loading :loader="loader || loaderDesc" />
       <div v-if="!loader && !loaderDesc" class="d-block">
+        <b-badge><span class="title-badge">Nova Descrição</span></b-badge>
         <FormDescricao @submit-descricao="saveDescricao" :descricao="descricao" />
         <b-table
           class="table-sm"
