@@ -47,4 +47,8 @@ h5.card-title{
 }
 
 .tooltip { pointer-events: none; }
+
+.title-badge{
+  font-size:1rem;
+}
 </style>
