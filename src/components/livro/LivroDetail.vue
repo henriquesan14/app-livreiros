@@ -115,16 +115,24 @@
               </b-form-group>
             </div>
             <h4 class="text-center mt-3">Movimentações</h4>
-            <b-table
-              class="table-sm"
-              :responsive="true"
-              :items="livro.livroMovimentos"
-              :fields="fields"
-              striped
-              hover
-            ></b-table>
-            <b-pagination size="sm" v-model="page" :total-rows="50" :per-page="10"></b-pagination>
-            <div v-if="livro.livroMovimentos.length < 1">Nenhuma movimentação</div>
+            <Loading :loader="loaderMovimentos" />
+            <div v-if="!loaderMovimentos">
+              <b-table
+                class="table-sm"
+                :responsive="true"
+                :items="pageMovimentos.rows"
+                :fields="fields"
+                striped
+                hover
+              ></b-table>
+              <b-pagination
+                size="sm"
+                v-model="page"
+                :total-rows="pageMovimentos.count"
+                :per-page="pageMovimentos.limite"
+              ></b-pagination>
+              <div v-if="pageMovimentos.rows.length < 1">Nenhuma movimentação</div>
+            </div>
           </div>
         </div>
       </div>
@@ -155,12 +163,12 @@ export default {
       livro: {
         autor: {},
         editora: {},
-        assunto: {},
-        livroMovimentos: [],
-        livrosDescritos: []
+        assunto: {}
       },
       date: "2019-05-22 16:10",
       loader: false,
+      pageMovimentos: { rows: [] },
+      loaderMovimentos: false,
       fields: [
         {
           key: "createdAt",
@@ -179,11 +187,12 @@ export default {
   },
   watch: {
     page() {
-      window.console.log("page");
+      this.getMovimentos(this.$route.params.id);
     }
   },
   mounted() {
     this.getLivro(this.$route.params.id);
+    this.getMovimentos(this.$route.params.id);
   },
   methods: {
     async getLivro(id) {
@@ -195,6 +204,17 @@ export default {
         showError(err);
       } finally {
         this.loader = false;
+      }
+    },
+    async getMovimentos(idLivro) {
+      this.loaderMovimentos = true;
+      try {
+        const res = await Livro.getMovimentos(idLivro, this.page -1);
+        this.pageMovimentos = res.data;
+      } catch (err) {
+        showError(err);
+      } finally {
+        this.loaderMovimentos = false;
       }
     }
   }

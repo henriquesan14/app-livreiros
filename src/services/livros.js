@@ -16,5 +16,8 @@ export default {
     },
     searchIsbn: (isbn) => {
         return axios.get(`${baseApiUrl}/livros/isbn/${isbn}`);
+    },
+    getMovimentos: (idLivro, page = 0, limite = 10) => {
+        return axios.get(`${baseApiUrl}/livros/${idLivro}/movimentos?pagina=${page}&limite=${limite}`);
     }
 }
