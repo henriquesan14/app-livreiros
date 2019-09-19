@@ -14,33 +14,31 @@
       </b-button>
       <b-row>
         <b-col>
-          <b-form-select
-            @change="getSolicitacoes"
-            size="sm"
-            v-model="status"
-          >
-            <option :value="''" disabled>Selecione um status</option>
-            <option :value="''">Todos</option>
-            <option value="pendente">Pendente</option>
-            <option value="confirmado">Confirmado</option>
-            <option value="cancelado">Cancelado</option>
-          </b-form-select>
+          <b-form-group label="Status">
+            <b-form-select @change="getSolicitacoes" size="sm" v-model="status">
+              <option :value="''" disabled>Selecione um status</option>
+              <option :value="''">Todos</option>
+              <option value="pendente">Pendente</option>
+              <option value="confirmado">Confirmado</option>
+              <option value="cancelado">Cancelado</option>
+            </b-form-select>
+          </b-form-group>
         </b-col>
-        <b-col md="10" class="mb-3">
-          <b-input-group>
+        <b-col md="5" class="mb-3">
+          <b-form-group label="Data inicio:">
             <b-form-input
+              @change="getSolicitacoes"
               size="sm"
-              @keyup.enter="getEditoras()"
-              type="text"
-              v-model="nome"
+              type="date"
+              v-model="dataInicio"
               placeholder="Pesquise o nome do livro..."
             />
-            <b-input-group-append>
-              <b-button size="sm" @click="getSolicitacoes()" variant="primary">
-                <i class="fa fa-search"></i>
-              </b-button>
-            </b-input-group-append>
-          </b-input-group>
+          </b-form-group>
+        </b-col>
+        <b-col md="5" class="mb-3">
+          <b-form-group label="Data Fim:">
+            <b-form-input @change="getSolicitacoes" size="sm" type="date" v-model="dataFim" />
+          </b-form-group>
         </b-col>
       </b-row>
 
@@ -123,7 +121,9 @@ export default {
       loader: false,
       nome: "",
       pageSolicitacoes: { rows: [] },
-      status: ''
+      status: "",
+      dataInicio: "",
+      dataFim: ""
     };
   },
   mounted() {
@@ -138,7 +138,13 @@ export default {
     async getSolicitacoes() {
       this.loader = true;
       try {
-        const res = await Solicitacoes.getSolicitacoes(this.page - 1, 10, this.status);
+        const res = await Solicitacoes.getSolicitacoes(
+          this.page - 1,
+          10,
+          this.status,
+          this.dataInicio,
+          this.dataFim
+        );
         this.pageSolicitacoes = res.data;
       } catch (err) {
         showError(err);
