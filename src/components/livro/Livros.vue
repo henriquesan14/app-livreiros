@@ -17,9 +17,6 @@
       <b-row>
         <b-col md="12" sm="12" class="mb-3">
           <b-input-group>
-            <b-form-select size="sm" v-model="filtroSelecionado" class="col-2 mr-2">
-              <option v-for="op in options" :key="op.name" :value="op.value">{{op.name}}</option>
-            </b-form-select>
             <b-form-input
               size="sm"
               @keyup.enter="getLivros()"

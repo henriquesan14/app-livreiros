@@ -457,7 +457,7 @@ export default {
       this.autor.nomeAutor = res.data.busca.autorLivro;
       this.editora.nomeEditora = res.data.busca.editoraLivro;
       let livro = { ...this.livro };
-      res.data.busca.titulo ? (livro.tituloLivro = res.data.busca.titulo) : null;
+      res.data.busca.tituloLivro ? (livro.tituloLivro = res.data.busca.tituloLivro) : null;
       res.data.busca.anoLivro ? (livro.anoLivro = res.data.busca.anoLivro) : null;
       res.data.busca.idiomaLivro ? (livro.idiomaLivro = res.data.busca.idiomaLivro) : null;
       res.data.busca.paginasLivro ? (livro.paginasLivro = res.data.busca.paginasLivro) : null;
@@ -473,6 +473,7 @@ export default {
         livro.nomeEditora = res.data.busca.editoraLivro;
         this.getEditoras(livro.nomeEditora);
       }
+      res.data.busca.imagemLivro ? (livro.imagemLivro = res.data.busca.imagemLivro.imagemLivro) : null;
       this.$store.dispatch("SET_LIVRO", { livro: livro });
     },
     convertLivro() {
