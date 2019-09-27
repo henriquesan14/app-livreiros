@@ -2,6 +2,9 @@ import axios from 'axios';
 import {baseApiUrl} from '@/global';
 
 export default {
+    getDescricoes: () => {
+        return axios.get(`${baseApiUrl}/descricoes/ativos`);
+    },
     saveDescricao: (descricao) => {
         return axios.post(`${baseApiUrl}/descricoes`, descricao);
     },

@@ -88,6 +88,16 @@ export default new Router({
           component: () => import('../components/livro/LivroDetail.vue')
         },
         {
+          path: 'livros/:idlivro/livrodescrito',
+          name: 'cadastro-livro-descrito',
+          component: () => import('../components/livro/CadastroLivroDescrito.vue')
+        },
+        {
+          path: 'livros/:idlivro/livrodescrito/:idlivrodescrito',
+          name: 'edicao-livro-descrito',
+          component: () => import('../components/livro/EdicaoLivroDescrito.vue')
+        },
+        {
           path: 'assuntos',
           name: 'assunto',
           component: () => import('../components/livro/assunto/Assuntos.vue')

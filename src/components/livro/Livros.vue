@@ -55,20 +55,6 @@
         <span>Nenhum resultado...</span>
       </div>
     </b-card>
-
-    <b-modal size="lg" id="new-livro-descrito" hide-footer>
-      <template slot="modal-title">Cadastro Livro Descrito</template>
-      <div class="d-block">
-        <FormLivroDescrito @submit-livro-desc="saveLivroDesc" :livroDescrito="livroDescrito" />
-      </div>
-    </b-modal>
-
-    <b-modal size="lg" id="edit-livro-descrito" hide-footer>
-      <template slot="modal-title">Edição Livro Descrito</template>
-      <div class="d-block">
-        <FormLivroDescrito @submit-livro-desc="editLivroDesc" />
-      </div>
-    </b-modal>
     <SolicitacaoLivro />
   </div>
 </template>

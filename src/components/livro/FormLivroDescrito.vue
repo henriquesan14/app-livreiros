@@ -1,36 +1,38 @@
 <template>
   <div>
     <Loading :loader="loader" />
-    <div v-if="!loader" class="table-responsive">
-      <table class="table table-hover table-sm table-striped">
-        <thead class="thead-dark">
-          <tr>
-            <th>Título</th>
-            <th>Autor</th>
-            <th>Editora</th>
-            <th>Ano</th>
-            <th>Condicao</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{{livro.tituloLivro}}</td>
-            <td>{{livro.autor.nomeAutor ? livro.autor.nomeAutor : 'N/A'}}</td>
-            <td>{{livro.editora.nomeEditora ? livro.editora.nomeEditora: 'N/A'}}</td>
-            <td>{{livro.anoLivro}}</td>
-            <td>{{livro.condicaoLivro}}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <b-form @submit.prevent="submitLivroDesc()" v-if="!loader">
-      <b-row>
-        <b-col>
-          <b-form-group label="Código.">
-            <b-form-input size="sm" :readonly="true" :value="livro.idLivro" />
-          </b-form-group>
-        </b-col>
-        <b-col>
+    <div v-if="!loader">
+      <div v-if="!loader" class="table-responsive">
+        <table class="table table-hover table-sm table-striped">
+          <thead class="thead-dark">
+            <tr>
+              <th>Título</th>
+              <th>Autor</th>
+              <th>Editora</th>
+              <th>Ano</th>
+              <th>Condicao</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{livro.tituloLivro}}</td>
+              <td>{{livro.autor.nomeAutor ? livro.autor.nomeAutor : 'N/A'}}</td>
+              <td>{{livro.editora.nomeEditora ? livro.editora.nomeEditora: 'N/A'}}</td>
+              <td>{{livro.anoLivro}}</td>
+              <td>{{livro.condicaoLivro}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <b-form @submit.prevent="submitLivroDesc()">
+        <b-row>
+          <b-col>
+            <b-form-group label="Código.">
+              <b-form-input size="sm" v-model="livro.idLivro" readonly/>
+            </b-form-group>
+          </b-col>
+          <b-col>
           <b-form-group label="SubCódigo.">
             <b-form-input
               size="sm"
@@ -39,16 +41,15 @@
               v-model="livroDescrito.subIdLivro"
               maxlength="2"
             />
-          </b-form-group>
-        </b-col>
-        <b-col>
-          <b-form-group label="Valor">
-            <b-form-input size="sm" :readonly="true" :value="livro.precoLivro" />
-          </b-form-group>
-        </b-col>
-      </b-row>
-
-      <b-row>
+            </b-form-group>
+          </b-col>
+          <b-col>
+            <b-form-group label="Valor">
+              <b-form-input size="sm" :readonly="true" :value="livro.precoLivro" />
+            </b-form-group>
+          </b-col>
+        </b-row>
+        <b-row>
         <b-col md="4">
           <b-form-group :label="livroDescrito.idLivroDescrito? 'Qtd. Atual' : 'Qtd.'">
             <the-mask
@@ -59,86 +60,83 @@
               v-model="livroDescrito.qtdLivro"
             />
           </b-form-group>
-        </b-col>
-        <b-col v-if="livroDescrito.idLivroDescrito">
-          <b-form-group label="Qtd.">
-            <the-mask mask="####" class="form-control form-control-sm" v-model="livroDescrito.qtd" />
-          </b-form-group>
-        </b-col>
-        <b-col v-if="livroDescrito.idLivroDescrito">
-          <b-form-group label="Tipo Movimento">
-            <b-form-select size="sm" v-model="livroDescrito.movimento">
-              <option v-for="op in options" :key="op.name" :value="op.value">{{op.name}}</option>
-            </b-form-select>
-          </b-form-group>
-        </b-col>
-      </b-row>
+          </b-col>
+          <b-col v-if="livroDescrito.idLivroDescrito">
+            <b-form-group label="Qtd.">
+              <the-mask mask="####" class="form-control form-control-sm" v-model="livroDescrito.qtd" />
+            </b-form-group>
+          </b-col>
+          <b-col v-if="livroDescrito.idLivroDescrito">
+            <b-form-group label="Tipo Movimento">
+              <b-form-select size="sm" v-model="livroDescrito.movimento">
+                <option v-for="op in options" :key="op.name" :value="op.value">{{op.name}}</option>
+              </b-form-select>
+            </b-form-group>
+          </b-col>
+        </b-row>
 
-      <b-row>
-        <b-col>
-          <b-form-group label="Obs.">
-            <b-form-textarea v-model="livroDescrito.obsLivroDescrito" />
-          </b-form-group>
-        </b-col>
-      </b-row>
+        <b-row>
+          <b-col>
+            <b-form-group label="Obs.">
+              <b-form-textarea v-model="livroDescrito.obsLivroDescrito" />
+            </b-form-group>
+          </b-col>
+        </b-row>
 
-      <b-row v-if="livroDescrito.textLivroDescrito">
-        <b-col>
-          <b-form-group label="Descrição Atual">
-            <b-form-textarea :readonly="true" v-model="livroDescrito.textLivroDescrito" />
-          </b-form-group>
-        </b-col>
-      </b-row>
+        <b-row v-if="livroDescrito.textLivroDescrito">
+          <b-col>
+            <b-form-group label="Descrição Atual">
+              <b-form-textarea :readonly="true" v-model="livroDescrito.textLivroDescrito" />
+            </b-form-group>
+          </b-col>
+        </b-row>
 
-      <div v-for="categoria in categoriasAtivas" :key="categoria.idCategoriaDescricao">
-        <h5 class="title-descricoes">
-          <strong>{{categoria.nomeCategoriaDescricao}}</strong>
-        </h5>
-        <b-table class="table-sm" :items="categoria.descricoes" :fields="fields" striped hover>
-          <template slot="actions" slot-scope="data">
-            <b-form-checkbox-group>
-              <b-form-checkbox @change="onChangeDesc(data.item.idDescricao)"></b-form-checkbox>
+        <b-row>
+        <b-col md="12" sm="12">
+          <b-form-group label="Descrições: *">
+            <b-form-checkbox-group class="is-invalid" v-model="livroDescrito.descricoes" name="descricoes">
+              <b-form-checkbox
+                v-for="desc in descricoes"
+                :key="desc.idDescricao"
+                :value="desc.idDescricao"
+              >{{desc.nomeDescricao}}</b-form-checkbox>
             </b-form-checkbox-group>
-          </template>
-        </b-table>
-      </div>
-      <b-button size="sm" type="submit" class="mr-2" variant="success">
-        <i class="fa fa-save mr-1"></i>
-        {{livroDescrito.idLivroDescrito ? 'Alterar': 'Adicionar'}}
-      </b-button>
-      <b-button
-        size="sm"
-        @click="$bvModal.hide('new-livro-descrito');$bvModal.hide('edit-livro-descrito')"
-      >
-        <i class="fa fa-arrow-left mr-1"></i>Fechar
-      </b-button>
-    </b-form>
+            <span
+              class="text-danger text-xs"
+              v-if="submitted && $v.user.grupos.$invalid"
+            >Selecione pelo menos um grupo</span>
+          </b-form-group>
+        </b-col>
+      </b-row>
+
+      </b-form>
+    </div>
   </div>
 </template>
 <script>
 import { mapGetters } from "vuex";
-import Livro from '../../services/livros';
+import Livro from "../../services/livros";
+import LivroDescrito from '../../services/livro-descrito';
+import Descricoes from '../../services/descricoes';
 import { showError } from "@/global";
 import Loading from "../shared/Loading";
 import { required } from "vuelidate/lib/validators";
 export default {
   name: "FormLivroDescrito",
   components: { Loading },
-  computed: mapGetters(["categoriasAtivas", "livroSelecionado", "livroDescrito"]),
   mounted() {
-    this.$store.dispatch("GET_CATEGORIAS_ATIVAS");
-  },
-  watch: {
-    livroSelecionado() {
-      if(this.livroSelecionado){
-        this.getLivro();
-      }
+    this.getDescricoes();
+    this.getLivro(this.$route.params.idlivro);
+    if(this.$route.params.idlivrodescrito){
+      this.getLivroDescrito(this.$route.params.idlivrodescrito);
     }
   },
   data() {
     return {
       loader: false,
       livro: { autor: {}, editora: {} },
+      livroDescrito: { descricoes: []},
+      descricoes: [],
       fields: [
         { key: "actions", label: "Ações" },
         { key: "nomeDescricao", label: "Desc.", sortable: true },
@@ -159,10 +157,10 @@ export default {
     }
   },
   methods: {
-    async getLivro() {
+    async getLivro(id) {
       this.loader = true;
       try {
-        const res = await Livro.getLivro(this.livroSelecionado);
+        const res = await Livro.getLivro(id);
         this.livro = res.data;
       } catch (err) {
         showError(err);
@@ -170,12 +168,25 @@ export default {
         this.loader = false;
       }
     },
-    onChangeDesc(id) {
-      if (this.livroDescrito.descricoes.includes(id)) {
-        let index = this.livroDescrito.descricoes.indexOf(id);
-        this.livroDescrito.descricoes.splice(index, 1);
-      } else {
-        this.livroDescrito.descricoes.push(id);
+    async getLivroDescrito(id){
+      this.loader = true;
+      try{
+        const res = await LivroDescrito.getLivroDescrito(id);
+        this.livroDescrito = res.data;
+        this.livroDescrito.descricoes = res.data.descricoes.map(d => d.idDescricao);
+        this.livroDescrito.movimento = 'adicionar';
+      }catch(err){
+        console.log(err);
+      }finally{
+        this.loader = false;
+      }
+    },
+    async getDescricoes(){
+      try{
+        const res = await Descricoes.getDescricoes();
+        this.descricoes = res.data;
+      }catch(err){
+        console.log(err);
       }
     },
     submitLivroDesc() {
@@ -187,7 +198,7 @@ export default {
         return;
       }
       this.submitted = false;
-      this.livroDescrito.idLivro = this.livroSelecionado;
+      this.livroDescrito.idLivro = this.livro.idLivro;
       this.$emit("submit-livro-desc", this.livroDescrito);
     }
   }
