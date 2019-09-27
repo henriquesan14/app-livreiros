@@ -15,13 +15,13 @@
       ></b-form-input>
       <div class="options" ref="optionsList">
         <ul>
-            <li
-              :class="{'selected': (selected == index)}"
-              v-for="(item, index) in items"
-              :key="index"
-              v-text="item[filterby]"
-              @click="itemClicked(index)"
-            ></li>
+          <li
+            :class="{'selected': (selected == index)}"
+            v-for="(item, index) in items"
+            :key="index"
+            v-text="item[filterby]"
+            @click="itemClicked(index)"
+          ></li>
         </ul>
       </div>
     </div>

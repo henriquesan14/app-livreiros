@@ -17,7 +17,9 @@
       <template slot="modal-title">Gerenciar Descrições</template>
       <Loading :loader="loader || loaderDesc" />
       <div v-if="!loader && !loaderDesc" class="d-block">
-        <b-badge><span class="title-badge">Nova Descrição</span></b-badge>
+        <b-badge>
+          <span class="title-badge">Nova Descrição</span>
+        </b-badge>
         <FormDescricao @submit-descricao="saveDescricao" :descricao="descricao" />
         <b-table
           class="table-sm"
@@ -34,7 +36,7 @@
           </template>
           <template slot="actions" slot-scope="data">
             <b-button
-              v-b-tooltip.hover 
+              v-b-tooltip.hover
               title="Editar"
               size="sm"
               @click="loadDescricao(data.item); $bvModal.show('modal-edit-descricoes')"
@@ -44,7 +46,7 @@
               <i class="fa fa-pencil"></i>
             </b-button>
             <b-button
-              v-b-tooltip.hover 
+              v-b-tooltip.hover
               :title="data.item.statusDescricao == true ? 'Desativar':'Ativar'"
               size="sm"
               :variant="data.item.statusDescricao == true ? 'danger': 'success'"
@@ -71,9 +73,9 @@
 import Loading from "../../shared/Loading";
 import { mapGetters } from "vuex";
 import { showError } from "@/global";
-import Descricao from '../../../services/descricoes';
-import PageTitle from '../../template/PageTitle';
-import FormDescricao from './FormDescricao';
+import Descricao from "../../../services/descricoes";
+import PageTitle from "../../template/PageTitle";
+import FormDescricao from "./FormDescricao";
 export default {
   name: "Descricoes",
   components: { Loading, PageTitle, FormDescricao },
@@ -94,7 +96,7 @@ export default {
       submitted: false
     };
   },
-  mounted(){
+  mounted() {
     this.getDescricoes(this.$route.params.id);
   },
   methods: {
@@ -168,7 +170,7 @@ export default {
       } finally {
         this.loaderDesc = false;
       }
-    },
+    }
   }
 };
 </script>

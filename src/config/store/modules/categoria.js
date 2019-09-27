@@ -23,28 +23,28 @@ const mutations = {
 const actions = {
   async GET_CATEGORIAS({ commit }, params) {
     const url = `${baseApiUrl}/categorias?nome=${params.nome}`;
-    try{
+    try {
       const { data } = await axios.get(url);
       commit('RECEIVE_CATEGORIAS', { pageCategorias: data });
-    }catch(err){
+    } catch (err) {
       showError(err);
     }
   },
   async GET_CATEGORIAS_ATIVAS({ commit }) {
     const url = `${baseApiUrl}/categorias/ativos`;
-    try{
+    try {
       const { data } = await axios.get(url);
       commit('RECEIVE_CATEGORIAS_ATIVAS', { categoriasAtivas: data });
-    }catch(err){
+    } catch (err) {
       showError(err);
     }
   },
   async GET_DESCRICOES({ commit }, id) {
     const url = `${baseApiUrl}/categorias/${id}/descricao`;
-    try{
+    try {
       const { data } = await axios.get(url);
       commit('RECEIVE_DESCRICOES', { descricoes: data });
-    }catch(err){
+    } catch (err) {
       showError(err);
     }
   }

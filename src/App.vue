@@ -9,12 +9,12 @@
   font-family: "Lato", sans-serif;
 }
 
-.card{
+.card {
   border: 1px solid #c8ced3 !important;
 }
 
-.card-header{
-  background-color:#f0f3f5 !important;
+.card-header {
+  background-color: #f0f3f5 !important;
   color: #23282c;
 }
 
@@ -32,23 +32,25 @@ body {
   justify-content: space-between;
   align-items: center;
 
-  h5{
+  h5 {
     font-size: 1rem;
   }
 
-  span{
+  span {
     font-size: 0.875rem;
   }
 }
 
-h5.card-title{
+h5.card-title {
   text-align: center;
   font-size: 1rem;
 }
 
-.tooltip { pointer-events: none; }
+.tooltip {
+  pointer-events: none;
+}
 
-.title-badge{
-  font-size:1rem;
+.title-badge {
+  font-size: 1rem;
 }
 </style>

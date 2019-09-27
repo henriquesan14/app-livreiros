@@ -51,7 +51,7 @@
         <h4>{{livro.precoLivro | currency}}</h4>
         <div class="btns-livro">
           <b-button
-            v-b-tooltip.hover 
+            v-b-tooltip.hover
             title="Adicionar"
             size="sm"
             v-hasRole="'ESCREVER_LIVRO'"
@@ -62,7 +62,7 @@
             <i class="fa fa-plus"></i>
           </b-button>
           <b-button
-            v-b-tooltip.hover 
+            v-b-tooltip.hover
             title="Editar"
             size="sm"
             v-hasRole="'ESCREVER_LIVRO'"
@@ -73,7 +73,7 @@
             <i class="fa fa-pencil"></i>
           </b-button>
           <b-button
-            v-b-tooltip.hover 
+            v-b-tooltip.hover
             title="Visualizar"
             class="btn-plus"
             size="sm"
@@ -109,9 +109,10 @@
           hover
           striped
         >
-          <template slot="precoLivroDescrito" slot-scope="data">
-            {{data.item.precoLivroDescrito | currency}}
-          </template>
+          <template
+            slot="precoLivroDescrito"
+            slot-scope="data"
+          >{{data.item.precoLivroDescrito | currency}}</template>
           <template slot="actions" slot-scope="data">
             <b-button
               v-b-tooltip.hover
@@ -174,13 +175,15 @@ export default {
   },
   methods: {
     loadLivro(idLivro) {
-      this.$store.dispatch("SET_LIVRO_SELECIONADO", {idLivro: idLivro});
+      this.$store.dispatch("SET_LIVRO_SELECIONADO", { idLivro: idLivro });
     },
     loadLivroDesc(livroDesc) {
       this.livroDescrito = livroDesc;
       this.livroDescrito.movimento = "adicionar";
       this.livroDescrito.descricoes = [];
-      this.$store.dispatch('SET_LIVRO_DESCRITO',{livroDescrito: this.livroDescrito});
+      this.$store.dispatch("SET_LIVRO_DESCRITO", {
+        livroDescrito: this.livroDescrito
+      });
     },
     zeraLivroDesc() {
       this.$store.dispatch("RESET_LIVRO_DESCRITO");
@@ -191,12 +194,18 @@ export default {
     navigateEditLivro(id) {
       this.$router.push({ name: "edit-livro", params: { id } });
     },
-    navigateNovoLivroDescrito(idlivro){
-      this.$router.push({ name: "cadastro-livro-descrito", params: { idlivro } });
+    navigateNovoLivroDescrito(idlivro) {
+      this.$router.push({
+        name: "cadastro-livro-descrito",
+        params: { idlivro }
+      });
     },
-    navigateEditLivroDescrito(idlivro, idlivrodescrito){
-      this.$router.push({ name: "edicao-livro-descrito", params: { idlivro: idlivro, idlivrodescrito: idlivrodescrito } });
-    },
+    navigateEditLivroDescrito(idlivro, idlivrodescrito) {
+      this.$router.push({
+        name: "edicao-livro-descrito",
+        params: { idlivro: idlivro, idlivrodescrito: idlivrodescrito }
+      });
+    }
   }
 };
 </script>

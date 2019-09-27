@@ -8,7 +8,11 @@
         <b-form @submit.prevent="submitCategoria()">
           <b-row>
             <b-col>
-              <b-form-group label="Nome: " label-for="nomeCategoriaDescricao" :invalid-feedback="invalidFeedBack($v.categoria.nomeCategoriaDescricao)">
+              <b-form-group
+                label="Nome: "
+                label-for="nomeCategoriaDescricao"
+                :invalid-feedback="invalidFeedBack($v.categoria.nomeCategoriaDescricao)"
+              >
                 <b-form-input
                   size="sm"
                   :class="{'is-invalid': submitted && $v.categoria.nomeCategoriaDescricao.$invalid, 'is-valid': submitted && !$v.categoria.nomeCategoriaDescricao.$invalid}"
@@ -35,8 +39,8 @@
 <script>
 import { required } from "vuelidate/lib/validators";
 import { showError } from "@/global";
-import {validationMsg} from '../../../config/validation-msgs';
-import Categoria from '../../../services/categorias';
+import { validationMsg } from "../../../config/validation-msgs";
+import Categoria from "../../../services/categorias";
 export default {
   name: "FormCategoria",
   data() {
@@ -69,7 +73,10 @@ export default {
     },
     async editCategoria() {
       try {
-        await Categoria.editCategoria(this.categoria.idCategoriaDescricao, this.categoria);
+        await Categoria.editCategoria(
+          this.categoria.idCategoriaDescricao,
+          this.categoria
+        );
         this.$bvModal.hide("modal-categoria");
         this.$toasted.global.defaultSuccess();
         this.$emit("zera-categoria");

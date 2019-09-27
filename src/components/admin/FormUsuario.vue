@@ -62,7 +62,7 @@
             label-for="confirmSenha"
           >
             <b-form-input
-            autocomplete="false"
+              autocomplete="false"
               size="sm"
               maxlength="100"
               :class="{'is-invalid': submitted && $v.user.confirmSenha.$invalid, 'is-valid': submitted && !$v.user.confirmSenha.$invalid}"

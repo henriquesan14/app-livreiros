@@ -6,9 +6,12 @@
         <b-form @submit.prevent="submitSolicitacao">
           <b-row>
             <b-col md="4">
-              <b-form-group label="Qtd.: " label-for="qtdSolicitacao" 
-              :invalid-feedback="invalidFeedBack($v.solicitacao.qtdSolicitada)">
-                <the-mask 
+              <b-form-group
+                label="Qtd.: "
+                label-for="qtdSolicitacao"
+                :invalid-feedback="invalidFeedBack($v.solicitacao.qtdSolicitada)"
+              >
+                <the-mask
                   :class="{'is-invalid': submitted && $v.solicitacao.qtdSolicitada.$invalid, 'is-valid': submitted && !$v.solicitacao.qtdSolicitada.$invalid}"
                   v-model="solicitacao.qtdSolicitada"
                   placeholder="Qtd."
@@ -82,19 +85,19 @@ export default {
       try {
         await Solicitacao.saveSolicitacao(this.solicitacao);
         this.$toasted.global.defaultSuccess();
-        this.$bvModal.hide('modal-solicitacao');
+        this.$bvModal.hide("modal-solicitacao");
         this.reset();
       } catch (err) {
         showError(err);
       }
     },
-    reset(){
+    reset() {
       this.solicitacao = {};
       this.submitted = false;
     },
     invalidFeedBack(field) {
       return validationMsg(field);
-    },
+    }
   }
 };
 </script>

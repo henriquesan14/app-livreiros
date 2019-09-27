@@ -6,7 +6,11 @@
         <b-form @submit.prevent="submitAssunto()">
           <b-row>
             <b-col>
-              <b-form-group label="Nome: " label-for="nomeAssunto" :invalid-feedback="invalidFeedBack($v.assunto.nomeAssunto)">
+              <b-form-group
+                label="Nome: "
+                label-for="nomeAssunto"
+                :invalid-feedback="invalidFeedBack($v.assunto.nomeAssunto)"
+              >
                 <b-form-input
                   size="sm"
                   :class="{'is-invalid': submitted && $v.assunto.nomeAssunto.$invalid, 'is-valid': submitted && !$v.assunto.nomeAssunto.$invalid}"
@@ -33,8 +37,8 @@
 <script>
 import { required } from "vuelidate/lib/validators";
 import { showError } from "@/global";
-import Assunto from '../../../services/assuntos';
-import {validationMsg} from '../../../config/validation-msgs';
+import Assunto from "../../../services/assuntos";
+import { validationMsg } from "../../../config/validation-msgs";
 export default {
   name: "FormAssunto",
   data() {
@@ -94,7 +98,7 @@ export default {
       this.submitted = false;
     },
     invalidFeedBack(field) {
-     return validationMsg(field);
+      return validationMsg(field);
     }
   }
 };

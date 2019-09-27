@@ -1,6 +1,6 @@
 import Vue from 'vue'
-import Router from 'vue-router' 
-import {userKey} from '@/global'
+import Router from 'vue-router'
+import { userKey } from '@/global'
 
 Vue.use(Router)
 
@@ -12,22 +12,22 @@ export default new Router({
       path: '/',
       name: 'login',
       component: () => import('../views/Login.vue'),
-      beforeEnter: function(to, from, next){
-        if(isLogged()){
-            next('/dashboard')
-            return;
+      beforeEnter: function (to, from, next) {
+        if (isLogged()) {
+          next('/dashboard')
+          return;
         }
         next()
-    }
+      }
     },
     {
       path: '/dashboard',
       name: 'dashboard',
       component: () => import('../views/Dashboard.vue'),
-      beforeEnter: function(to, from, next){
-        if(isLogged()){
-            next()
-            return;
+      beforeEnter: function (to, from, next) {
+        if (isLogged()) {
+          next()
+          return;
         }
         next('/')
       },
@@ -113,19 +113,24 @@ export default new Router({
           component: () => import('../components/livro/autor/Autores.vue')
         },
         {
-          path:'categorias',
+          path: 'categorias',
           name: 'categorias-descricao',
           component: () => import('../components/livro/categoria/Categorias.vue')
         },
         {
-          path:'categorias/:id',
+          path: 'categorias/:id',
           name: 'descricoes',
           component: () => import('../components/livro/categoria/Descricoes.vue')
         },
         {
-          path:'solicitacoes',
+          path: 'solicitacoes',
           name: 'solicitacoes',
           component: () => import('../components/solicitacoes/Solicitacoes.vue')
+        },
+        {
+          path: 'clientes',
+          name: 'clientes',
+          component: () => import('../components/cliente/Clientes.vue')
         },
         {
           path: '',
@@ -136,21 +141,21 @@ export default new Router({
           redirect: '/dashboard/home'
         }
       ],
-      
+
     },
     {
       path: '*',
       redirect: '/'
     }
-    
+
   ]
 })
 
 
 const isLogged = () => {
   let token = localStorage.getItem(userKey)
-   if(token){
-      return true;
-   }
-   return false;
+  if (token) {
+    return true;
+  }
+  return false;
 }

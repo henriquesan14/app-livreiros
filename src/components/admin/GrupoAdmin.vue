@@ -18,7 +18,7 @@
     >
       <template slot="actions" slot-scope="data">
         <b-button
-          v-b-tooltip.hover 
+          v-b-tooltip.hover
           title="Editar"
           size="sm"
           v-hasRole="'ESCREVER_GRUPO'"
@@ -44,7 +44,7 @@ export default {
         { key: "idGrupo", label: "Cód.", sortable: true },
         { key: "nomeGrupo", label: "Nome", sortable: true },
         { key: "actions", label: "Ações" }
-      ],
+      ]
     };
   },
   computed: mapGetters(["grupos"]),
