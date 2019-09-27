@@ -1,9 +1,12 @@
 <template>
   <div class="cadastro-livro-descrito">
-    <PageTitle icon="fas fa-book" main="Administração de livros descritos" sub="Gerenciar livros descritos" />
-      <b-card>
-      <Loading :loader="loader" />
-      <FormLivroDescrito v-if="!loader" :livroDescrito="livroDescrito" />
+    <PageTitle
+      icon="fas fa-book"
+      main="Administração de livros descritos"
+      sub="Gerenciar livros descritos"
+    />
+    <b-card>
+      <FormLivroDescrito @submit-livro-desc="editLivroDescrito" />
       <template slot="header">
         <div class="header-card">
           <h5 class="title-card">Alteração livro descrito</h5>
@@ -18,40 +21,26 @@
 </template>
 
 <script>
-import FormLivroDescrito from './FormLivroDescrito';
-import PageTitle from '../template/PageTitle';
-import LivroDescrito from '../../services/livro-descrito';
-import Descricoes from '../../services/descricoes';
-import Loading from '../shared/Loading';
+import FormLivroDescrito from "./FormLivroDescrito";
+import PageTitle from "../template/PageTitle";
+import LivroDescrito from "../../services/livro-descrito";
+import { showError } from "@/global";
 export default {
-    name: 'EdicaoLivroDescrito',
-    components: {FormLivroDescrito, PageTitle, Loading},
-    data(){
-      return {
-        loader: false,
-        livroDescrito: {descricoes: [], livro: {}}
+  name: "EdicaoLivroDescrito",
+  components: { FormLivroDescrito, PageTitle },
+  methods: {
+    async editLivroDescrito(livroDescrito){
+      try{
+        const res = await LivroDescrito.editLivroDescrito(livroDescrito.idLivroDescrito, livroDescrito);
+        this.$toasted.global.defaultSuccess();
+        this.$router.push('/dashboard/livros');
+      }catch(err){
+        showError(err);
       }
-    },
-    mounted(){
-      this.getLivroDescrito(this.$route.params.idlivrodescrito);
-    },
-    methods:{
-      async getLivroDescrito(id){
-        this.loader = true;
-        try{
-          const res = await LivroDescrito.getLivroDescrito(id);
-          this.livroDescrito = res.data;
-          console.log(res.data);
-        }catch(err){
-          console.log(err);
-        }finally{
-          this.loader = false;
-        }
-      },
     }
-}
+  }
+};
 </script>
 
 <style>
-
 </style>

@@ -2,7 +2,7 @@
   <div class="cadastro-livro-descrito">
     <PageTitle icon="fas fa-book" main="Administração de livros descritos" sub="Gerenciar livros descritos" />
       <b-card>
-      <FormLivroDescrito />
+      <FormLivroDescrito @submit-livro-desc="saveLivroDescrito" />
       <template slot="header">
         <div class="header-card">
           <h5 class="title-card">Novo livro descrito</h5>
@@ -21,9 +21,21 @@ import FormLivroDescrito from './FormLivroDescrito';
 import PageTitle from '../template/PageTitle';
 import LivroDescrito from '../../services/livro-descrito';
 import Loading from '../shared/Loading';
+import { showError } from "@/global";
 export default {
     name: 'CadastroLivroDescrito',
     components: {FormLivroDescrito, PageTitle},
+    methods: {
+      async saveLivroDescrito(livroDescrito){
+        try{
+          const res = await LivroDescrito.saveLivroDescrito(livroDescrito);
+          this.$toasted.global.defaultSuccess();
+          this.$router.push('/dashboard/livros');
+        }catch(err){
+          showError(err);
+        }
+      }
+    }
 }
 </script>
 
