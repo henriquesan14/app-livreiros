@@ -1,8 +1,8 @@
 <template>
   <div>
-    <Loading :loader="loader" />
-    <div v-if="!loader">
-      <div v-if="!loader" class="table-responsive">
+    <Loading :loader="loaderLivro || loaderLivroDesc" />
+    <div v-if="!loaderLivro && !loaderLivroDesc">
+      <div class="table-responsive">
         <table class="table table-hover table-sm table-striped">
           <thead class="thead-dark">
             <tr>
@@ -148,7 +148,8 @@ export default {
   },
   data() {
     return {
-      loader: false,
+      loaderLivro: false,
+      loaderLivroDesc: false,
       livro: { autor: {}, editora: {} },
       livroDescrito: { descricoes: [] },
       descricoes: [],
@@ -175,18 +176,18 @@ export default {
   },
   methods: {
     async getLivro(id) {
-      this.loader = true;
+      this.loaderLivro = true;
       try {
         const res = await Livro.getLivro(id);
         this.livro = res.data;
       } catch (err) {
         showError(err);
       } finally {
-        this.loader = false;
+        this.loaderLivro = false;
       }
     },
     async getLivroDescrito(id) {
-      this.loader = true;
+      this.loaderLivroDesc = true;
       try {
         const res = await LivroDescrito.getLivroDescrito(id);
         this.livroDescrito = res.data;
@@ -197,7 +198,7 @@ export default {
       } catch (err) {
         showError(err);
       } finally {
-        this.loader = false;
+        this.loaderLivroDesc = false;
       }
     },
     async getDescricoes() {
