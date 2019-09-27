@@ -2,8 +2,8 @@ import axios from 'axios';
 import {baseApiUrl} from '@/global';
 
 export default {
-    getLivroDescrito: (livro) => {
-        return axios.post(`${baseApiUrl}/livros`, livro);
+    getLivroDescrito: (id) => {
+        return axios.get(`${baseApiUrl}/livrosdescritos/${id}`);
     },
     saveLivroDescrito: (livroDescrito) => {
         return axios.post(`${baseApiUrl}/livrosdescritos`, livroDescrito);

@@ -55,7 +55,7 @@
             title="Adicionar"
             size="sm"
             v-hasRole="'ESCREVER_LIVRO'"
-            @click="loadLivro(livro.idLivro);zeraLivroDesc();$bvModal.show('new-livro-descrito')"
+            @click="navigateNovoLivroDescrito(livro.idLivro);"
             variant="primary"
             class="mr-2"
           >
@@ -66,7 +66,7 @@
             title="Editar"
             size="sm"
             v-hasRole="'ESCREVER_LIVRO'"
-            @click="navigateLivro(livro.idLivro);"
+            @click="navigateEditLivro(livro.idLivro);"
             variant="warning"
             class="mr-2"
           >
@@ -77,7 +77,7 @@
             title="Visualizar"
             class="btn-plus"
             size="sm"
-            @click="navigate(livro.idLivro)"
+            @click="navigateLivroDetail(livro.idLivro)"
             variant="dark"
           >
             <i class="fa fa-search-plus"></i>
@@ -119,7 +119,7 @@
               class="mr-2"
               size="sm"
               v-hasRole="'ESCREVER_LIVRO'"
-              @click="loadLivroDesc(data.item);$bvModal.show('edit-livro-descrito')"
+              @click="loadLivroDesc(data.item);navigateEditLivroDescrito(livro.idLivro,data.item.idLivroDescrito)"
               variant="warning"
             >
               <i class="fa fa-pencil"></i>
@@ -185,12 +185,18 @@ export default {
     zeraLivroDesc() {
       this.$store.dispatch("RESET_LIVRO_DESCRITO");
     },
-    navigate(id) {
+    navigateLivroDetail(id) {
       this.$router.push({ name: "livro-detalhes", params: { id } });
     },
-    navigateLivro(id) {
+    navigateEditLivro(id) {
       this.$router.push({ name: "edit-livro", params: { id } });
-    }
+    },
+    navigateNovoLivroDescrito(idlivro){
+      this.$router.push({ name: "cadastro-livro-descrito", params: { idlivro } });
+    },
+    navigateEditLivroDescrito(idlivro, idlivrodescrito){
+      this.$router.push({ name: "edicao-livro-descrito", params: { idlivro: idlivro, idlivrodescrito: idlivrodescrito } });
+    },
   }
 };
 </script>
