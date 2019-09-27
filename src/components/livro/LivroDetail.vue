@@ -3,8 +3,8 @@
     <PageTitle icon="fa fa-book" main="Administração de livros" sub="Detalhes livro" />
     <b-card>
       <div>
-        <Loading :loader="loader" />
-        <div v-if="!loader" class="d-block">
+        <Loading :loader="loader || loaderMovimentos" />
+        <div v-if="!loader && !loaderMovimentos" class="d-block">
           <b-row>
             <b-col md="2" sm="2">
                   <img class="img-livro" 
@@ -63,7 +63,7 @@
                     </div>
                     <div class="box-info">
                       <span class="title">Coleção</span>
-                      <span>{{livro.colecaoLivro}}</span>
+                      <span>{{livro.colecaoLivro ? livro.colecao : 'N/A'}}</span>
                     </div>
                   </div>
               </b-card>
@@ -74,7 +74,7 @@
                 <div class="card-info">
                     <div class="box-info">
                       <span class="title">Edição</span>
-                      <span>{{livro.edicaoLivro}}</span>
+                      <span>{{livro.edicaoLivro  ? livro.edicaoLivro : 'N/A'}}</span>
                     </div>
                     <div class="box-info">
                       <span class="title">Preço</span>
@@ -82,23 +82,23 @@
                     </div>
                     <div class="box-info">
                       <span class="title">Peso</span>
-                      <span>{{livro.pesoLivro}}</span>
+                      <span>{{livro.pesoLivro  ? livro.pesoLivro : 'N/A'}}</span>
                     </div>
                     <div class="box-info">
                       <span class="title">Tradução</span>
-                      <span>{{livro.traducaoLivro}}</span>
+                      <span>{{livro.traducaoLivro ? livro.traducaoLivro : 'N/A'}}</span>
                     </div>
                     <div class="box-info">
                       <span class="title">Acabamento</span>
-                      <span>{{livro.acabamentoLivro}}</span>
+                      <span>{{livro.acabamentoLivro  ? livro.acabamentoLivro : 'N/A'}}</span>
                     </div>
                     <div class="box-info">
                       <span class="title">Dimensões</span>
-                      <span>{{livro.dimensaoLivro}}</span>
+                      <span>{{livro.dimensaoLivro ? livro.dimensaoLivro : 'N/A'}}</span>
                     </div>
                     <div class="box-info">
                       <span class="title">Ilustração</span>
-                      <span>{{livro.ilustracaoLivro}}</span>
+                      <span>{{livro.ilustracaoLivro ? livro.ilustracaoLivro : 'N/A'}}</span>
                     </div>
                   </div>
               </b-card>
@@ -108,14 +108,15 @@
           <b-row>
             <b-col>
               <b-card header="Sinopse">
-                <b-form-textarea
-                  class="text-sinopse"
-                  readonly="readonly"
-                  cols="100"
-                  rows="6"
-                  :value="livro.sinopseLivro ? livro.sinopseLivro : 'N/A'"
-                ></b-form-textarea>
-              </b-form-group>
+                <b-form-group>
+                  <b-form-textarea
+                    class="text-sinopse"
+                    readonly="readonly"
+                    cols="100"
+                    rows="6"
+                    :value="livro.sinopseLivro ? livro.sinopseLivro : 'N/A'"
+                  ></b-form-textarea>
+                </b-form-group>
               </b-card>
             </b-col>
           </b-row>
@@ -202,97 +203,16 @@ export default {
       this.getMovimentos(this.$route.params.id);
     }
   },
-  mounted() {
-    this.mocky();
-    // this.getLivro(this.$route.params.id);
-    // this.getMovimentos(this.$route.params.id);
+  created() {
+    this.getLivro(this.$route.params.id);
+    this.getMovimentos(this.$route.params.id);
   },
   methods: {
-    mocky(){
-      this.livro = {
-        idLivro: 1,
-        isbn: '4324234234234234',
-        createdAt: '2019-05-01 01:00',
-        updatedAt:'2019-05-01 01:00',
-        tituloLivro: 'BORA CUMPADI HORA DO SHOW É 13 POHA',
-        autor: {
-          nomeAutor: 'Bambam'
-        },
-        editora: {
-          nomeEditora: 'HoraDoShow'
-        },
-        assunto: {
-          nomeAssunto: 'Trapezio Descendente'
-        },
-        idiomaLivro: 'Português',
-        imagemLivro: '9788545202219',
-        anoLivro: '2019',
-        condicaoLivro: 'usado',
-        dimensaoLivro: '200x280',
-        colecaoLivro: 'É 13 pohaa',
-        edicaoLivro: '1',
-        precoLivro: 5.7,
-        pesoLivro: 600,
-        traducaoLivro: 'Portugues',
-        acabamentoLivro: 'Capa Comum',
-        qtdTotal: 2,
-        sinopseLivro: `ekpaokepoakepoakeoakpeo
-         ekpaokepoakepoakeoakpeo ekpaokepoakepoakeoakpeo
-          ekpaokepoakepoakeoakpeo ekpaokepoakepoakeoakpeo
-          ekpaokepoakepoakeoakpeo ekpaokepoakepoakeoakpeo
-          ekpaokepoakepoakeoakpeo ekpaokepoakepoakeoakpeo
-          ekpaokepoakepoakeoakpeo ekpaokepoakepoakeoakpeo`,
-          ilustracaoLivro: 'kepakepak'
-      };
-      this.pageMovimentos = {
-        rows: [
-          {
-            createdAt: '2019-09-08 11:11',
-            subIdLivro: 'A2',
-            usuario: {
-              loginUsuario: 'vladmir'
-            },
-            tipoLivroMovimento: 'adicionado',
-            qtdMovimento: 1
-          },
-          {
-            createdAt: '2019-09-08 11:11',
-            subIdLivro: 'A2',
-            usuario: {
-              loginUsuario: 'vladmir'
-            },
-            tipoLivroMovimento: 'adicionado',
-            qtdMovimento: 1
-          },
-          {
-            createdAt: '2019-09-08 11:11',
-            subIdLivro: 'A2',
-            usuario: {
-              loginUsuario: 'vladmir'
-            },
-            tipoLivroMovimento: 'adicionado',
-            qtdMovimento: 1
-          },
-          {
-            createdAt: '2019-09-08 11:11',
-            subIdLivro: 'A2',
-            usuario: {
-              loginUsuario: 'vladmir'
-            },
-            tipoLivroMovimento: 'adicionado',
-            qtdMovimento: 1
-          }
-        ],
-        count: 12,
-        limite: 10,
-      }
-    },
     async getLivro(id) {
       this.loader = true;
       try {
         const res = await Livro.getLivro(id);
         this.livro = res.data;
-        console.log(res.data);
       } catch (err) {
         showError(err);
       } finally {
