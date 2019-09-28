@@ -54,7 +54,7 @@
         </template>
         <template slot="actions" slot-scope="data">
           <b-button
-            v-b-tooltip.hover 
+            v-b-tooltip.hover
             title="Editar"
             size="sm"
             v-hasRole="'ESCREVER_DESCRICAO'"
@@ -65,7 +65,7 @@
             <i class="fa fa-pencil"></i>
           </b-button>
           <b-button
-            v-b-tooltip.hover 
+            v-b-tooltip.hover
             title="Adicionar"
             size="sm"
             v-hasRole="'ESCREVER_DESCRICAO'"
@@ -76,7 +76,7 @@
             <i class="fa fa-plus"></i>
           </b-button>
           <b-button
-            v-b-tooltip.hover 
+            v-b-tooltip.hover
             :title="data.item.statusCategoriaDescricao == true ? 'Desativar': 'Ativar'"
             size="sm"
             v-hasRole="'ESCREVER_DESCRICAO'"
@@ -94,7 +94,12 @@
         <span>Nenhum resultado...</span>
       </div>
       <Loading :loader="loader" />
-      <b-pagination size="sm" v-model="page" :total-rows="pageCategorias.count" :per-page="10"></b-pagination>
+      <b-pagination
+        size="sm"
+        v-model="page"
+        :total-rows="pageCategorias.count"
+        :per-page="pageCategorias.limite"
+      ></b-pagination>
     </b-card>
     <FormCategoria @zera-categoria="getCategorias()" :categoria="categoria" />
   </div>

@@ -14,10 +14,10 @@ const mutations = {
 const actions = {
   async GET_EDITORAS({ commit }, params) {
     const url = `${baseApiUrl}/editoras?nome=${params.nome}`;
-    try{
+    try {
       const { data } = await axios.get(url);
       commit('RECEIVE_EDITORAS', { pageEditoras: data });
-    }catch(err){
+    } catch (err) {
       showError(err);
     }
   },

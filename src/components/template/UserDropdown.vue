@@ -50,7 +50,7 @@ export default {
 .user-button {
   display: flex;
   align-items: center;
-  
+
   font-weight: 100;
   height: 100%;
   padding: 0 20px;
@@ -85,7 +85,7 @@ export default {
   transition: visibility 0s, opacity 0.5s linear;
 
   a {
-    font-size: 0.900rem;
+    font-size: 0.9rem;
     text-decoration: none;
     color: #000;
     padding: 10px;

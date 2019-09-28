@@ -17,7 +17,6 @@ export default {
 </script>
 
 <style>
-
 .page-title h1 {
   margin: 0px;
   font-size: 1.8rem;

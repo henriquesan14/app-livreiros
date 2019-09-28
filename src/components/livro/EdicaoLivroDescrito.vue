@@ -29,12 +29,15 @@ export default {
   name: "EdicaoLivroDescrito",
   components: { FormLivroDescrito, PageTitle },
   methods: {
-    async editLivroDescrito(livroDescrito){
-      try{
-        const res = await LivroDescrito.editLivroDescrito(livroDescrito.idLivroDescrito, livroDescrito);
+    async editLivroDescrito(livroDescrito) {
+      try {
+        const res = await LivroDescrito.editLivroDescrito(
+          livroDescrito.idLivroDescrito,
+          livroDescrito
+        );
         this.$toasted.global.defaultSuccess();
-        this.$router.push('/dashboard/livros');
-      }catch(err){
+        this.$router.push("/dashboard/livros");
+      } catch (err) {
         showError(err);
       }
     }

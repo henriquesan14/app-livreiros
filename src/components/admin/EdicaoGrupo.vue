@@ -11,7 +11,7 @@
           </router-link>
         </div>
       </template>
-      <Loading :loader="loader"/>
+      <Loading :loader="loader" />
       <FormGrupo v-if="!loader" @submit-grupo="editGrupo" />
     </b-card>
   </div>
@@ -21,18 +21,18 @@
 import FormGrupo from "./FormGrupo";
 import PageTitle from "../template/PageTitle";
 import Grupo from "../../services/grupos";
-import Loading from '../shared/Loading';
-import {showError} from '@/global';
+import Loading from "../shared/Loading";
+import { showError } from "@/global";
 export default {
   name: "EdicaoGrupo",
   components: { FormGrupo, PageTitle, Loading },
   data() {
     return {
-      loader: false,
+      loader: false
     };
   },
-  mounted(){
-    this.getGrupo(this.$route.params.id); 
+  mounted() {
+    this.getGrupo(this.$route.params.id);
   },
   methods: {
     async getGrupo(id) {

@@ -3,7 +3,10 @@
     <b-form @submit.prevent="handleSubmit()">
       <b-row>
         <b-col>
-          <b-form-group label="Nome" :invalid-feedback="invalidFeedBack($v.descricao.nomeDescricao)">
+          <b-form-group
+            label="Nome"
+            :invalid-feedback="invalidFeedBack($v.descricao.nomeDescricao)"
+          >
             <b-form-input
               size="sm"
               :class="{'is-invalid': submitted && $v.descricao.nomeDescricao.$invalid, 'is-valid': submitted && !$v.descricao.nomeDescricao.$invalid}"

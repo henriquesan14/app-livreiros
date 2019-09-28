@@ -36,8 +36,14 @@
       <Loading :loader="loader" />
       <div v-if="!loader">
         <b-badge class="mb-1">
-          <span v-if="pageLivros.tipoResultado === 'todos resultados'" class="title-badge">Foram encontrados {{pageLivros.count}} resultados para sua busca: </span>
-          <span v-if="pageLivros.tipoResultado === 'outros resultados'" class="title-badge">Foram encontrados {{pageLivros.count}} resultados relacionados para sua busca: </span>
+          <span
+            v-if="pageLivros.tipoResultado === 'todos resultados'"
+            class="title-badge"
+          >Foram encontrados {{pageLivros.count}} resultados para sua busca:</span>
+          <span
+            v-if="pageLivros.tipoResultado === 'outros resultados'"
+            class="title-badge"
+          >Foram encontrados {{pageLivros.count}} resultados relacionados para sua busca:</span>
         </b-badge>
         <div class="scroll-table">
           <div v-for="livro in pageLivros.rows" :key="livro.idLivro">
@@ -67,10 +73,16 @@ import FormLivroDescrito from "./FormLivroDescrito";
 import { showError } from "@/global";
 import BoxLivro from "./BoxLivro";
 import LivroDescrito from "../../services/livro-descrito";
-import SolicitacaoLivro from './SolicitacaoLivro';
+import SolicitacaoLivro from "./SolicitacaoLivro";
 export default {
   name: "Livros",
-  components: { PageTitle, Loading, FormLivroDescrito, BoxLivro, SolicitacaoLivro },
+  components: {
+    PageTitle,
+    Loading,
+    FormLivroDescrito,
+    BoxLivro,
+    SolicitacaoLivro
+  },
   computed: mapGetters(["pageLivros", "livroSelecionado", "livroDescrito"]),
   mounted() {
     this.getLivros();
@@ -150,5 +162,4 @@ h5 {
   text-align: center;
   font-size: 1rem;
 }
-
 </style>

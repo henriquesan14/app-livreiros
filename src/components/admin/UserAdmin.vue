@@ -42,7 +42,7 @@
       </template>
       <template slot="actions" slot-scope="data">
         <b-button
-          v-b-tooltip.hover 
+          v-b-tooltip.hover
           title="Editar"
           size="sm"
           v-hasRole="'ESCREVER_USUARIO'"
@@ -53,7 +53,7 @@
           <i class="fa fa-pencil"></i>
         </b-button>
         <b-button
-          v-b-tooltip.hover 
+          v-b-tooltip.hover
           :title="data.item.statusUsuario == true ? 'Desativar': 'Ativar'"
           size="sm"
           v-hasRole="'ESCREVER_USUARIO'"
@@ -69,7 +69,12 @@
       <span>Nenhum resultado...</span>
     </div>
     <Loading :loader="loader" />
-    <b-pagination size="sm" v-model="page" :total-rows="pageUsers.count" :per-page="10"></b-pagination>
+    <b-pagination
+      size="sm"
+      v-model="page"
+      :total-rows="pageUsers.count"
+      :per-page="pageUsers.limite"
+    ></b-pagination>
   </div>
 </template>
 

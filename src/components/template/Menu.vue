@@ -2,13 +2,10 @@
   <aside class="menu" v-show="isMenuVisible">
     <nav class="menu-aside">
       <ul>
-        <router-link
-        active-class="active"
-        exact
-        to="/dashboard/home"
-        tag="li"
-        >
-        <span><i class="fas fa-home mr-2" ></i>Home</span>
+        <router-link active-class="active" exact to="/dashboard/home" tag="li">
+          <span>
+            <i class="fas fa-home mr-2"></i>Home
+          </span>
         </router-link>
         <router-link
           active-class="active"
@@ -91,18 +88,18 @@ export default {
           path: "/dashboard/pedidos",
           icon: "fas fa-shopping-cart",
           visible: "BUSCAR_DESCRICAO"
-        },
+        }
       ]
     };
   },
-  mounted(){
+  mounted() {
     this.initMenu();
   },
   methods: {
     initMenu() {
       let roles = JSON.parse(localStorage.getItem(userKey)).user.permissoes;
       this.items.forEach(i => {
-        if(roles.includes(i.visible)){
+        if (roles.includes(i.visible)) {
           this.activeItems.push(i);
         }
       });
@@ -162,5 +159,4 @@ nav ul li span:hover {
   flex-direction: column;
   flex-wrap: wrap;
 }
-
 </style>

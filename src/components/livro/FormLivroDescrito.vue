@@ -33,8 +33,10 @@
             </b-form-group>
           </b-col>
           <b-col>
-            <b-form-group label="SubCódigo." 
-              :invalid-feedback="invalidFeedBack($v.livroDescrito.subIdLivro)">
+            <b-form-group
+              label="SubCódigo."
+              :invalid-feedback="invalidFeedBack($v.livroDescrito.subIdLivro)"
+            >
               <the-mask
                 mask="SS"
                 class="form-control form-control-sm"
@@ -53,8 +55,10 @@
         </b-row>
         <b-row>
           <b-col md="4">
-            <b-form-group :label="livroDescrito.idLivroDescrito? 'Qtd. Atual' : 'Qtd.'"
-            :invalid-feedback="invalidFeedBack($v.livroDescrito.qtdLivro)">
+            <b-form-group
+              :label="livroDescrito.idLivroDescrito? 'Qtd. Atual' : 'Qtd.'"
+              :invalid-feedback="invalidFeedBack($v.livroDescrito.qtdLivro)"
+            >
               <the-mask
                 :readOnly="livroDescrito.idLivroDescrito"
                 :class="{'is-invalid': submitted && $v.livroDescrito.qtdLivro.$invalid, 'is-valid': submitted && !$v.livroDescrito.qtdLivro.$invalid}"
@@ -100,7 +104,7 @@
 
         <b-row class="mb-2">
           <b-col>
-            <b-button type="submit" class="mr-2"  variant="success" size="sm">
+            <b-button type="submit" class="mr-2" variant="success" size="sm">
               <i class="mr-1 fa fa-save"></i>Salvar
             </b-button>
             <router-link tag="b-button" class="btn-dark btn-sm" to="/dashboard/livros">
@@ -169,10 +173,10 @@ export default {
   validations() {
     return {
       livroDescrito: {
-      subIdLivro: { required },
-      qtdLivro: { required, minValue: minValue(1) }
-    }
-    }
+        subIdLivro: { required },
+        qtdLivro: { required, minValue: minValue(1) }
+      }
+    };
   },
   methods: {
     async getLivro(id) {
@@ -230,7 +234,7 @@ export default {
     },
     invalidFeedBack(field) {
       return validationMsg(field);
-    },
+    }
   }
 };
 </script>

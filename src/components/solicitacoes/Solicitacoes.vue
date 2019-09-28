@@ -9,9 +9,6 @@
       <template slot="header">
         <h5 class="card-title">Solicitações de livros</h5>
       </template>
-      <b-button size="sm" variant="dark" class="mb-2">
-        <i class="fa fa-plus-circle mr-1"></i> Nova Solicitação
-      </b-button>
       <b-row>
         <b-col>
           <b-form-group label="Status">
@@ -85,7 +82,12 @@
         <span>Nenhum resultado...</span>
       </div>
       <Loading :loader="loader" />
-      <b-pagination size="sm" v-model="page" :total-rows="pageSolicitacoes.count" :per-page="10"></b-pagination>
+      <b-pagination
+        size="sm"
+        v-model="page"
+        :total-rows="pageSolicitacoes.count"
+        :per-page="pageSolicitacoes.limite"
+      ></b-pagination>
     </b-card>
   </div>
 </template>

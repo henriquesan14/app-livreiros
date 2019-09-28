@@ -3,32 +3,34 @@
     <PageTitle icon="fa fa-book" main="Administração de livros" sub="Detalhes livro" />
     <b-card>
       <div>
-        <Loading :loader="loader" />
-        <div v-if="!loader" class="d-block">
+        <Loading :loader="loader || loaderMovimentos" />
+        <div v-if="!loader && !loaderMovimentos" class="d-block">
           <b-row>
             <b-col md="2" sm="2">
-                  <img class="img-livro" 
-                  :src="'https://imagens-capas-1.s3.amazonaws.com/'+ (livro.imagemLivro == null ? '1557681051638': livro.imagemLivro)" >
+              <img
+                class="img-livro"
+                :src="'https://imagens-capas-1.s3.amazonaws.com/'+ (livro.imagemLivro == null ? '1557681051638': livro.imagemLivro)"
+              />
             </b-col>
             <b-col class="header-livro" md="10" sm="10">
               <div>
                 <h6>{{livro.tituloLivro | toTitle}}</h6>
               </div>
               <div>
-                 <h6>Qtd. estoque:</h6>
-                 <span>{{livro.qtdTotal}}</span>
+                <h6>Qtd. estoque:</h6>
+                <span>{{livro.qtdTotal}}</span>
               </div>
               <div>
-                <h6 >Autor:</h6>
+                <h6>Autor:</h6>
                 <span>{{livro.autor.nomeAutor | toTitle}}</span>
               </div>
               <div>
-                <h6 >Editora: </h6>
+                <h6>Editora:</h6>
                 <span>{{livro.editora.nomeEditora | toTitle}}</span>
               </div>
               <div>
-                <h6 >Assunto:</h6>
-                <span >{{livro.assunto.nomeAssunto  | toTitle}}</span>
+                <h6>Assunto:</h6>
+                <span>{{livro.assunto.nomeAssunto | toTitle}}</span>
               </div>
             </b-col>
           </b-row>
@@ -37,90 +39,91 @@
             <b-col>
               <b-card no-body header="Informações">
                 <div class="card-info">
-                    <div class="box-info">
-                      <span class="title">Cód.</span>
-                      <span>{{livro.idLivro}}</span>
-                    </div>
-                    <div class="box-info">
-                      <span class="title">ISBN</span>
-                      <span>{{livro.isbn}}</span>
-                    </div>
-                    <div class="box-info">
-                      <span class="title">Ano</span>
-                      <span>{{livro.anoLivro}}</span>
-                    </div>
-                    <div class="box-info">
-                      <span class="title">Data de criação</span>
-                      <span>{{formataData(livro.createdAt)}}</span>
-                    </div>
-                    <div class="box-info">
-                      <span class="title">Data última atualização</span>
-                      <span>{{formataData(livro.updatedAt)}}</span>
-                    </div>
-                    <div class="box-info">
-                      <span class="title">Condição</span>
-                      <span>{{livro.condicaoLivro}}</span>
-                    </div>
-                    <div class="box-info">
-                      <span class="title">Coleção</span>
-                      <span>{{livro.colecaoLivro}}</span>
-                    </div>
+                  <div class="box-info">
+                    <span class="title">Cód.</span>
+                    <span>{{livro.idLivro}}</span>
                   </div>
+                  <div class="box-info">
+                    <span class="title">ISBN</span>
+                    <span>{{livro.isbn}}</span>
+                  </div>
+                  <div class="box-info">
+                    <span class="title">Ano</span>
+                    <span>{{livro.anoLivro}}</span>
+                  </div>
+                  <div class="box-info">
+                    <span class="title">Data de criação</span>
+                    <span>{{formataData(livro.createdAt)}}</span>
+                  </div>
+                  <div class="box-info">
+                    <span class="title">Data última atualização</span>
+                    <span>{{formataData(livro.updatedAt)}}</span>
+                  </div>
+                  <div class="box-info">
+                    <span class="title">Condição</span>
+                    <span>{{livro.condicaoLivro}}</span>
+                  </div>
+                  <div class="box-info">
+                    <span class="title">Coleção</span>
+                    <span>{{livro.colecaoLivro ? livro.colecao : 'N/A'}}</span>
+                  </div>
+                </div>
               </b-card>
             </b-col>
 
             <b-col>
               <b-card no-body header="Informações">
                 <div class="card-info">
-                    <div class="box-info">
-                      <span class="title">Edição</span>
-                      <span>{{livro.edicaoLivro}}</span>
-                    </div>
-                    <div class="box-info">
-                      <span class="title">Preço</span>
-                      <span>{{livro.precoLivro | currency}}</span>
-                    </div>
-                    <div class="box-info">
-                      <span class="title">Peso</span>
-                      <span>{{livro.pesoLivro}}</span>
-                    </div>
-                    <div class="box-info">
-                      <span class="title">Tradução</span>
-                      <span>{{livro.traducaoLivro}}</span>
-                    </div>
-                    <div class="box-info">
-                      <span class="title">Acabamento</span>
-                      <span>{{livro.acabamentoLivro}}</span>
-                    </div>
-                    <div class="box-info">
-                      <span class="title">Dimensões</span>
-                      <span>{{livro.dimensaoLivro}}</span>
-                    </div>
-                    <div class="box-info">
-                      <span class="title">Ilustração</span>
-                      <span>{{livro.ilustracaoLivro}}</span>
-                    </div>
+                  <div class="box-info">
+                    <span class="title">Edição</span>
+                    <span>{{livro.edicaoLivro ? livro.edicaoLivro : 'N/A'}}</span>
                   </div>
+                  <div class="box-info">
+                    <span class="title">Preço</span>
+                    <span>{{livro.precoLivro | currency}}</span>
+                  </div>
+                  <div class="box-info">
+                    <span class="title">Peso</span>
+                    <span>{{livro.pesoLivro ? livro.pesoLivro : 'N/A'}}</span>
+                  </div>
+                  <div class="box-info">
+                    <span class="title">Tradução</span>
+                    <span>{{livro.traducaoLivro ? livro.traducaoLivro : 'N/A'}}</span>
+                  </div>
+                  <div class="box-info">
+                    <span class="title">Acabamento</span>
+                    <span>{{livro.acabamentoLivro ? livro.acabamentoLivro : 'N/A'}}</span>
+                  </div>
+                  <div class="box-info">
+                    <span class="title">Dimensões</span>
+                    <span>{{livro.dimensaoLivro ? livro.dimensaoLivro : 'N/A'}}</span>
+                  </div>
+                  <div class="box-info">
+                    <span class="title">Ilustração</span>
+                    <span>{{livro.ilustracaoLivro ? livro.ilustracaoLivro : 'N/A'}}</span>
+                  </div>
+                </div>
               </b-card>
             </b-col>
           </b-row>
-          <br>
+          <br />
           <b-row>
             <b-col>
               <b-card header="Sinopse">
-                <b-form-textarea
-                  class="text-sinopse"
-                  readonly="readonly"
-                  cols="100"
-                  rows="6"
-                  :value="livro.sinopseLivro ? livro.sinopseLivro : 'N/A'"
-                ></b-form-textarea>
-              </b-form-group>
+                <b-form-group>
+                  <b-form-textarea
+                    class="text-sinopse"
+                    readonly="readonly"
+                    cols="100"
+                    rows="6"
+                    :value="livro.sinopseLivro ? livro.sinopseLivro : 'N/A'"
+                  ></b-form-textarea>
+                </b-form-group>
               </b-card>
             </b-col>
           </b-row>
 
-          <br>
+          <br />
 
           <div class="detalhes-livro">
             <b-card>
@@ -202,97 +205,16 @@ export default {
       this.getMovimentos(this.$route.params.id);
     }
   },
-  mounted() {
-    this.mocky();
-    // this.getLivro(this.$route.params.id);
-    // this.getMovimentos(this.$route.params.id);
+  created() {
+    this.getLivro(this.$route.params.id);
+    this.getMovimentos(this.$route.params.id);
   },
   methods: {
-    mocky(){
-      this.livro = {
-        idLivro: 1,
-        isbn: '4324234234234234',
-        createdAt: '2019-05-01 01:00',
-        updatedAt:'2019-05-01 01:00',
-        tituloLivro: 'BORA CUMPADI HORA DO SHOW É 13 POHA',
-        autor: {
-          nomeAutor: 'Bambam'
-        },
-        editora: {
-          nomeEditora: 'HoraDoShow'
-        },
-        assunto: {
-          nomeAssunto: 'Trapezio Descendente'
-        },
-        idiomaLivro: 'Português',
-        imagemLivro: '9788545202219',
-        anoLivro: '2019',
-        condicaoLivro: 'usado',
-        dimensaoLivro: '200x280',
-        colecaoLivro: 'É 13 pohaa',
-        edicaoLivro: '1',
-        precoLivro: 5.7,
-        pesoLivro: 600,
-        traducaoLivro: 'Portugues',
-        acabamentoLivro: 'Capa Comum',
-        qtdTotal: 2,
-        sinopseLivro: `ekpaokepoakepoakeoakpeo
-         ekpaokepoakepoakeoakpeo ekpaokepoakepoakeoakpeo
-          ekpaokepoakepoakeoakpeo ekpaokepoakepoakeoakpeo
-          ekpaokepoakepoakeoakpeo ekpaokepoakepoakeoakpeo
-          ekpaokepoakepoakeoakpeo ekpaokepoakepoakeoakpeo
-          ekpaokepoakepoakeoakpeo ekpaokepoakepoakeoakpeo`,
-          ilustracaoLivro: 'kepakepak'
-      };
-      this.pageMovimentos = {
-        rows: [
-          {
-            createdAt: '2019-09-08 11:11',
-            subIdLivro: 'A2',
-            usuario: {
-              loginUsuario: 'vladmir'
-            },
-            tipoLivroMovimento: 'adicionado',
-            qtdMovimento: 1
-          },
-          {
-            createdAt: '2019-09-08 11:11',
-            subIdLivro: 'A2',
-            usuario: {
-              loginUsuario: 'vladmir'
-            },
-            tipoLivroMovimento: 'adicionado',
-            qtdMovimento: 1
-          },
-          {
-            createdAt: '2019-09-08 11:11',
-            subIdLivro: 'A2',
-            usuario: {
-              loginUsuario: 'vladmir'
-            },
-            tipoLivroMovimento: 'adicionado',
-            qtdMovimento: 1
-          },
-          {
-            createdAt: '2019-09-08 11:11',
-            subIdLivro: 'A2',
-            usuario: {
-              loginUsuario: 'vladmir'
-            },
-            tipoLivroMovimento: 'adicionado',
-            qtdMovimento: 1
-          }
-        ],
-        count: 12,
-        limite: 10,
-      }
-    },
     async getLivro(id) {
       this.loader = true;
       try {
         const res = await Livro.getLivro(id);
         this.livro = res.data;
-        console.log(res.data);
       } catch (err) {
         showError(err);
       } finally {
@@ -302,7 +224,7 @@ export default {
     async getMovimentos(idLivro) {
       this.loaderMovimentos = true;
       try {
-        const res = await Livro.getMovimentos(idLivro, this.page -1);
+        const res = await Livro.getMovimentos(idLivro, this.page - 1);
         this.pageMovimentos = res.data;
       } catch (err) {
         showError(err);
@@ -310,7 +232,7 @@ export default {
         this.loaderMovimentos = false;
       }
     },
-    formataData(data){
+    formataData(data) {
       return moment(String(data)).format("DD/MM/YYYY HH:mm");
     }
   }
@@ -318,23 +240,20 @@ export default {
 </script>
 
 <style lang="scss">
-
-.header-livro{
-
-  div{
+.header-livro {
+  div {
     margin-bottom: 10px;
   }
 
-  span{
-    font-size:1rem;
+  span {
+    font-size: 1rem;
   }
 
-  h6{
-    margin:0;
+  h6 {
+    margin: 0;
     font-weight: bold;
-    font-size:1.3rem;
+    font-size: 1.3rem;
   }
-
 }
 
 img.img-livro {
@@ -342,23 +261,23 @@ img.img-livro {
   height: 280px;
 }
 
-.card-info{
-  display:flex;
+.card-info {
+  display: flex;
   flex-direction: column;
-  padding:10px 20px;
+  padding: 10px 20px;
 }
 
-.box-info{
-  display:flex;
-  flex-direction:column;
-  margin-bottom:5px;
-  span{
-    padding:0 40px 0 0;
+.box-info {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 5px;
+  span {
+    padding: 0 40px 0 0;
   }
 
-  span.title{
+  span.title {
     font-weight: bold;
-    font-size:1rem;
+    font-size: 1rem;
   }
 }
 </style>

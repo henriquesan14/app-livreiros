@@ -28,19 +28,19 @@ const actions = {
 
   async LOGIN({ commit }, user) {
     const url = `${baseApiUrl}/login`;
-    try{
+    try {
       const { data } = await axios.post(url, user);
       commit('setUser', JSON.stringify(data.auth));
-    }catch(err){
+    } catch (err) {
       showError(err);
     }
   },
   async LOGOUT({ commit }) {
     const url = `${baseApiUrl}/logout`;
-    try{
+    try {
       await axios.post(url);
       commit('removeUser');
-    }catch(err){
+    } catch (err) {
       showError(err);
     }
   },

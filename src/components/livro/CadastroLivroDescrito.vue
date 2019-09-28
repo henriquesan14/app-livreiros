@@ -1,7 +1,11 @@
 <template>
   <div class="cadastro-livro-descrito">
-    <PageTitle icon="fas fa-book" main="Administração de livros descritos" sub="Gerenciar livros descritos" />
-      <b-card>
+    <PageTitle
+      icon="fas fa-book"
+      main="Administração de livros descritos"
+      sub="Gerenciar livros descritos"
+    />
+    <b-card>
       <FormLivroDescrito @submit-livro-desc="saveLivroDescrito" />
       <template slot="header">
         <div class="header-card">
@@ -17,28 +21,27 @@
 </template>
 
 <script>
-import FormLivroDescrito from './FormLivroDescrito';
-import PageTitle from '../template/PageTitle';
-import LivroDescrito from '../../services/livro-descrito';
-import Loading from '../shared/Loading';
+import FormLivroDescrito from "./FormLivroDescrito";
+import PageTitle from "../template/PageTitle";
+import LivroDescrito from "../../services/livro-descrito";
+import Loading from "../shared/Loading";
 import { showError } from "@/global";
 export default {
-    name: 'CadastroLivroDescrito',
-    components: {FormLivroDescrito, PageTitle},
-    methods: {
-      async saveLivroDescrito(livroDescrito){
-        try{
-          const res = await LivroDescrito.saveLivroDescrito(livroDescrito);
-          this.$toasted.global.defaultSuccess();
-          this.$router.push('/dashboard/livros');
-        }catch(err){
-          showError(err);
-        }
+  name: "CadastroLivroDescrito",
+  components: { FormLivroDescrito, PageTitle },
+  methods: {
+    async saveLivroDescrito(livroDescrito) {
+      try {
+        const res = await LivroDescrito.saveLivroDescrito(livroDescrito);
+        this.$toasted.global.defaultSuccess();
+        this.$router.push("/dashboard/livros");
+      } catch (err) {
+        showError(err);
       }
     }
-}
+  }
+};
 </script>
 
 <style>
-
 </style>

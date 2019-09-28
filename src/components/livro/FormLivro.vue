@@ -457,23 +457,41 @@ export default {
       this.autor.nomeAutor = res.data.busca.autorLivro;
       this.editora.nomeEditora = res.data.busca.editoraLivro;
       let livro = { ...this.livro };
-      res.data.busca.tituloLivro ? (livro.tituloLivro = res.data.busca.tituloLivro) : null;
-      res.data.busca.anoLivro ? (livro.anoLivro = res.data.busca.anoLivro) : null;
-      res.data.busca.idiomaLivro ? (livro.idiomaLivro = res.data.busca.idiomaLivro) : null;
-      res.data.busca.paginasLivro ? (livro.paginasLivro = res.data.busca.paginasLivro) : null;
-      res.data.busca.sinopseLivro ? (livro.sinopseLivro = res.data.busca.sinopseLivro) : null;
-      res.data.busca.taducaoLivro ? (livro.traducaoLivro = res.data.busca.taducaoLivro) : null;
-      res.data.busca.pesoLivro ? (livro.pesoLivro = res.data.busca.pesoLivro) : null;
-      res.data.busca.edicaoLivro ? (livro.edicaoLivro = res.data.busca.edicaoLivro) : null;
-      if(res.data.busca.autorLivro){
+      res.data.busca.tituloLivro
+        ? (livro.tituloLivro = res.data.busca.tituloLivro)
+        : null;
+      res.data.busca.anoLivro
+        ? (livro.anoLivro = res.data.busca.anoLivro)
+        : null;
+      res.data.busca.idiomaLivro
+        ? (livro.idiomaLivro = res.data.busca.idiomaLivro)
+        : null;
+      res.data.busca.paginasLivro
+        ? (livro.paginasLivro = res.data.busca.paginasLivro)
+        : null;
+      res.data.busca.sinopseLivro
+        ? (livro.sinopseLivro = res.data.busca.sinopseLivro)
+        : null;
+      res.data.busca.taducaoLivro
+        ? (livro.traducaoLivro = res.data.busca.taducaoLivro)
+        : null;
+      res.data.busca.pesoLivro
+        ? (livro.pesoLivro = res.data.busca.pesoLivro)
+        : null;
+      res.data.busca.edicaoLivro
+        ? (livro.edicaoLivro = res.data.busca.edicaoLivro)
+        : null;
+      if (res.data.busca.autorLivro) {
         livro.nomeAutor = res.data.busca.autorLivro;
         this.getAutores(livro.nomeAutor);
       }
-      if(res.data.busca.editoraLivro){
+      if (res.data.busca.editoraLivro) {
         livro.nomeEditora = res.data.busca.editoraLivro;
         this.getEditoras(livro.nomeEditora);
       }
-      res.data.busca.imagemLivro ? (livro.imagemLivro = res.data.busca.imagemLivro.imagemLivro) : null;
+      res.data.busca.imagemLivro
+        ? (livro.imagemLivro = res.data.busca.imagemLivro.imagemLivro)
+        : null;
       this.$store.dispatch("SET_LIVRO", { livro: livro });
     },
     convertLivro() {
@@ -539,7 +557,7 @@ export default {
     autorSelected(autor) {
       this.livro.nomeAutor = autor.nomeAutor;
       this.livro.idAutor = autor.idAutor;
-      let livro = {...this.livro};
+      let livro = { ...this.livro };
       this.$store.dispatch("SET_LIVRO", { livro: livro });
     },
     onChangeAutor(nomeAutor) {
@@ -549,7 +567,7 @@ export default {
     editoraSelected(editora) {
       this.livro.nomeEditora = editora.nomeEditora;
       this.livro.idEditora = editora.idEditora;
-      let livro = {...this.livro};
+      let livro = { ...this.livro };
       this.$store.dispatch("SET_LIVRO", { livro: livro });
     },
     onChangeEditora(nomeEditora) {
@@ -559,7 +577,7 @@ export default {
     assuntoSelected(assunto) {
       this.livro.nomeAssunto = assunto.nomeAssunto;
       this.livro.idAssunto = assunto.idAssunto;
-      let livro = {...this.livro};
+      let livro = { ...this.livro };
       this.$store.dispatch("SET_LIVRO", { livro: livro });
     },
     onChangeAssunto(nomeAssunto) {
@@ -602,5 +620,4 @@ export default {
   display: flex;
   align-items: center;
 }
-
 </style>
