@@ -133,6 +133,11 @@ export default new Router({
           component: () => import('../components/cliente/Clientes.vue')
         },
         {
+          path: 'pedidos',
+          name: 'pedidos',
+          component: () => import('../components/pedido/Pedidos.vue')
+        },
+        {
           path: '',
           redirect: '/dashboard/home'
         },

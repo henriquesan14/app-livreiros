@@ -1,5 +1,5 @@
 <template>
-  <div class="autores">
+  <div class="clientes">
     <PageTitle icon="far fa-user" main="Administração de clientes" sub="Gerenciar clientes" />
 
     <b-card header="clientes">
