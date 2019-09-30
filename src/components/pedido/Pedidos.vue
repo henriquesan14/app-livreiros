@@ -6,9 +6,6 @@
       <template slot="header">
         <h5 class="card-title">Pedidos</h5>
       </template>
-      <b-button variant="dark" class="mb-2" size="sm">
-        <i class="fa fa-plus-circle mr-1"></i>Novo Pedido
-      </b-button>
 
       <b-row>
         <b-col>
@@ -88,9 +85,9 @@ export default {
       loader: false,
       pagePedidos: { rows: [] },
       page: 1,
-      status: '',
-      dataInicio: '',
-      dataFim: '',
+      status: "",
+      dataInicio: "",
+      dataFim: "",
       fields: [
         { key: "idPedido", label: "Cód.", sortable: true },
         {

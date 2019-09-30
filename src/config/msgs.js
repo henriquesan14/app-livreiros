@@ -13,6 +13,13 @@ Vue.toasted.register(
 )
 
 Vue.toasted.register(
+    'defaultInfo',
+    payload => !payload.msg ? 'Livro adicionado!' : payload.msg,
+    {type: 'info', icon: 'info-circle'}
+)
+
+
+Vue.toasted.register(
     'defaultError',
     payload => !payload.msg ? 'Oops... Erro inesperado!' : payload.msg,
     { type: 'error', icon: 'times' }

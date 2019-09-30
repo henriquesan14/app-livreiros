@@ -126,6 +126,7 @@
               <i class="fa fa-pencil"></i>
             </b-button>
             <b-button
+              class="mr-2"
               v-b-tooltip.hover
               title="Solicitar"
               size="sm"
@@ -135,6 +136,17 @@
             >
               <i class="fas fa-list-alt"></i>
             </b-button>
+
+            <b-button
+              v-b-tooltip.hover
+              title="Adicionar"
+              size="sm"
+              v-hasRole="'ESCREVER_LIVRO'"
+              variant="primary"
+              @click="addLivroToCart(data.item)"
+            >
+              <i class="fas fa-plus-circle"></i>
+            </b-button>
           </template>
         </b-table>
       </b-collapse>
@@ -143,6 +155,7 @@
 </template>
 
 <script>
+import { addLivro, getCart } from '../../utils/storage';
 export default {
   name: "BoxLivro",
   data() {
@@ -205,6 +218,11 @@ export default {
         name: "edicao-livro-descrito",
         params: { idlivro: idlivro, idlivrodescrito: idlivrodescrito }
       });
+    },
+    addLivroToCart(livro) {
+      addLivro(livro);
+      this.$store.dispatch('SET_CART');
+      this.$toasted.global.defaultInfo();
     }
   }
 };

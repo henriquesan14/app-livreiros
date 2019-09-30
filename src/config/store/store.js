@@ -9,6 +9,7 @@ import editora from './modules/editora'
 import assunto from './modules/assunto'
 import categoria from './modules/categoria'
 import livroDescrito from './modules/livro-descrito'
+import cart from './modules/cart'
 
 Vue.use(Vuex);
 
@@ -22,6 +23,7 @@ export default new Vuex.Store({
         assunto,
         autor,
         categoria,
-        livroDescrito
+        livroDescrito,
+        cart
     }
 })
