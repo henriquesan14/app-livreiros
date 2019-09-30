@@ -10,13 +10,29 @@
                 <b-form-input size="sm"></b-form-input>
               </b-form-group>
             </b-col>
+            <b-col>
+              <b-form-group label="Tipo">
+                <b-form-select size="sm" v-model="pedido.tipoPedido">
+                  <option value="balcao">Balcão</option>
+                  <option value="on-line">Online</option>
+                </b-form-select>
+              </b-form-group>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              <b-form-group label="Obs.">
+                <b-form-textarea></b-form-textarea>
+              </b-form-group>
+            </b-col>
           </b-row>
           <div class="table-responsive">
+            <b-badge class="mb-1"><span class="title-badge">Livros Descritos</span></b-badge>
             <table class="table table-sm table-hover table-striped">
               <thead>
                 <tr>
-                  <th>Cód Livro Descrito</th>
-                  <th>Cód. Livro</th>
+                  <th>Cód.</th>
+                  <th>Título</th>
                   <th>Qtd.</th>
                   <th>Valor Unitário</th>
                   <th>Valor Total</th>
@@ -26,7 +42,7 @@
               <tbody>
                 <tr v-for="item in cart.livrosDescritos" :key="item.id">
                   <td>{{item.idLivroDescrito}}</td>
-                  <td>{{item.livro.idLivro}}</td>
+                  <td>{{item.livro.tituloLivro}}</td>
                   <td>
                     <b-button @click="aumentaQuantidade(item)" variant="primary" size="sm">
                       <i class="fas fa-plus-circle"></i>
@@ -90,10 +106,12 @@
                 </tr>
               </tbody>
             </table>
+            
+            <b-button size="sm" variant="success">Finalizar</b-button>
+            <b-button @click="$bvModal.hide('modal-cart')" class="ml-2 mr-4" size="sm" variant="secondary">Fechar</b-button>
             <b-badge variant="danger">
               <span id="total">Total: {{total() | currency}}</span>
             </b-badge>
-            <b-button class="ml-3" size="sm" variant="success">Finalizar</b-button>
           </div>
         </div>
         <div v-if="!existemItens()">
@@ -121,12 +139,10 @@ export default {
   name: "Cart",
   data() {
     return {
+      pedido: {tipoPedido: 'balcao'},
       qtdSelecionada: null,
       ajusteSelecionado: null
     };
-  },
-  mounted(){
-    console.log(this.cart);
   },
   computed: mapGetters(["cart"]),
   methods: {

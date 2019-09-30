@@ -220,6 +220,7 @@ export default {
       });
     },
     addLivroToCart(livro) {
+      livro.tituloLivro = this.livro.tituloLivro;
       addLivro(livro);
       this.$store.dispatch('SET_CART');
       this.$toasted.global.defaultInfo();
