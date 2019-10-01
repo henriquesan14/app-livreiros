@@ -6,9 +6,18 @@
         <div v-if="existemItens()">
           <b-row>
             <b-col>
-              <b-form-group label="Pesquise o cliente">
-                <b-form-input size="sm"></b-form-input>
-              </b-form-group>
+              <b-form-group label="Cliente">
+                <Autocomplete
+                  :valorInicial="pedido.nomeCliente"
+                  :idAutocomplete="1"
+                  :shouldReset="false"
+                  title="Selecione um cliente..."
+                  :items="clientes"
+                  filterby="nomeCliente"
+                  @selected="clienteSelected"
+                  @change="onChangeCliente"
+                />
+               </b-form-group>
             </b-col>
             <b-col>
               <b-form-group label="Tipo">
@@ -22,7 +31,7 @@
           <b-row>
             <b-col>
               <b-form-group label="Obs.">
-                <b-form-textarea></b-form-textarea>
+                <b-form-textarea v-model="pedido.obsPedido"></b-form-textarea>
               </b-form-group>
             </b-col>
           </b-row>
@@ -56,17 +65,21 @@
                       class="m-md-2"
                     >
                       <b-dropdown-form>
-                        <b-row>
-                          <b-col>
-                            <b-form-group label="Qtd.">
-                              <b-form-input v-model="qtdSelecionada" class="mb-1" size="sm"></b-form-input>
-                            </b-form-group>
-                          </b-col>
-                        </b-row>
+                        <b-form @submit.prevent>
+                          <b-row>
+                            <b-col>
+                              <b-form-group label="Qtd.">
+                                <the-mask
+                                class="form-control form-control-sm mb-1"
+                                 v-model.number="qtdSelecionada" mask="####"></the-mask>
+                              </b-form-group>
+                            </b-col>
+                          </b-row>
 
-                        <b-dropdown-item-button id="btn-form">
-                          <b-button size="sm" @click="ajusteQuantidade(item)" variant="success" block>Ok</b-button>
-                        </b-dropdown-item-button>
+                          <b-dropdown-item-button id="btn-form">
+                            <b-button size="sm" @click="ajusteQuantidade(item)" variant="success" block>Ok</b-button>
+                          </b-dropdown-item-button>
+                        </b-form>
                       </b-dropdown-form>
                     </b-dropdown>
                     <b-button @click="diminuiQuantidade(item)" variant="primary" size="sm">
@@ -87,16 +100,18 @@
                         <i class="fas fa-cogs"></i>
                       </template>
                       <b-dropdown-form>
-                        <b-row>
-                          <b-col>
-                            <b-form-group label="Ajuste (%)">
-                              <b-form-input v-model="ajusteSelecionado" class="mb-1" size="sm"></b-form-input>
-                            </b-form-group>
-                          </b-col>
-                        </b-row>
-                        <b-dropdown-item-button id="btn-form">
-                          <b-button size="sm" @click="ajustePreco(item)" variant="success" block>Ok</b-button>
-                        </b-dropdown-item-button>
+                        <b-form @submit.prevent>
+                          <b-row>
+                            <b-col>
+                              <b-form-group label="Desconto (%)">
+                                <the-mask mask="####" v-model.number="ajusteSelecionado" class="form-control form-control-sm mb-1" size="sm"></the-mask>
+                              </b-form-group>
+                            </b-col>
+                          </b-row>
+                          <b-dropdown-item-button id="btn-form">
+                            <b-button size="sm" @click="ajustePreco(item)" variant="success" block>Ok</b-button>
+                          </b-dropdown-item-button>
+                        </b-form>
                       </b-dropdown-form>
                     </b-dropdown>
                     <b-button @click="removeProduto(item)" size="sm" variant="danger">
@@ -107,7 +122,7 @@
               </tbody>
             </table>
             
-            <b-button size="sm" variant="success">Finalizar</b-button>
+            <b-button size="sm" variant="success" @click="finalizaVenda()">Finalizar</b-button>
             <b-button @click="$bvModal.hide('modal-cart')" class="ml-2 mr-4" size="sm" variant="secondary">Fechar</b-button>
             <b-badge variant="danger">
               <span id="total">Total: {{total() | currency}}</span>
@@ -135,13 +150,18 @@ import {
   setPrice
 } from '../../utils/storage';
 import { mapGetters } from "vuex";
+import Autocomplete from '../shared/Autocomplete';
+import Clientes from '../../services/clientes';
+import { showError } from "@/global";
 export default {
   name: "Cart",
+  components: { Autocomplete },
   data() {
     return {
-      pedido: {tipoPedido: 'balcao'},
+      pedido: {tipoPedido: 'balcao', nomeCliente: '', livrosDescritos: []},
       qtdSelecionada: null,
-      ajusteSelecionado: null
+      ajusteSelecionado: null,
+      clientes: []
     };
   },
   computed: mapGetters(["cart"]),
@@ -166,12 +186,30 @@ export default {
     },
     ajustePreco(item){
       let ajuste =  (item.livro.precoLivroDescrito * this.ajusteSelecionado) / 100;
-      setPrice(item, parseInt(item.livro.precoLivroDescrito) + parseInt(ajuste, 10));
+      setPrice(item, parseInt(item.livro.precoLivroDescrito) - parseInt(ajuste, 10));
       this.$store.dispatch("SET_CART");
     },
     ajusteQuantidade(item){
       setQuantity(item, this.qtdSelecionada);
       this.$store.dispatch("SET_CART");
+    },
+    async getClientes(nomeCliente){
+      try{
+        const res = await Clientes.getClientes(nomeCliente);
+        this.clientes = res.data.rows;
+      }catch(err){
+        showError(err);
+      }
+    },
+    clienteSelected(cliente){
+      this.pedido.idCliente = cliente.idCliente;
+      this.pedido.nomeCliente = cliente.nomeCliente;
+    },
+    onChangeCliente(nomeCliente) {
+      this.getClientes(nomeCliente);
+    },
+    finalizaVenda(){
+      this.pedido.livrosDescritos = this.cart.livrosDescritos;
     }
   }
 };

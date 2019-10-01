@@ -120,7 +120,7 @@ export default {
     async getClientes() {
       this.loader = true;
       try {
-        const res = await Clientes.getClientes(this.page - 1);
+        const res = await Clientes.getClientes(this.nome, this.page - 1);
         this.pageClientes = res.data;
       } catch (err) {
         showError(err);
