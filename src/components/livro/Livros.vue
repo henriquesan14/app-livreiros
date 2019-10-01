@@ -63,7 +63,7 @@
       </div>
     </b-card>
     <SolicitacaoLivro />
-    <Cart />
+    <Cart @atualiza-livros="getLivros()"/>
   </div>
 </template>
 
@@ -71,7 +71,6 @@
 import PageTitle from "../template/PageTitle";
 import { mapGetters } from "vuex";
 import Loading from "../shared/Loading";
-import FormLivroDescrito from "./FormLivroDescrito";
 import { showError } from "@/global";
 import BoxLivro from "./BoxLivro";
 import LivroDescrito from "../../services/livro-descrito";
@@ -82,7 +81,6 @@ export default {
   components: {
     PageTitle,
     Loading,
-    FormLivroDescrito,
     BoxLivro,
     SolicitacaoLivro,
     Cart

@@ -17,6 +17,12 @@
                   @selected="clienteSelected"
                   @change="onChangeCliente"
                 />
+                <div>
+                  <span
+                    class="text-danger mt-2 font-menor"
+                    v-if="submitted && $v.pedido.idCliente.$invalid"
+                  >Selecione um cliente</span>
+                </div>
                </b-form-group>
             </b-col>
             <b-col>
@@ -122,7 +128,7 @@
               </tbody>
             </table>
             
-            <b-button size="sm" variant="success" @click="finalizaVenda()">Finalizar</b-button>
+            <b-button size="sm" variant="success" @click="submitPedido()">Finalizar</b-button>
             <b-button @click="$bvModal.hide('modal-cart')" class="ml-2 mr-4" size="sm" variant="secondary">Fechar</b-button>
             <b-badge variant="danger">
               <span id="total">Total: {{total() | currency}}</span>
@@ -141,7 +147,6 @@
 
 <script>
 import {
-  getCart,
   removeLivro,
   increaseQuantity,
   decreaseQuantity,
@@ -155,15 +160,25 @@ import Autocomplete from '../shared/Autocomplete';
 import Clientes from '../../services/clientes';
 import { showError } from "@/global";
 import Pedido from '../../services/pedidos';
+import { required } from "vuelidate/lib/validators";
 export default {
   name: "Cart",
   components: { Autocomplete },
   data() {
     return {
-      pedido: {tipoPedido: 'balcao', nomeCliente: '', livrosDescritos: []},
+      pedido: {tipoPedido: 'balcao', nomeCliente: 'Selecione um cliente...', livrosDescritos: []},
       qtdSelecionada: null,
       ajusteSelecionado: null,
-      clientes: []
+      clientes: [],
+      submitted: false
+    };
+  },
+  validations() {
+    return {
+      pedido: {
+        idCliente: { required },
+        livrosDescritos: { required }
+      }
     };
   },
   computed: mapGetters(["cart"]),
@@ -210,17 +225,26 @@ export default {
     onChangeCliente(nomeCliente) {
       this.getClientes(nomeCliente);
     },
-    async finalizaVenda(){
+    submitPedido(){
       this.pedido.livrosDescritos = this.cart.livrosDescritos;
+      this.submitted = true;
+      this.$v.$touch();
+      if (this.$v.$invalid) {
+        return;
+      }
+      this.submitted = false;
+      this.finalizaVenda();
+    },
+    async finalizaVenda(){
       try{
         await Pedido.savePedido(this.pedido);
+        this.$emit('atualiza-livros');
         this.$bvModal.hide('modal-cart');
-        this.pedido = {tipoPedido: 'balcao', nomeCliente: '', livrosDescritos: []};
+        this.pedido = {tipoPedido: 'balcao', nomeCliente: 'Selecione um cliente...', livrosDescritos: []};
         this.$toasted.global.defaultSuccess();
         this.$store.dispatch('ZERA_CART');
         setCart({livrosDescritos: []});
       }catch(err){
-        console.log(err.response);
         showError(err);
       }
     }

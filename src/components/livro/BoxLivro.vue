@@ -155,7 +155,7 @@
 </template>
 
 <script>
-import { addLivro, getCart } from '../../utils/storage';
+import { addLivro } from '../../utils/storage';
 export default {
   name: "BoxLivro",
   data() {
