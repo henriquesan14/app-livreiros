@@ -90,5 +90,5 @@ const total = () => {
     return sum;
 }
 
-export { getCart, addLivro, removeLivro, increaseQuantity, decreaseQuantity, total, setQuantity, setPrice };
+export { getCart, addLivro, removeLivro, increaseQuantity, decreaseQuantity, total, setQuantity, setPrice, setCart };
 

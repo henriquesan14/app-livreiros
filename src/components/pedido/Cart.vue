@@ -41,7 +41,7 @@
               <thead>
                 <tr>
                   <th>Cód.</th>
-                  <th>Título</th>
+                  <th>Livro</th>
                   <th>Qtd.</th>
                   <th>Valor Unitário</th>
                   <th>Valor Total</th>
@@ -147,12 +147,14 @@ import {
   decreaseQuantity,
   total,
   setQuantity,
-  setPrice
+  setPrice,
+  setCart
 } from '../../utils/storage';
 import { mapGetters } from "vuex";
 import Autocomplete from '../shared/Autocomplete';
 import Clientes from '../../services/clientes';
 import { showError } from "@/global";
+import Pedido from '../../services/pedidos';
 export default {
   name: "Cart",
   components: { Autocomplete },
@@ -208,8 +210,19 @@ export default {
     onChangeCliente(nomeCliente) {
       this.getClientes(nomeCliente);
     },
-    finalizaVenda(){
+    async finalizaVenda(){
       this.pedido.livrosDescritos = this.cart.livrosDescritos;
+      try{
+        await Pedido.savePedido(this.pedido);
+        this.$bvModal.hide('modal-cart');
+        this.pedido = {tipoPedido: 'balcao', nomeCliente: '', livrosDescritos: []};
+        this.$toasted.global.defaultSuccess();
+        this.$store.dispatch('ZERA_CART');
+        setCart({livrosDescritos: []});
+      }catch(err){
+        console.log(err.response);
+        showError(err);
+      }
     }
   }
 };

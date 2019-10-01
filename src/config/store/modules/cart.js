@@ -11,7 +11,10 @@ const mutations = {
 const actions = {
     SET_CART({ commit }) {
         commit('RECEIVE_CART', {cart: JSON.parse(localStorage.getItem('cart'))});
-    }
+    },
+    ZERA_CART({ commit }) {
+        commit('RECEIVE_CART', {cart: {livrosDescritos: []}});
+    },
 }
 
 const getters = {
