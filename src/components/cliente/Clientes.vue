@@ -6,9 +6,9 @@
       <template slot="header">
         <h5 class="card-title">Clientes</h5>
       </template>
-      <b-button variant="dark" class="mb-2" size="sm">
+      <router-link tag="button" to="/dashboard/clientes/cadastro" class="btn btn-dark btn-sm mb-2">
         <i class="fa fa-plus-circle mr-1"></i>Novo Cliente
-      </b-button>
+      </router-link>
       <b-row>
         <b-col md="12" sm="12" class="mb-3">
           <b-input-group>
