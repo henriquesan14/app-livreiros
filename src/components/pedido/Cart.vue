@@ -49,7 +49,6 @@
                   <th>Livro</th>
                   <th>Qtd.</th>
                   <th>Valor Unitário</th>
-                  
                   <th>Ações</th>
                 </tr>
               </thead>
@@ -91,7 +90,6 @@
                     </b-button>
                   </td>
                   <td>{{item.livro.precoLivroDescrito | currency}}</td>
-                  <!-- <td>{{item.livro.precoLivroDescrito * item.qtdLivroDescrito | currency}}</td> -->
                   <td>
                     <b-dropdown
                       dropright
