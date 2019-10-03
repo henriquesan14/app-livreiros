@@ -8,6 +8,7 @@
             <b-col>
               <b-form-group :invalid-feedback="invalidFeedBack($v.telefone)" label="Telefone">
                 <the-mask
+                  placeholder="Informe um número de telefone"
                   :class="{'is-invalid': submitted && $v.telefone.$invalid, 'is-valid': submitted && !$v.telefone.$invalid}"
                   v-model="telefone"
                   mask="(##)#####-####"
@@ -52,7 +53,8 @@ export default {
   methods: {
     addTelefone() {
       this.$emit("add-telefone", this.telefone);
-      this.telefone = '';
+      this.telefone = "";
+      this.$bvModal.hide("modal-form-telefone");
     },
     submitTelefone() {
       this.submitted = true;

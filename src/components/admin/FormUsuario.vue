@@ -459,7 +459,9 @@ export default {
       data.logradouro
         ? (user.ruaUsuario = data.logradouro)
         : (user.ruaUsuario = "");
-      data.bairro ? (user.bairroUsuario = data.bairro) : (data.bairro = "");
+      data.bairro
+        ? (user.bairroUsuario = data.bairro)
+        : (user.bairroUsuario = "");
       this.estados
         .filter(e => e.siglaUf.toUpperCase() === data.uf)
         .forEach(e => (user.idUf = e.idUf));

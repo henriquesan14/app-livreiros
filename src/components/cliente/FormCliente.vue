@@ -3,37 +3,60 @@
     <b-form @submit.prevent="submitCliente">
       <b-row>
         <b-col>
-          <b-form-group label="Nome*">
-            <b-form-input v-model="cliente.nomeCliente" size="sm"></b-form-input>
+          <b-form-group label="Nome*" :invalid-feedback="invalidFeedBack($v.cliente.nomeCliente)">
+            <b-form-input
+              placeholder="Informe o nome do cliente"
+              :class="{'is-invalid': submitted && $v.cliente.nomeCliente.$invalid, 'is-valid': submitted && !$v.cliente.nomeCliente.$invalid}"
+              v-model="cliente.nomeCliente"
+              size="sm"
+            ></b-form-input>
           </b-form-group>
         </b-col>
         <b-col>
-          <b-form-group label="Email*">
-            <b-form-input v-model="cliente.emailCliente" size="sm"></b-form-input>
+          <b-form-group label="Email*" :invalid-feedback="invalidFeedBack($v.cliente.emailCliente)">
+            <b-form-input
+              placeholder="Informe o email do cliente"
+              :class="{'is-invalid': submitted && $v.cliente.emailCliente.$invalid, 'is-valid': submitted && !$v.cliente.emailCliente.$invalid}"
+              v-model="cliente.emailCliente"
+              size="sm"
+            ></b-form-input>
           </b-form-group>
         </b-col>
       </b-row>
       <b-row>
         <b-col>
-          <b-form-group label="Tipo Pessoa">
+          <b-form-group label="Tipo Pessoa*">
             <b-form-radio-group v-model="cliente.tipoPessoa">
               <b-form-radio size="sm" value="fisica">Física</b-form-radio>
               <b-form-radio size="sm" value="juridica">Jurídica</b-form-radio>
             </b-form-radio-group>
           </b-form-group>
         </b-col>
-        <b-col v-if="cliente.tipoPessoa === 'fisica'">
-          <b-form-group label="CPF*">
+      </b-row>
+
+      <b-row>
+        <b-col md="3" v-if="cliente.tipoPessoa === 'fisica'">
+          <b-form-group
+            label="CPF*"
+            :invalid-feedback="invalidFeedBack($v.cliente.clientePf.cpfCliente)"
+          >
             <the-mask
+              placeholder="Informe o CPF do cliente"
+              :class="{'is-invalid': submitted && $v.cliente.clientePf.cpfCliente.$invalid, 'is-valid': submitted && !$v.cliente.clientePf.cpfCliente.$invalid}"
               mask="###.###.###-##"
               class="form-control form-control-sm"
               v-model="cliente.clientePf.cpfCliente"
             ></the-mask>
           </b-form-group>
         </b-col>
-        <b-col v-if="cliente.tipoPessoa === 'juridica'">
-          <b-form-group label="CNPJ*">
+        <b-col md="3" v-if="cliente.tipoPessoa === 'juridica'">
+          <b-form-group
+            label="CNPJ*"
+            :invalid-feedback="invalidFeedBack($v.cliente.clientePj.cnpjCliente)"
+          >
             <the-mask
+              placeholder="Informe o CNPJ do cliente"
+              :class="{'is-invalid': submitted && $v.cliente.clientePj.cnpjCliente.$invalid, 'is-valid': submitted && !$v.cliente.clientePj.cnpjCliente.$invalid}"
               mask="###.###.###/####-##"
               class="form-control form-control-sm"
               v-model="cliente.clientePj.cnpjCliente"
@@ -41,30 +64,7 @@
           </b-form-group>
         </b-col>
       </b-row>
-      <b-row>
-        <b-col>
-          <b-form-group label="Telefones*">
-            <b-row>
-              <b-col md="2" v-for="(telefone, index) in cliente.telefones" :key="index">
-                <div class="mb-2 box-telefone">
-                  <the-mask
-                    mask="(##)#####-####"
-                    class="form-control form-control-sm"
-                    readonly
-                    :value="telefone"
-                  ></the-mask>
-                  <button @click="removeTelefone(index)" class="ml-1 btn-remove">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                </div>
-              </b-col>
-            </b-row>
-            <b-button @click="$bvModal.show('modal-form-telefone')" size="sm" variant="primary">
-              <i class="fa fa-plus-circle mr-1"></i>Adicionar telefone
-            </b-button>
-          </b-form-group>
-        </b-col>
-      </b-row>
+
       <b-row>
         <b-col>
           <b-form-group label="Obs.">
@@ -72,86 +72,166 @@
           </b-form-group>
         </b-col>
       </b-row>
-
-      <b-badge class="mb-2">
-        <span class="title-badge">Endereço</span>
-      </b-badge>
       <b-row>
-        <b-col md="2">
-          <b-form-group
-            label="CEP: *"
-            label-for="cep"
-          >
-            <the-mask
-              class="form-control form-control-sm"
-              :mask="'#####-###'"
-              :masked="false"
-              type="text"
-              id="cep"
-              placeholder="Informe o CEP"
-            />
+        <b-col>
+          <b-form-group label="Telefones*">
+            <span
+              class="text-danger font-menor block"
+              v-if="submitted && $v.cliente.telefones.$invalid"
+            >Adicione pelo menos um telefone</span>
+
+            <b-button
+              type="button"
+              @click="$bvModal.show('modal-form-telefone')"
+              size="sm"
+              variant="primary"
+            >
+              <i class="fa fa-plus-circle mr-1"></i>Adicionar novo telefone
+            </b-button>
+            <b-row class="mt-1">
+              <b-col md="2" v-for="(telefone, index) in cliente.telefones" :key="index">
+                <span>Telefone {{index + 1}}</span>
+                <div class="mb-2 box-telefone">
+                  <the-mask
+                    mask="(##)#####-####"
+                    class="form-control form-control-sm"
+                    readonly
+                    :value="telefone"
+                  ></the-mask>
+                  <button type="button" @click="removeTelefone(index)" class="ml-1 btn-remove">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                </div>
+              </b-col>
+            </b-row>
           </b-form-group>
         </b-col>
-        <b-col >
-            <b-form-group label="Logradouro*">
-                <b-form-input size="sm"></b-form-input>
-            </b-form-group>
-        </b-col>
-        <b-col md="2">
-            <b-form-group label="Nº">
-                <b-form-input size="sm"></b-form-input>
-            </b-form-group>
-        </b-col>
-      </b-row>
-      <b-row>
-          <b-col>
-              <b-form-group label="Bairro">
-                  <b-form-input size="sm"></b-form-input>
-              </b-form-group>
-          </b-col>
-          <b-col>
-              <b-form-group label="Complemento">
-                  <b-form-input size="sm"></b-form-input>
-              </b-form-group>
-          </b-col>
       </b-row>
 
-      
+      <b-row>
+        <b-col>
+          <b-form-group label="Endereços*">
+            <span
+              class="text-danger font-menor block"
+              v-if="submitted && $v.cliente.enderecos.$invalid"
+            >Adicione pelo menos um endereço</span>
+
+            <b-button
+              type="button"
+              @click="$bvModal.show('modal-form-endereco')"
+              size="sm"
+              variant="primary"
+            >
+              <i class="fa fa-plus-circle mr-1"></i>Adicionar novo endereço
+            </b-button>
+          </b-form-group>
+        </b-col>
+      </b-row>
+      <b-table
+        v-if="cliente.enderecos.length > 0"
+        class="table-sm"
+        :responsive="true"
+        hover
+        striped
+        :items="cliente.enderecos"
+        :fields="fields"
+      ></b-table>
+
       <b-button size="sm" type="submit" variant="success" class="mr-2">
         <i class="fa fa-save mr-1"></i>Salvar
       </b-button>
-      <b-button variant="dark" size="sm">
+      <b-button type="button" variant="dark" size="sm">
         <i class="fa fa-arrow-left mr-1"></i>Fechar
       </b-button>
     </b-form>
     <ModalFormTelefone @add-telefone="addTelefone" />
+    <ModalFormEndereco @add-endereco="addEndereco" />
   </div>
 </template>
 
 <script>
 import ModalFormTelefone from "./ModalFormTelefone";
+import ModalFormEndereco from "./ModalFormEndereco";
+import { showError } from "@/global";
+import { validationMsg } from "../../config/validation-msgs";
+import {
+  required,
+  minLength,
+  email,
+  sameAs,
+  requiredIf
+} from "vuelidate/lib/validators";
 export default {
   name: "FormCliente",
-  components: { ModalFormTelefone },
+  components: { ModalFormTelefone, ModalFormEndereco },
   data() {
     return {
+      fields: [
+        { key: "rua", label: "Rua", sortable: true },
+        { key: "numero", label: "Numero", sortable: true },
+        { key: "bairro", label: "Bairro", sortable: true },
+        { key: "cep", label: "CEP", sortable: true }
+      ],
+      submitted: false,
       cliente: {
         telefones: [],
         tipoPessoa: "fisica",
         clientePj: {},
-        clientePf: {}
+        clientePf: {},
+        enderecos: []
+      }
+    };
+  },
+  validations() {
+    return {
+      cliente: {
+        nomeCliente: { required },
+        emailCliente: { required, email },
+        clientePj: {
+          cnpjCliente: {
+            requiredIf: requiredIf(() => {
+              if (this.cliente.tipoPessoa === "juridica") {
+                return true;
+              }
+            }),
+            minLength: minLength(15)
+          }
+        },
+        clientePf: {
+          cpfCliente: {
+            requiredIf: requiredIf(() => {
+              if (this.cliente.tipoPessoa === "fisica") {
+                return true;
+              }
+            }),
+            minLength: minLength(11)
+          }
+        },
+        telefones: { required },
+        enderecos: { required }
       }
     };
   },
   methods: {
     submitCliente() {
-      console.log(this.cliente);
+      this.submitted = true;
+      this.$v.$touch();
+      if (this.$v.$invalid) {
+        return;
+      }
+      this.submitted = false;
     },
     addTelefone(telefone) {
       this.cliente.telefones.push(telefone);
     },
+    addEndereco(endereco) {
+      this.cliente.enderecos.push(endereco);
+    },
     removeTelefone(index) {
       this.cliente.telefones.splice(index, 1);
+    },
+    invalidFeedBack(field) {
+      return validationMsg(field);
     }
   }
 };
@@ -171,5 +251,13 @@ export default {
   color: white;
   border: none;
   border-radius: 5px;
+}
+
+.font-menor {
+  font-size: 0.785rem;
+}
+
+.block {
+  display: block;
 }
 </style>
