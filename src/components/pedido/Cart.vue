@@ -46,17 +46,15 @@
             <table class="table table-sm table-hover table-striped">
               <thead>
                 <tr>
-                  <th>Cód.</th>
                   <th>Livro</th>
                   <th>Qtd.</th>
                   <th>Valor Unitário</th>
-                  <th>Valor Total</th>
+                  
                   <th>Ações</th>
                 </tr>
               </thead>
               <tbody>
                 <tr v-for="item in cart.livrosDescritos" :key="item.id">
-                  <td>{{item.idLivroDescrito}}</td>
                   <td>{{item.livro.tituloLivro}}</td>
                   <td>
                     <b-button @click="aumentaQuantidade(item)" variant="primary" size="sm">
@@ -93,7 +91,7 @@
                     </b-button>
                   </td>
                   <td>{{item.livro.precoLivroDescrito | currency}}</td>
-                  <td>{{item.livro.precoLivroDescrito * item.qtdLivroDescrito | currency}}</td>
+                  <!-- <td>{{item.livro.precoLivroDescrito * item.qtdLivroDescrito | currency}}</td> -->
                   <td>
                     <b-dropdown
                       dropright
@@ -166,7 +164,6 @@ export default {
   components: { Autocomplete },
   data() {
     return {
-      pedido: {tipoPedido: 'balcao', nomeCliente: 'Selecione um cliente...', livrosDescritos: []},
       qtdSelecionada: null,
       ajusteSelecionado: null,
       clientes: [],
@@ -181,7 +178,7 @@ export default {
       }
     };
   },
-  computed: mapGetters(["cart"]),
+  computed: mapGetters(["cart", "pedido"]),
   methods: {
     diminuiQuantidade(item) {
       decreaseQuantity(item);
@@ -219,14 +216,19 @@ export default {
       }
     },
     clienteSelected(cliente){
+      this.pedido.livrosDescritos = this.cart.livrosDescritos;
       this.pedido.idCliente = cliente.idCliente;
       this.pedido.nomeCliente = cliente.nomeCliente;
+      let pedido = {...this.pedido};
+      this.$store.dispatch('SET_PEDIDO', pedido);
     },
     onChangeCliente(nomeCliente) {
       this.getClientes(nomeCliente);
     },
     submitPedido(){
       this.pedido.livrosDescritos = this.cart.livrosDescritos;
+      let pedido = {...this.pedido};
+      this.$store.dispatch('SET_PEDIDO', pedido);
       this.submitted = true;
       this.$v.$touch();
       if (this.$v.$invalid) {
@@ -240,7 +242,8 @@ export default {
         await Pedido.savePedido(this.pedido);
         this.$emit('atualiza-livros');
         this.$bvModal.hide('modal-cart');
-        this.pedido = {tipoPedido: 'balcao', nomeCliente: 'Selecione um cliente...', livrosDescritos: []};
+        let pedido = {tipoPedido: 'balcao', nomeCliente: 'Selecione um cliente...', livrosDescritos: []};
+        this.$store.dispatch('SET_PEDIDO', pedido);
         this.$toasted.global.defaultSuccess();
         this.$store.dispatch('ZERA_CART');
         setCart({livrosDescritos: []});
