@@ -368,7 +368,7 @@ import { showError } from "@/global";
 import { mapGetters } from "vuex";
 import { required, minValue, minLength } from "vuelidate/lib/validators";
 import { VMoney } from "v-money";
-import { validationMsg } from "../../config/validation-msgs";
+import { validationMsg } from "../../utils/validation-msgs";
 import Livro from "../../services/livros";
 import Autocomplete from "../shared/Autocomplete";
 export default {

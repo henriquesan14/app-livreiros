@@ -39,7 +39,7 @@
 <script>
 import { required } from "vuelidate/lib/validators";
 import { showError } from "@/global";
-import { validationMsg } from "../../../config/validation-msgs";
+import { validationMsg } from "../../../utils/validation-msgs";
 import Categoria from "../../../services/categorias";
 export default {
   name: "FormCategoria",

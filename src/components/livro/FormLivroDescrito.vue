@@ -137,7 +137,7 @@ import Descricoes from "../../services/descricoes";
 import { showError } from "@/global";
 import Loading from "../shared/Loading";
 import { required, minValue } from "vuelidate/lib/validators";
-import { validationMsg } from "../../config/validation-msgs";
+import { validationMsg } from "../../utils/validation-msgs";
 export default {
   name: "FormLivroDescrito",
   components: { Loading },

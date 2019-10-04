@@ -39,7 +39,7 @@
 
 <script>
 import { required, minLength } from "vuelidate/lib/validators";
-import { validationMsg } from "../../config/validation-msgs";
+import { validationMsg } from "../../utils/validation-msgs";
 export default {
   name: "ModalFormTelefone",
   data() {

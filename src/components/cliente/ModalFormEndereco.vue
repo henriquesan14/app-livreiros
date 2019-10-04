@@ -163,7 +163,7 @@
 
 <script>
 import { required, minLength } from "vuelidate/lib/validators";
-import { validationMsg } from "../../config/validation-msgs";
+import { validationMsg } from "../../utils/validation-msgs";
 import { showError } from "@/global";
 import Estado from "../../services/estados";
 import WsCep from "../../services/ws-cep";

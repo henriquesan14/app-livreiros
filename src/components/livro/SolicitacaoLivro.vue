@@ -53,7 +53,7 @@ import Solicitacao from "../../services/solicitacoes";
 import { showError } from "@/global";
 import { mapGetters } from "vuex";
 import { required, minValue } from "vuelidate/lib/validators";
-import { validationMsg } from "../../config/validation-msgs";
+import { validationMsg } from "../../utils/validation-msgs";
 export default {
   name: "SolicitacaoLivro",
   computed: mapGetters(["livroDescrito"]),

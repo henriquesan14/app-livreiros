@@ -38,7 +38,7 @@
 import { required } from "vuelidate/lib/validators";
 import { showError } from "@/global";
 import Autor from "../../../services/autores";
-import { validationMsg } from "../../../config/validation-msgs";
+import { validationMsg } from "../../../utils/validation-msgs";
 export default {
   name: "FormAutor",
   data() {

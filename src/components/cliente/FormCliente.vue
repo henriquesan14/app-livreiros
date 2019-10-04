@@ -165,7 +165,7 @@
 import ModalFormTelefone from "./ModalFormTelefone";
 import ModalFormEndereco from "./ModalFormEndereco";
 import { showError } from "@/global";
-import { validationMsg } from "../../config/validation-msgs";
+import { validationMsg } from "../../utils/validation-msgs";
 import { validaCpf } from "../../utils/cpf_validator";
 import { validaCnpj } from "../../utils/cnpj_validator";
 import {

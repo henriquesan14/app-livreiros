@@ -45,7 +45,7 @@
 <script>
 import { VMoney } from "v-money";
 import { required } from "vuelidate/lib/validators";
-import { validationMsg } from "../../../config/validation-msgs";
+import { validationMsg } from "../../../utils/validation-msgs";
 export default {
   name: "FormDescricao",
   directives: { money: VMoney },

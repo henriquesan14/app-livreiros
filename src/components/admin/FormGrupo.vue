@@ -51,7 +51,7 @@
 <script>
 import { mapGetters } from "vuex";
 import { required } from "vuelidate/lib/validators";
-import { validationMsg } from "../../config/validation-msgs";
+import { validationMsg } from "../../utils/validation-msgs";
 export default {
   name: "FormGrupo",
   data() {
