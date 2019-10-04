@@ -35,8 +35,12 @@ export default {
           livroDescrito.idLivroDescrito,
           livroDescrito
         );
-        this.$toasted.global.defaultSuccess();
-        this.$router.push("/dashboard/livros");
+        let loader = this.$loading.show();
+        setTimeout(() => {
+          loader.hide();
+          this.$toasted.global.defaultSuccess();
+          this.$router.push("/dashboard/livros");
+        }, 2000);
       } catch (err) {
         showError(err);
       }

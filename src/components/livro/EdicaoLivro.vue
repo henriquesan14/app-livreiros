@@ -49,8 +49,12 @@ export default {
     async editLivro(livro) {
       try {
         await Livro.editLivro(livro.idLivro, livro);
-        this.$toasted.global.defaultSuccess();
-        this.$router.push("/dashboard/livros");
+        let loader = this.$loading.show();
+        setTimeout(() => {
+          loader.hide();
+          this.$toasted.global.defaultSuccess();
+          this.$router.push("/dashboard/livros");
+        }, 2000);
       } catch (err) {
         showError(err);
       }
