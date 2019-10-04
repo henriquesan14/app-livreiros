@@ -35,6 +35,20 @@
                 </b-button>
               </b-form-group>
             </b-col>
+            <b-col>
+              <b-form-group
+                label="Destinatário*"
+                :invalid-feedback="invalidFeedBack($v.endereco.destinatario)"
+              >
+                <b-form-input
+                  placeholder="Informe o destinatário"
+                  maxlength="100"
+                  :class="{'is-invalid': submitted && $v.endereco.destinatario.$invalid, 'is-valid': submitted && !$v.endereco.destinatario.$invalid}"
+                  size="sm"
+                  v-model="endereco.destinatario"
+                ></b-form-input>
+              </b-form-group>
+            </b-col>
           </b-row>
           <b-row>
             <b-col>
@@ -163,6 +177,7 @@ export default {
   validations() {
     return {
       endereco: {
+        destinatario: { required },
         rua: { required },
         cepCliente: { required, minLength: minLength(8) },
         numero: { required },
@@ -218,6 +233,10 @@ export default {
         let loader = this.$loading.show();
         try {
           const res = await WsCep.buscaCep(this.endereco.cepCliente);
+          if (res.data.erro) {
+            showError("CEP não encontrado");
+            return;
+          }
           this.exportDadosWsCep(res.data);
         } catch (err) {
           showError(err);
@@ -233,7 +252,10 @@ export default {
       data.bairro ? (endereco.bairro = data.bairro) : (endereco.bairro = "");
       this.estados
         .filter(e => e.siglaUf.toUpperCase() === data.uf)
-        .forEach(e => (endereco.idUf = e.idUf));
+        .forEach(e => {
+          endereco.idUf = e.idUf;
+          endereco.siglaUf = e.siglaUf;
+        });
       try {
         await this.loadCidades(endereco.idUf);
       } catch (err) {
@@ -243,7 +265,10 @@ export default {
       }
       this.cidades
         .filter(c => c.idIbge == data.ibge)
-        .forEach(c => (endereco.idCidade = c.idCidade));
+        .forEach(c => {
+          endereco.idCidade = c.idCidade;
+          endereco.nomeCidade = c.nomeCidade;
+        });
       this.$store.dispatch("SET_ENDERECO", { endereco: endereco });
     },
     cepValido() {

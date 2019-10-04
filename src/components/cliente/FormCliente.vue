@@ -57,7 +57,7 @@
             <the-mask
               placeholder="Informe o CNPJ do cliente"
               :class="{'is-invalid': submitted && $v.cliente.clientePj.cnpjCliente.$invalid, 'is-valid': submitted && !$v.cliente.clientePj.cnpjCliente.$invalid}"
-              mask="###.###.###/####-##"
+              mask="##.###.###/####-##"
               class="form-control form-control-sm"
               v-model="cliente.clientePj.cnpjCliente"
             ></the-mask>
@@ -135,7 +135,17 @@
         striped
         :items="cliente.enderecos"
         :fields="fields"
-      ></b-table>
+      >
+        <template
+          slot="endereco"
+          slot-scope="data"
+        >{{`${data.item.rua}, ${data.item.numero}, ${data.item.bairro}, ${data.item.nomeCidade}-${data.item.siglaUf} - ${data.item.cepCliente}`}}</template>
+        <template slot="actions" slot-scope="data">
+          <b-button variant="danger" size="sm">
+            <i class="fas fa-trash"></i>
+          </b-button>
+        </template>
+      </b-table>
 
       <b-button size="sm" type="submit" variant="success" class="mr-2">
         <i class="fa fa-save mr-1"></i>Salvar
@@ -154,6 +164,8 @@ import ModalFormTelefone from "./ModalFormTelefone";
 import ModalFormEndereco from "./ModalFormEndereco";
 import { showError } from "@/global";
 import { validationMsg } from "../../config/validation-msgs";
+import { validaCpf } from "../../utils/cpf_validator";
+import { validaCnpj } from "../../utils/cnpj_validator";
 import {
   required,
   minLength,
@@ -167,10 +179,8 @@ export default {
   data() {
     return {
       fields: [
-        { key: "rua", label: "Rua", sortable: true },
-        { key: "numero", label: "Numero", sortable: true },
-        { key: "bairro", label: "Bairro", sortable: true },
-        { key: "cep", label: "CEP", sortable: true }
+        { key: "endereco", label: "Rua" },
+        { key: "actions", label: "Ações" }
       ],
       submitted: false,
       cliente: {
@@ -194,7 +204,8 @@ export default {
                 return true;
               }
             }),
-            minLength: minLength(15)
+            minLength: minLength(14),
+            validaCnpj
           }
         },
         clientePf: {
@@ -204,7 +215,8 @@ export default {
                 return true;
               }
             }),
-            minLength: minLength(11)
+            minLength: minLength(11),
+            validaCpf
           }
         },
         telefones: { required },
@@ -219,6 +231,7 @@ export default {
       if (this.$v.$invalid) {
         return;
       }
+      this.$emit("submit-cliente", this.cliente);
       this.submitted = false;
     },
     addTelefone(telefone) {

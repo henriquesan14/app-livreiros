@@ -15,6 +15,10 @@ function validationMsg(field) {
         return 'Senha e confirmação de senha não conferem';
     } else if (field.minValue != undefined && !field.minValue) {
         return `Este campo deve ter o valor minimo de ${field.$params.minValue.min}`
+    } else if(field.validaCpf != undefined && !field.validaCpf){
+        return 'CPF inválido';
+    } else if(field.validaCnpj != undefined && !field.validaCnpj){
+        return 'CNPJ inválido';
     }
 }
 

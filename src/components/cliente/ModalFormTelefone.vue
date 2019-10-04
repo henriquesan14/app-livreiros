@@ -11,7 +11,7 @@
                   placeholder="Informe um número de telefone"
                   :class="{'is-invalid': submitted && $v.telefone.$invalid, 'is-valid': submitted && !$v.telefone.$invalid}"
                   v-model="telefone"
-                  mask="(##)#####-####"
+                  :mask="['(##)#####-####', '(##)####-####']"
                   class="form-control form-control-sm"
                 ></the-mask>
               </b-form-group>
@@ -47,7 +47,7 @@ export default {
   },
   validations() {
     return {
-      telefone: { required, minLength: minLength(11) }
+      telefone: { required, minLength: minLength(10) }
     };
   },
   methods: {
