@@ -1,9 +1,9 @@
 <template>
   <div class="flex">
-    <b-button variant="success">
-      <i class="fas fa-shopping-cart mr-1"></i>
-      Ir para o edido atual
-    </b-button>
+    <router-link v-if="cart.livrosDescritos.length > 0" to="/dashboard/pedidos/atual" class="btn btn-success" tag="button">
+      <i class="fas fa-cart-arrow-down mr-1"></i>
+      Ir para o pedido atual
+    </router-link>
     <div class="user-dropdown">
       <div class="user-button">
         <span class="d-none d-sm-block">{{localUser.user.nomeUsuario}}</span>
@@ -30,7 +30,7 @@ import Gravatar from "vue-gravatar";
 export default {
   name: "UserDropdown",
   components: { Gravatar },
-  computed: mapGetters(["localUser"]),
+  computed: mapGetters(["localUser", "cart"]),
   methods: {
     logout() {
       this.$store

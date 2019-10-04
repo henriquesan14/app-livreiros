@@ -143,6 +143,11 @@ export default new Router({
           component: () => import('../components/pedido/Pedidos.vue')
         },
         {
+          path: 'pedidos/atual',
+          name: 'pedidos',
+          component: () => import('../components/pedido/PedidoAtual.vue')
+        },
+        {
           path: '',
           redirect: '/dashboard/home'
         },

@@ -6,7 +6,6 @@
       <template slot="header">
         <h5>Livros</h5>
       </template>
-      <b-button v-if="cart.livrosDescritos.length > 0" @click="$bvModal.show('modal-cart');" class="mb-2" size="sm" variant="success" block>Visualizar Pedido</b-button>
       <router-link
         v-hasRole="'ESCREVER_LIVRO'"
         to="/dashboard/livros/cadastro"
@@ -63,7 +62,6 @@
       </div>
     </b-card>
     <SolicitacaoLivro />
-    <Cart @atualiza-livros="getLivros()"/>
   </div>
 </template>
 
@@ -75,7 +73,6 @@ import { showError } from "@/global";
 import BoxLivro from "./BoxLivro";
 import LivroDescrito from "../../services/livro-descrito";
 import SolicitacaoLivro from "./SolicitacaoLivro";
-import Cart from '../pedido/Cart';
 export default {
   name: "Livros",
   components: {
@@ -83,9 +80,8 @@ export default {
     Loading,
     BoxLivro,
     SolicitacaoLivro,
-    Cart
   },
-  computed: mapGetters(["pageLivros", "livroSelecionado", "livroDescrito", "cart"]),
+  computed: mapGetters(["pageLivros", "livroSelecionado", "livroDescrito"]),
   mounted() {
     this.getLivros();
   },

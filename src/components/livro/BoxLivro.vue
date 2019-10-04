@@ -3,7 +3,7 @@
     <div class="box-livro mb-2">
       <div class="img-livro">
         <img
-          :src="'https://imagens-capas-1.s3.amazonaws.com/'+ (livro.imagemLivro == null ? '1557681051638': livro.imagemLivro)"
+          :src="'https://imagens-capas-1.s3.amazonaws.com/'+ (livro.imagemLivro == null ? '1570218265559': livro.imagemLivro)"
           alt="capa-livro"
         />
       </div>
@@ -221,6 +221,8 @@ export default {
     },
     addLivroToCart(livro) {
       livro.tituloLivro = this.livro.tituloLivro;
+      livro.imagemLivro = this.livro.imagemLivro;
+
       addLivro(livro);
       this.$store.dispatch('SET_CART');
       this.$toasted.global.defaultInfo();
