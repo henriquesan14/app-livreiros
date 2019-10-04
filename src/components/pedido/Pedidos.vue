@@ -9,19 +9,30 @@
 
       <b-row>
         <b-col>
+          <b-form-group label="Tipo">
+            <b-form-select @change="getPedidos" size="sm" v-model="tipo">
+              <option :value="''" disabled>Selecione um tipo</option>
+              <option :value="''">Todos</option>
+              <option value="balcao">Pendente</option>
+              <option value="on-line">Online</option>
+            </b-form-select>
+          </b-form-group>
+        </b-col>
+        <b-col>
           <b-form-group label="Status">
-            <b-form-select size="sm" v-model="status">
+            <b-form-select @change="getPedidos" size="sm" v-model="status">
               <option :value="''" disabled>Selecione um status</option>
               <option :value="''">Todos</option>
               <option value="pendente">Pendente</option>
-              <option value="confirmado">Confirmado</option>
+              <option value="finalizado">Finalizado</option>
               <option value="cancelado">Cancelado</option>
             </b-form-select>
           </b-form-group>
         </b-col>
-        <b-col md="5" class="mb-3">
+        <b-col md="4" class="mb-3">
           <b-form-group label="Data inicio:">
             <b-form-input
+              @change="getPedidos"
               size="sm"
               type="date"
               v-model="dataInicio"
@@ -29,9 +40,9 @@
             />
           </b-form-group>
         </b-col>
-        <b-col md="5" class="mb-3">
+        <b-col md="4" class="mb-3">
           <b-form-group label="Data Fim:">
-            <b-form-input size="sm" type="date" v-model="dataFim" />
+            <b-form-input @change="getPedidos" size="sm" type="date" v-model="dataFim" />
           </b-form-group>
         </b-col>
       </b-row>
@@ -88,6 +99,7 @@ export default {
       status: "",
       dataInicio: "",
       dataFim: "",
+      tipo: "",
       fields: [
         { key: "idPedido", label: "Cód.", sortable: true },
         {
@@ -119,7 +131,14 @@ export default {
     async getPedidos() {
       this.loader = true;
       try {
-        const res = await Pedidos.getPedidos(this.page - 1);
+        const res = await Pedidos.getPedidos(
+          this.page - 1,
+          10,
+          this.status,
+          this.dataInicio,
+          this.dataFim,
+          this.tipo
+        );
         this.pagePedidos = res.data;
       } catch (err) {
         showError(err);

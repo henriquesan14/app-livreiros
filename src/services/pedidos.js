@@ -2,8 +2,8 @@ import axios from 'axios';
 import { baseApiUrl } from '@/global';
 
 export default {
-    getPedidos: (page = 0, limite = 10) => {
-        return axios.get(`${baseApiUrl}/pedidos?pagina=${page}&limite=${limite}`);
+    getPedidos: (page = 0, limite = 10, status = '', dataInicio = '', dataFim = '', tipo = '') => {
+        return axios.get(`${baseApiUrl}/pedidos?pagina=${page}&limite=${limite}&statusPedido=${status}&dataIni=${dataInicio}&dataFim=${dataFim}&tipoPedido=${tipo}`);
     },
     savePedido: (pedido) => {
         return axios.post(`${baseApiUrl}/pedidos`, pedido);
