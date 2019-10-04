@@ -13,7 +13,7 @@
             <b-form-select @change="getPedidos" size="sm" v-model="tipo">
               <option :value="''" disabled>Selecione um tipo</option>
               <option :value="''">Todos</option>
-              <option value="balcao">Pendente</option>
+              <option value="balcao">Balcão</option>
               <option value="on-line">Online</option>
             </b-form-select>
           </b-form-group>

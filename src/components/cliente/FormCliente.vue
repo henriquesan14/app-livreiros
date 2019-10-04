@@ -152,9 +152,9 @@
       <b-button size="sm" type="submit" variant="success" class="mr-2">
         <i class="fa fa-save mr-1"></i>Salvar
       </b-button>
-      <b-button type="button" variant="dark" size="sm">
-        <i class="fa fa-arrow-left mr-1"></i>Fechar
-      </b-button>
+      <router-link tag="button" to="/dashboard/clientes" class="btn btn-dark btn-sm">
+        <i class="fa fa-arrow-left mr-1"></i>Voltar
+      </router-link>
     </b-form>
     <ModalFormTelefone @add-telefone="addTelefone" />
     <ModalFormEndereco @add-endereco="addEndereco" />
