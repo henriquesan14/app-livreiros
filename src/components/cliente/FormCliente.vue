@@ -141,9 +141,9 @@
         <template
           slot="endereco"
           slot-scope="data"
-        >{{`${data.item.rua}, ${data.item.numero}, ${data.item.bairro}, ${data.item.nomeCidade}-${data.item.siglaUf} - ${data.item.cepCliente}`}}</template>
+        >{{`${data.item.rua}, Nº ${data.item.numero} ${data.item.complemento ? data.item.complemento : ''}, ${data.item.bairro}, ${data.item.nomeCidade}-${data.item.siglaUf} - ${data.item.cepCliente}`}}</template>
         <template slot="actions" slot-scope="data">
-          <b-button variant="danger" size="sm">
+          <b-button @click="removeEndereco(data.index)" variant="danger" size="sm">
             <i class="fas fa-trash"></i>
           </b-button>
         </template>
@@ -244,6 +244,9 @@ export default {
     },
     removeTelefone(index) {
       this.cliente.telefones.splice(index, 1);
+    },
+    removeEndereco(index){
+      this.cliente.enderecos.splice(index, 1);
     },
     invalidFeedBack(field) {
       return validationMsg(field);

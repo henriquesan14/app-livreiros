@@ -58,7 +58,7 @@ export default {
   methods: {
     addTelefone() {
       this.$emit("add-telefone", this.telefone);
-      this.telefone = "";
+      this.telefone = {};
       this.$bvModal.hide("modal-form-telefone");
     },
     submitTelefone() {
