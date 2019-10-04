@@ -11,6 +11,7 @@ import categoria from './modules/categoria'
 import livroDescrito from './modules/livro-descrito'
 import cart from './modules/cart'
 import pedido from './modules/pedido'
+import endereco from './modules/endereco';
 
 Vue.use(Vuex);
 
@@ -26,6 +27,7 @@ export default new Vuex.Store({
         categoria,
         livroDescrito,
         cart,
-        pedido
+        pedido,
+        endereco
     }
 })

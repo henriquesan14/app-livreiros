@@ -133,6 +133,11 @@ export default new Router({
           component: () => import('../components/cliente/Clientes.vue')
         },
         {
+          path: 'clientes/cadastro',
+          name: 'cadastro-cliente',
+          component: () => import('../components/cliente/CadastroCliente.vue')
+        },
+        {
           path: 'pedidos',
           name: 'pedidos',
           component: () => import('../components/pedido/Pedidos.vue')

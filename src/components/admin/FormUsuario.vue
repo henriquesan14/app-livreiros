@@ -327,6 +327,7 @@ import Estado from "../../services/estados";
 import { showError } from "@/global";
 import { validationMsg } from "../../config/validation-msgs";
 import WsCep from "../../services/ws-cep";
+import { validaCpf } from "../../utils/cpf_validator";
 export default {
   name: "FormUsuario",
   data() {
@@ -366,7 +367,8 @@ export default {
         },
         cpfUsuario: {
           required,
-          minLength: minLength(11)
+          minLength: minLength(11),
+          validaCpf
         },
         emailUsuario: {
           required,
@@ -437,6 +439,10 @@ export default {
         let loader = this.$loading.show();
         try {
           const res = await WsCep.buscaCep(this.user.cepUsuario);
+          if (res.data.erro) {
+            showError("CEP não encontrado");
+            return;
+          }
           this.exportDadosWsCep(res.data);
         } catch (err) {
           showError(err);
@@ -459,7 +465,9 @@ export default {
       data.logradouro
         ? (user.ruaUsuario = data.logradouro)
         : (user.ruaUsuario = "");
-      data.bairro ? (user.bairroUsuario = data.bairro) : (data.bairro = "");
+      data.bairro
+        ? (user.bairroUsuario = data.bairro)
+        : (user.bairroUsuario = "");
       this.estados
         .filter(e => e.siglaUf.toUpperCase() === data.uf)
         .forEach(e => (user.idUf = e.idUf));
