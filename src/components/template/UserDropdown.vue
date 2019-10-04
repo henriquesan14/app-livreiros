@@ -1,19 +1,25 @@
 <template>
-  <div class="user-dropdown">
-    <div class="user-button">
-      <span class="d-none d-sm-block">{{localUser.user.nomeUsuario}}</span>
-      <div class="user-dropdown-img">
-        <Gravatar :email="localUser.email" alt="user" />
+  <div class="flex">
+    <b-button variant="success">
+      <i class="fas fa-shopping-cart mr-1"></i>
+      Ir para o edido atual
+    </b-button>
+    <div class="user-dropdown">
+      <div class="user-button">
+        <span class="d-none d-sm-block">{{localUser.user.nomeUsuario}}</span>
+        <div class="user-dropdown-img">
+          <Gravatar :email="localUser.email" alt="user" />
+        </div>
+        <i class="fa fa-angle-down"></i>
       </div>
-      <i class="fa fa-angle-down"></i>
-    </div>
-    <div class="user-dropdown-content">
-      <router-link v-hasRole="'BUSCAR_USUARIO'" to="/dashboard/usuarios">
-        <i class="fa fa-cogs"></i>Administração
-      </router-link>
-      <a href @click.prevent="logout">
-        <i class="fa fa-sign-out"></i>Sair
-      </a>
+      <div class="user-dropdown-content">
+        <router-link v-hasRole="'BUSCAR_USUARIO'" to="/dashboard/usuarios">
+          <i class="fa fa-cogs"></i>Administração
+        </router-link>
+        <a href @click.prevent="logout">
+          <i class="fa fa-sign-out"></i>Sair
+        </a>
+      </div>
     </div>
   </div>
 </template>
@@ -100,5 +106,9 @@ export default {
 .user-dropdown:hover .user-dropdown-content {
   visibility: visible;
   opacity: 1;
+}
+
+.flex{
+  display: flex;
 }
 </style>
