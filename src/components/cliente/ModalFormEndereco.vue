@@ -57,6 +57,7 @@
                 label="Logradouro*"
               >
                 <b-form-input
+                  maxlength="100"
                   placeholder="Informe o logradouro"
                   :class="{'is-invalid': submitted && $v.endereco.rua.$invalid, 'is-valid': submitted && !$v.endereco.rua.$invalid}"
                   v-model="endereco.rua"
@@ -80,6 +81,7 @@
             <b-col>
               <b-form-group label="Bairro*" :invalid-feedback="invalidFeedBack($v.endereco.bairro)">
                 <b-form-input
+                  maxlength="100"
                   placeholder="Informe o bairro"
                   :class="{'is-invalid': submitted && $v.endereco.bairro.$invalid, 'is-valid': submitted && !$v.endereco.bairro.$invalid}"
                   v-model="endereco.bairro"
@@ -90,6 +92,7 @@
             <b-col>
               <b-form-group label="Complemento">
                 <b-form-input
+                  maxlength="100"
                   placeholder="Informe o complemento"
                   v-model="endereco.complemento"
                   size="sm"
@@ -177,7 +180,7 @@ export default {
   validations() {
     return {
       endereco: {
-        destinatario: { required },
+        destinatario: { required, minLength: minLength(4) },
         rua: { required },
         cepCliente: { required, minLength: minLength(8) },
         numero: { required },

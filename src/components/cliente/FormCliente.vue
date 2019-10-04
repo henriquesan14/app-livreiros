@@ -5,6 +5,7 @@
         <b-col>
           <b-form-group label="Nome*" :invalid-feedback="invalidFeedBack($v.cliente.nomeCliente)">
             <b-form-input
+              maxlength="100"
               placeholder="Informe o nome do cliente"
               :class="{'is-invalid': submitted && $v.cliente.nomeCliente.$invalid, 'is-valid': submitted && !$v.cliente.nomeCliente.$invalid}"
               v-model="cliente.nomeCliente"
@@ -15,6 +16,7 @@
         <b-col>
           <b-form-group label="Email*" :invalid-feedback="invalidFeedBack($v.cliente.emailCliente)">
             <b-form-input
+              maxlength="100"
               placeholder="Informe o email do cliente"
               :class="{'is-invalid': submitted && $v.cliente.emailCliente.$invalid, 'is-valid': submitted && !$v.cliente.emailCliente.$invalid}"
               v-model="cliente.emailCliente"
@@ -96,7 +98,7 @@
                     mask="(##)#####-####"
                     class="form-control form-control-sm"
                     readonly
-                    :value="telefone"
+                    :value="telefone.telefoneCliente"
                   ></the-mask>
                   <button type="button" @click="removeTelefone(index)" class="ml-1 btn-remove">
                     <i class="fas fa-minus"></i>
@@ -195,7 +197,7 @@ export default {
   validations() {
     return {
       cliente: {
-        nomeCliente: { required },
+        nomeCliente: { required, minLength: minLength(6) },
         emailCliente: { required, email },
         clientePj: {
           cnpjCliente: {

@@ -6,11 +6,14 @@
         <b-form @submit.prevent="submitTelefone">
           <b-row>
             <b-col>
-              <b-form-group :invalid-feedback="invalidFeedBack($v.telefone)" label="Telefone">
+              <b-form-group
+                :invalid-feedback="invalidFeedBack($v.telefone.telefoneCliente)"
+                label="Telefone"
+              >
                 <the-mask
                   placeholder="Informe um número de telefone"
-                  :class="{'is-invalid': submitted && $v.telefone.$invalid, 'is-valid': submitted && !$v.telefone.$invalid}"
-                  v-model="telefone"
+                  :class="{'is-invalid': submitted && $v.telefone.telefoneCliente.$invalid, 'is-valid': submitted && !$v.telefone.telefoneCliente.$invalid}"
+                  v-model="telefone.telefoneCliente"
                   :mask="['(##)#####-####', '(##)####-####']"
                   class="form-control form-control-sm"
                 ></the-mask>
@@ -42,12 +45,14 @@ export default {
   data() {
     return {
       submitted: false,
-      telefone: null
+      telefone: {}
     };
   },
   validations() {
     return {
-      telefone: { required, minLength: minLength(10) }
+      telefone: {
+        telefoneCliente: { required, minLength: minLength(10) }
+      }
     };
   },
   methods: {
