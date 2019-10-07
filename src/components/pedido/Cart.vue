@@ -63,6 +63,99 @@
             </b-form-group>
           </b-col>
         </b-row>
+
+        <div v-if="pedido.tipoPedido === 'on-line'">
+          <b-badge><span class="title-badge">Pedido Online</span></b-badge>
+          <b-row>
+            <b-col>
+              <b-form-group label="Valor Frete*">
+                <b-form-input placeholder="Valor do frete" size="sm"></b-form-input>
+              </b-form-group>
+            </b-col>
+            <b-col>
+              <b-form-group label="Valor Tarifa">
+                <b-form-input placeholder="Valor da tarifa" size="sm"></b-form-input>
+              </b-form-group>
+            </b-col>
+            <b-col>
+              <b-form-group label="ID Externo*">
+                <b-form-input placeholder="ID externo" size="sm"></b-form-input>
+              </b-form-group>
+            </b-col>
+            <b-col>
+              <b-form-group label="Canal de venda*">
+                <b-form-select size="sm" v-model="selected">
+                  <option value="site">Site</option>
+                  <option value="amazon">Amazon</option>
+                  <option value="estante-virtual">Estante Virtual</option>
+                </b-form-select>
+              </b-form-group>
+            </b-col>
+            <b-col>
+              <b-form-group label="Data do Pagamento*">
+                <b-form-input placeholder="Data do pagamento" size="sm"></b-form-input>
+              </b-form-group>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              <b-form-group label="Status">
+                <b-form-select size="sm">
+                  <option value="pendente">Pendente</option>
+                  <option value="pago">Pago</option>
+                </b-form-select>
+              </b-form-group>
+            </b-col>
+            <b-col>
+              <b-form-group label="Tipo do Pagamento*">
+                <b-form-input placeholder="Tipo do pagamento" size="sm"></b-form-input>
+              </b-form-group>
+            </b-col>
+            <b-col>
+              <b-form-group label="Status do Envio*">
+                <b-form-input placeholder="Status do envio" size="sm"></b-form-input>
+              </b-form-group>
+            </b-col>
+            <b-col>
+              <b-form-group label="Tipo Envio*">
+                <b-form-input placeholder="Tipo envio" size="sm"></b-form-input>
+              </b-form-group>
+            </b-col>
+            <b-col>
+              <b-form-group label="CEP*">
+                <b-form-input placeholder="CEP" size="sm"></b-form-input>
+              </b-form-group>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col md="3">
+              <b-form-group label="Destinatário*">
+                <b-form-input placeholder="Destinatário" size="sm"></b-form-input>
+              </b-form-group>
+            </b-col>
+            <b-col md="3">
+              <b-form-group label="Logradouro*">
+                <b-form-input placeholder="Logradouro" size="sm"></b-form-input>
+              </b-form-group>
+            </b-col>
+            <b-col md="1">
+              <b-form-group label="Nº*">
+                <b-form-input placeholder="Nº" size="sm"></b-form-input>
+              </b-form-group>
+            </b-col>
+            <b-col>
+              <b-form-group label="Estado*">
+                <b-form-input placeholder="Estado" size="sm"></b-form-input>
+              </b-form-group>
+            </b-col>
+            <b-col>
+              <b-form-group label="Cidade*">
+                <b-form-input placeholder="Cidade" size="sm"></b-form-input>
+              </b-form-group>
+            </b-col>
+          </b-row>
+        </div>
+
         <div class="table-responsive">
           <b-badge class="mb-1">
             <span class="title-badge">Livros Descritos</span>
@@ -182,6 +275,7 @@ export default {
   directives: { money: VMoney },
   data() {
     return {
+      selected: 'site',
       ajustePorcento: 0,
       ajusteValor: 0,
       qtdSelecionada: null,
@@ -247,6 +341,7 @@ export default {
       let pedido = { ...this.pedido };
       this.$store.dispatch("SET_PEDIDO", pedido);
       this.submitted = true;
+      this.pedido.valorDesconto = this.ajusteValor;
       this.$v.$touch();
       if (this.$v.$invalid) {
         return;
