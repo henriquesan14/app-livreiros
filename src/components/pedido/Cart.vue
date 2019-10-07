@@ -217,9 +217,6 @@ export default {
       removeLivro(item);
       this.$store.dispatch("SET_CART");
     },
-    total() {
-      return total();
-    },
     existemItens() {
       return this.cart.livrosDescritos && this.cart.livrosDescritos.length > 0;
     },
@@ -281,12 +278,10 @@ export default {
     changeAjustePorcento() {
       let a = this.ajustePorcento * parseFloat(this.total());
       this.ajusteValor = a / 100;
-      
     },
     changeAjusteValor() {
       let a = this.ajusteValor * 100;
       this.ajustePorcento = (a / this.total());
-      
     },
     total(){
       let cart = getCart();
@@ -297,6 +292,8 @@ export default {
       return sum;
     },
     totalAjustado(){
+      this.changeAjustePorcento();
+      this.changeAjusteValor();
       return this.total() - this.ajusteValor;
     }
   }
