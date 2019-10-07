@@ -81,14 +81,6 @@ const decreaseQuantity = (item) => {
     return cart;
 }
 
-const total = () => {
-    let cart = getCart();
-    let sum = 0;
-    for (var i = 0; i < cart.livrosDescritos.length; i++) {
-        sum += cart.livrosDescritos[i].livro.precoLivroDescrito * cart.livrosDescritos[i].qtdLivroDescrito;
-    }
-    return sum;
-}
 
-export { getCart, addLivro, removeLivro, increaseQuantity, decreaseQuantity, total, setQuantity, setPrice, setCart };
+export { getCart, addLivro, removeLivro, increaseQuantity, decreaseQuantity, setQuantity, setPrice, setCart };
 

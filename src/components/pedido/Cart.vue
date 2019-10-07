@@ -53,7 +53,7 @@
         </b-row>
 
         <b-badge class="mb-2"  variant="danger">
-          <span id="total">Total: {{totalAjustado | currency}}</span>
+          <span id="total">Total: {{totalAjustado() | currency}}</span>
         </b-badge>
 
         <b-row>
@@ -75,6 +75,7 @@
                 <th>Nome</th>
                 <th>Qtd.</th>
                 <th>Valor Unitário</th>
+                <th>Valor total</th>
                 <th>Ações</th>
               </tr>
             </thead>
@@ -130,37 +131,8 @@
                   </b-button>
                 </td>
                 <td>{{item.livro.precoLivroDescrito | currency}}</td>
+                <td>{{item.livro.precoLivroDescrito * item.qtdLivroDescrito | currency}}</td>
                 <td>
-                  <b-dropdown
-                    dropright
-                    variant="outline-success"
-                    size="sm"
-                    id="dropdown-1"
-                    class="m-md-2"
-                  >
-                    <template slot="button-content">
-                      <i class="fas fa-cogs"></i>
-                    </template>
-                    <b-dropdown-form>
-                      <b-form @submit.prevent>
-                        <b-row>
-                          <b-col>
-                            <b-form-group label="Desconto (%)">
-                              <the-mask
-                                mask="####"
-                                v-model.number="ajusteSelecionado"
-                                class="form-control form-control-sm mb-1"
-                                size="sm"
-                              ></the-mask>
-                            </b-form-group>
-                          </b-col>
-                        </b-row>
-                        <b-dropdown-item-button id="btn-form">
-                          <b-button size="sm" @click="ajustePreco(item)" variant="success" block>Ok</b-button>
-                        </b-dropdown-item-button>
-                      </b-form>
-                    </b-dropdown-form>
-                  </b-dropdown>
                   <b-button @click="removeProduto(item)" size="sm" variant="danger">
                     <i class="fas fa-trash"></i>
                   </b-button>
@@ -192,10 +164,10 @@ import {
   removeLivro,
   increaseQuantity,
   decreaseQuantity,
-  total,
   setQuantity,
   setPrice,
-  setCart
+  setCart,
+  getCart
 } from "../../utils/storage";
 import { mapGetters } from "vuex";
 import Autocomplete from "../shared/Autocomplete";
@@ -213,7 +185,6 @@ export default {
       ajustePorcento: 0,
       ajusteValor: 0,
       qtdSelecionada: null,
-      ajusteSelecionado: null,
       clientes: [],
       submitted: false,
       money: {
@@ -222,7 +193,6 @@ export default {
         precision: 2,
         masked: false
       },
-      totalAjustado: total()
     };
   },
   validations() {
@@ -252,15 +222,6 @@ export default {
     },
     existemItens() {
       return this.cart.livrosDescritos && this.cart.livrosDescritos.length > 0;
-    },
-    ajustePreco(item) {
-      let ajuste =
-        (item.livro.precoLivroDescrito * this.ajusteSelecionado) / 100;
-      setPrice(
-        item,
-        parseInt(item.livro.precoLivroDescrito) - parseInt(ajuste, 10)
-      );
-      this.$store.dispatch("SET_CART");
     },
     ajusteQuantidade(item) {
       setQuantity(item, this.qtdSelecionada);
@@ -318,14 +279,25 @@ export default {
       history.back();
     },
     changeAjustePorcento() {
-      let a = this.ajustePorcento * parseFloat(total());
+      let a = this.ajustePorcento * parseFloat(this.total());
       this.ajusteValor = a / 100;
-      this.totalAjustado = parseFloat(total()) - this.ajusteValor;
+      
     },
     changeAjusteValor() {
       let a = this.ajusteValor * 100;
-      this.ajustePorcento = (a / total());
-      this.totalAjustado = parseFloat(total()) - this.ajusteValor;
+      this.ajustePorcento = (a / this.total());
+      
+    },
+    total(){
+      let cart = getCart();
+      let sum = 0;
+      for (var i = 0; i < cart.livrosDescritos.length; i++) {
+          sum += cart.livrosDescritos[i].livro.precoLivroDescrito * cart.livrosDescritos[i].qtdLivroDescrito;
+      }
+      return sum;
+    },
+    totalAjustado(){
+      return this.total() - this.ajusteValor;
     }
   }
 };
