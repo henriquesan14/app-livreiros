@@ -1,5 +1,5 @@
 <template>
-  <div class="card-dashboard mb-2 mr-5" :style="'background-color: ' + cor">
+  <div class="card-dashboard mb-2" :style="'background-color: ' + cor">
     <div class="card-icon">
       <i :class="icon"></i>
     </div>
@@ -36,7 +36,7 @@ export default {
   align-items: center;
   color: #fff;
   padding: 15px;
-  width: 280px;
+  width: 260px;
   border-radius: 3px;
 
   .card-icon {
