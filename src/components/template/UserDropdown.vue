@@ -3,6 +3,7 @@
     <router-link v-if="cart.livrosDescritos.length > 0" to="/dashboard/pedidos/atual" class="btn btn-success" tag="button">
       <i class="fas fa-cart-arrow-down mr-1"></i>
       Ir para o pedido atual
+      <b-badge variant="danger">{{cart.livrosDescritos.length}}</b-badge>
     </router-link>
     <div class="user-dropdown">
       <div class="user-button">
