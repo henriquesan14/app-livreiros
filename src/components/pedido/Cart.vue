@@ -38,9 +38,9 @@
             <b-form-group label="Desconto (R$)">
               <b-form-input
                 @keyup="changeAjusteValor()"
-                v-money="money"
+                
                 maxlength="10"
-                v-model="ajusteValor"
+                v-model.number="ajusteValor"
                 size="sm"
               ></b-form-input>
             </b-form-group>
@@ -53,7 +53,11 @@
         </b-row>
 
         <b-badge class="mb-2"  variant="danger">
-          <span id="total">Total: {{totalAjustado() | currency}}</span>
+          <span id="total">Total: {{total | currency}}</span>
+        </b-badge>
+        <br>
+        <b-badge class="mb-2"  variant="danger">
+          <span id="total">Total com desconto: {{totalComAjuste | currency}}</span>
         </b-badge>
 
         <b-row>
@@ -183,7 +187,7 @@
                 <td>{{item.idLivroDescrito}}</td>
                 <td>{{item.livro.tituloLivro}}</td>
                 <td>
-                  <b-button @click="aumentaQuantidade(item)" variant="primary" size="sm">
+                  <b-button type="button" @click="aumentaQuantidade(item)" variant="primary" size="sm">
                     <i class="fas fa-plus-circle"></i>
                   </b-button>
                   <b-dropdown
@@ -210,6 +214,7 @@
 
                         <b-dropdown-item-button id="btn-form">
                           <b-button
+                            type="button"
                             size="sm"
                             @click="ajusteQuantidade(item)"
                             variant="success"
@@ -219,14 +224,14 @@
                       </b-form>
                     </b-dropdown-form>
                   </b-dropdown>
-                  <b-button @click="diminuiQuantidade(item)" variant="primary" size="sm">
+                  <b-button type="button" @click="diminuiQuantidade(item)" variant="primary" size="sm">
                     <i class="fas fa-minus-circle"></i>
                   </b-button>
                 </td>
                 <td>{{item.livro.precoLivroDescrito | currency}}</td>
                 <td>{{item.livro.precoLivroDescrito * item.qtdLivroDescrito | currency}}</td>
                 <td>
-                  <b-button @click="removeProduto(item)" size="sm" variant="danger">
+                  <b-button type="button" @click="removeProduto(item)" size="sm" variant="danger">
                     <i class="fas fa-trash"></i>
                   </b-button>
                 </td>
@@ -234,7 +239,7 @@
             </tbody>
           </table>
 
-          <b-button size="sm" variant="success" @click="submitPedido()">Finalizar</b-button>
+          <b-button type="button" size="sm" variant="success" @click="submitPedido()">Finalizar</b-button>
           <b-button
             @click="back()"
             class="btn btn-secondary ml-2 mr-4"
@@ -287,6 +292,8 @@ export default {
         precision: 2,
         masked: false
       },
+      totalComAjuste: 0,
+      total: 0
     };
   },
   validations() {
@@ -297,19 +304,32 @@ export default {
       }
     };
   },
+  mounted(){
+    this.total = this.calculaTotal();
+  },
+  watch: {
+    total(){
+      this.changeAjustePorcento();
+      this.changeAjusteValor();
+      this.totalAjustado();
+    }
+  },
   computed: mapGetters(["cart", "pedido"]),
   methods: {
     diminuiQuantidade(item) {
       decreaseQuantity(item);
       this.$store.dispatch("SET_CART");
+      this.total = this.calculaTotal();
     },
     aumentaQuantidade(item) {
       increaseQuantity(item);
       this.$store.dispatch("SET_CART");
+      this.total = this.calculaTotal();
     },
     removeProduto(item) {
       removeLivro(item);
       this.$store.dispatch("SET_CART");
+      this.total = this.calculaTotal();
     },
     existemItens() {
       return this.cart.livrosDescritos && this.cart.livrosDescritos.length > 0;
@@ -317,6 +337,7 @@ export default {
     ajusteQuantidade(item) {
       setQuantity(item, this.qtdSelecionada);
       this.$store.dispatch("SET_CART");
+      this.total = this.calculaTotal();
     },
     async getClientes(nomeCliente) {
       try {
@@ -371,14 +392,16 @@ export default {
       history.back();
     },
     changeAjustePorcento() {
-      let a = this.ajustePorcento * parseFloat(this.total());
+      let a = this.ajustePorcento * this.total;
       this.ajusteValor = a / 100;
+      this.totalAjustado();
     },
     changeAjusteValor() {
       let a = this.ajusteValor * 100;
-      this.ajustePorcento = (a / this.total());
+      this.ajustePorcento = (a / this.total);
+      this.totalAjustado();
     },
-    total(){
+    calculaTotal(){
       let cart = getCart();
       let sum = 0;
       for (var i = 0; i < cart.livrosDescritos.length; i++) {
@@ -387,9 +410,7 @@ export default {
       return sum;
     },
     totalAjustado(){
-      this.changeAjustePorcento();
-      this.changeAjusteValor();
-      return this.total() - this.ajusteValor;
+      this.totalComAjuste = this.total - this.ajusteValor;
     }
   }
 };
