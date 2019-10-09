@@ -383,10 +383,10 @@ export default {
     },
     submitPedido() {
       this.pedido.livrosDescritos = this.cart.livrosDescritos;
+      this.pedido.valorDesconto = this.ajusteValor;
       let pedido = { ...this.pedido };
       this.$store.dispatch("SET_PEDIDO", pedido);
       this.submitted = true;
-      this.pedido.valorDesconto = this.ajusteValor;
       this.$v.$touch();
       if (this.$v.$invalid) {
         return;
@@ -397,17 +397,16 @@ export default {
     async finalizaVenda() {
       try {
         await Pedido.savePedido(this.pedido);
-        this.$emit("atualiza-livros");
-        this.$bvModal.hide("modal-cart");
         let pedido = {
           tipoPedido: "balcao",
           nomeCliente: "Selecione um cliente...",
           livrosDescritos: []
         };
         this.$store.dispatch("SET_PEDIDO", pedido);
-        this.$toasted.global.defaultSuccess();
         this.$store.dispatch("ZERA_CART");
         setCart({ livrosDescritos: [] });
+        this.$toasted.global.defaultSuccess();
+        this.$router.push('/dashboard/pedidos');
       } catch (err) {
         showError(err);
       }

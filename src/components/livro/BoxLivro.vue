@@ -138,6 +138,7 @@
             </b-button>
 
             <b-button
+              :disabled="data.item.qtdLivro < 1"
               v-b-tooltip.hover
               title="Adicionar"
               size="sm"
