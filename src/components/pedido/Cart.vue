@@ -36,27 +36,34 @@
         <b-row>
           <b-col md="3">
             <b-form-group label="Desconto (R$)">
-              <b-form-input
-                @keyup="changeAjusteValor()"
-                
+              <the-mask
+                mask="FFFFFFF"
+                :tokens="hexTokens"
+                @keyup.native="changeAjusteValor()"
                 maxlength="10"
                 v-model.number="ajusteValor"
-                size="sm"
-              ></b-form-input>
+                class="form-control form-control-sm"
+              ></the-mask>
             </b-form-group>
           </b-col>
           <b-col md="3">
             <b-form-group label="Desconto (%)">
-              <b-form-input @keyup="changeAjustePorcento()" v-model.number="ajustePorcento" size="sm"></b-form-input>
+              <the-mask
+                mask="FFFFFFF"
+                :tokens="hexTokens"
+                @keyup.native="changeAjustePorcento()"
+                v-model.number="ajustePorcento"
+                class="form-control form-control-sm"
+              ></the-mask>
             </b-form-group>
           </b-col>
         </b-row>
 
-        <b-badge class="mb-2"  variant="danger">
+        <b-badge class="mb-2" variant="danger">
           <span id="total">Total: {{total | currency}}</span>
         </b-badge>
-        <br>
-        <b-badge class="mb-2"  variant="danger">
+        <br />
+        <b-badge class="mb-2" variant="danger">
           <span id="total">Total com desconto: {{totalComAjuste | currency}}</span>
         </b-badge>
 
@@ -69,7 +76,9 @@
         </b-row>
 
         <div v-if="pedido.tipoPedido === 'on-line'">
-          <b-badge><span class="title-badge">Pedido Online</span></b-badge>
+          <b-badge>
+            <span class="title-badge">Pedido Online</span>
+          </b-badge>
           <b-row>
             <b-col>
               <b-form-group label="Valor Frete*">
@@ -187,7 +196,12 @@
                 <td>{{item.idLivroDescrito}}</td>
                 <td>{{item.livro.tituloLivro}}</td>
                 <td>
-                  <b-button type="button" @click="aumentaQuantidade(item)" variant="primary" size="sm">
+                  <b-button
+                    type="button"
+                    @click="aumentaQuantidade(item)"
+                    variant="primary"
+                    size="sm"
+                  >
                     <i class="fas fa-plus-circle"></i>
                   </b-button>
                   <b-dropdown
@@ -224,7 +238,12 @@
                       </b-form>
                     </b-dropdown-form>
                   </b-dropdown>
-                  <b-button type="button" @click="diminuiQuantidade(item)" variant="primary" size="sm">
+                  <b-button
+                    type="button"
+                    @click="diminuiQuantidade(item)"
+                    variant="primary"
+                    size="sm"
+                  >
                     <i class="fas fa-minus-circle"></i>
                   </b-button>
                 </td>
@@ -280,7 +299,7 @@ export default {
   directives: { money: VMoney },
   data() {
     return {
-      selected: 'site',
+      selected: "site",
       ajustePorcento: 0,
       ajusteValor: 0,
       qtdSelecionada: null,
@@ -288,12 +307,17 @@ export default {
       submitted: false,
       money: {
         decimal: ".",
-        thousands: "",
+
         precision: 2,
         masked: false
       },
       totalComAjuste: 0,
-      total: 0
+      total: 0,
+      hexTokens: {
+        F: {
+          pattern: /^[\d,.?!]+$/
+        }
+      }
     };
   },
   validations() {
@@ -304,11 +328,11 @@ export default {
       }
     };
   },
-  mounted(){
+  mounted() {
     this.total = this.calculaTotal();
   },
   watch: {
-    total(){
+    total() {
       this.changeAjustePorcento();
       this.changeAjusteValor();
       this.totalAjustado();
@@ -398,18 +422,20 @@ export default {
     },
     changeAjusteValor() {
       let a = this.ajusteValor * 100;
-      this.ajustePorcento = (a / this.total);
+      this.ajustePorcento = a / this.total;
       this.totalAjustado();
     },
-    calculaTotal(){
+    calculaTotal() {
       let cart = getCart();
       let sum = 0;
       for (var i = 0; i < cart.livrosDescritos.length; i++) {
-          sum += cart.livrosDescritos[i].livro.precoLivroDescrito * cart.livrosDescritos[i].qtdLivroDescrito;
+        sum +=
+          cart.livrosDescritos[i].livro.precoLivroDescrito *
+          cart.livrosDescritos[i].qtdLivroDescrito;
       }
       return sum;
     },
-    totalAjustado(){
+    totalAjustado() {
       this.totalComAjuste = this.total - this.ajusteValor;
     }
   }
