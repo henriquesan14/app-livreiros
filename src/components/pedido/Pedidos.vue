@@ -63,7 +63,7 @@
         </template>
         <template slot="valorTotal" slot-scope="data">{{data.item.valorTotal | currency}}</template>
         <template slot="actions" slot-scope="data">
-          <b-button v-b-tooltip.hover title="Detalhes" size="sm" variant="primary" class="mr-2">
+          <b-button @click="navigate(data.item.idPedido)" v-b-tooltip.hover title="Detalhes" size="sm" variant="primary" class="mr-2">
             <i class="fa fa-search-plus"></i>
           </b-button>
         </template>
@@ -145,6 +145,9 @@ export default {
       } finally {
         this.loader = false;
       }
+    },
+    navigate(id) {
+      this.$router.push({ name: "pedido-detail", params: { id } });
     }
   }
 };

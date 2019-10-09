@@ -144,8 +144,13 @@ export default new Router({
         },
         {
           path: 'pedidos/atual',
-          name: 'pedidos',
+          name: 'pedido-atual',
           component: () => import('../components/pedido/PedidoAtual.vue')
+        },
+        {
+          path: 'pedidos/:id',
+          name: 'pedido-detail',
+          component: () => import('../components/pedido/PedidoDetail.vue')
         },
         {
           path: '',

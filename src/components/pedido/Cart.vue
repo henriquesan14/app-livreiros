@@ -82,17 +82,34 @@
           <b-row>
             <b-col>
               <b-form-group label="Valor Frete*">
-                <b-form-input v-model.number="pedido.valorFrete" maxlength="6" v-money="money" placeholder="Valor do frete" size="sm"></b-form-input>
+                <b-form-input
+                  v-model.number="pedido.valorFrete"
+                  maxlength="6"
+                  v-money="money"
+                  placeholder="Valor do frete"
+                  size="sm"
+                ></b-form-input>
               </b-form-group>
             </b-col>
             <b-col>
               <b-form-group label="Valor Tarifa">
-                <b-form-input v-model.number="pedido.valorTarifa" maxlength="6" v-money="money" placeholder="Valor da tarifa" size="sm"></b-form-input>
+                <b-form-input
+                  v-model.number="pedido.valorTarifa"
+                  maxlength="6"
+                  v-money="money"
+                  placeholder="Valor da tarifa"
+                  size="sm"
+                ></b-form-input>
               </b-form-group>
             </b-col>
             <b-col>
               <b-form-group label="ID Externo*">
-                <b-form-input v-model="pedidoOnline.idExterno" maxlength="30" placeholder="ID externo" size="sm"></b-form-input>
+                <b-form-input
+                  v-model="pedidoOnline.idExterno"
+                  maxlength="30"
+                  placeholder="ID externo"
+                  size="sm"
+                ></b-form-input>
               </b-form-group>
             </b-col>
             <b-col>
@@ -106,7 +123,12 @@
             </b-col>
             <b-col>
               <b-form-group label="Data do Pagamento*">
-                <b-form-input v-model="pedidoOnline.dataHoraPagamento" type="date" placeholder="Data do pagamento" size="sm"></b-form-input>
+                <b-form-input
+                  v-model="pedidoOnline.dataHoraPagamento"
+                  type="date"
+                  placeholder="Data do pagamento"
+                  size="sm"
+                ></b-form-input>
               </b-form-group>
             </b-col>
           </b-row>
@@ -146,7 +168,7 @@
             <b-col>
               <b-form-group label="CEP*">
                 <the-mask
-                v-model="pedidoOnline.cep"
+                  v-model="pedidoOnline.cep"
                   class="form-control form-control-sm"
                   mask="######-###"
                   placeholder="CEP"
@@ -158,12 +180,22 @@
           <b-row>
             <b-col md="5">
               <b-form-group label="Destinatário*">
-                <b-form-input v-model="pedidoOnline.destinatario" maxlength="50" placeholder="Destinatário" size="sm"></b-form-input>
+                <b-form-input
+                  v-model="pedidoOnline.destinatario"
+                  maxlength="50"
+                  placeholder="Destinatário"
+                  size="sm"
+                ></b-form-input>
               </b-form-group>
             </b-col>
             <b-col md="6">
               <b-form-group label="Logradouro*">
-                <b-form-input v-model="pedidoOnline.rua" maxlength="100" placeholder="Logradouro" size="sm"></b-form-input>
+                <b-form-input
+                  v-model="pedidoOnline.rua"
+                  maxlength="100"
+                  placeholder="Logradouro"
+                  size="sm"
+                ></b-form-input>
               </b-form-group>
             </b-col>
             <b-col md="1">
@@ -174,16 +206,18 @@
           </b-row>
 
           <b-row>
-            <b-col md="3">
+            <b-col>
               <b-form-group label="Bairro*">
                 <b-form-input v-model="pedidoOnline.bairro" size="sm" placeholder="Bairro"></b-form-input>
               </b-form-group>
             </b-col>
-            <b-col >
-              <b-form-group
-                label="Estado: *"
-                label-for="estado"
-              >
+            <b-col>
+              <b-form-group label="Complemento*">
+                <b-form-input v-model="pedidoOnline.complemento" size="sm" placeholder="Complemento"></b-form-input>
+              </b-form-group>
+            </b-col>
+            <b-col>
+              <b-form-group label="Estado: *" label-for="estado">
                 <b-form-select
                   size="sm"
                   v-model="pedidoOnline.idUf"
@@ -199,14 +233,8 @@
               </b-form-group>
             </b-col>
             <b-col>
-              <b-form-group
-                label="Cidade: *"
-                label-for="cidade"
-              >
-                <b-form-select
-                  size="sm"
-                  v-model="pedidoOnline.idCidade"
-                >
+              <b-form-group label="Cidade: *" label-for="cidade">
+                <b-form-select size="sm" v-model="pedidoOnline.idCidade">
                   <option :value="null" disabled>Selecione a cidade</option>
                   <option
                     v-for="cidade in cidades"
@@ -332,7 +360,6 @@ import {
   increaseQuantity,
   decreaseQuantity,
   setQuantity,
-  setPrice,
   setCart,
   getCart
 } from "../../utils/storage";
@@ -359,7 +386,7 @@ export default {
         statusEnvio: "pendente",
         tipoEnvio: "normal",
         idUf: null,
-        idCidade: null,
+        idCidade: null
       },
       ajustePorcento: 0,
       ajusteValor: 0,
@@ -446,8 +473,12 @@ export default {
     submitPedido() {
       this.pedido.livrosDescritos = this.cart.livrosDescritos;
       this.pedido.valorDesconto = this.ajusteValor;
-      if(this.pedido.tipoPedido === 'on-line'){
+      if (this.pedido.tipoPedido === "on-line") {
         this.pedido.pedidoOnline = this.pedidoOnline;
+      }
+      if(this.pedido.tipoPedido === 'balcao'){
+        delete this.pedido.valorFrete;
+        delete this.pedido.valorTarifa;
       }
       let pedido = { ...this.pedido };
       this.$store.dispatch("SET_PEDIDO", pedido);
@@ -502,7 +533,7 @@ export default {
     totalAjustado() {
       this.totalComAjuste = this.total - this.ajusteValor;
     },
-     async loadCidades(idUf) {
+    async loadCidades(idUf) {
       this.pedidoOnline.idCidade = null;
       try {
         const res = await Estado.getCidades(idUf);
@@ -518,7 +549,7 @@ export default {
       } catch (err) {
         showError(err);
       }
-    },
+    }
   }
 };
 </script>

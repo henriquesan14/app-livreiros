@@ -27,7 +27,6 @@ export default {
   methods: {
     async saveLivro(livro) {
       try {
-        console.log(livro);
         await Livro.saveLivro(livro);
         let loader = this.$loading.show();
         setTimeout(() => {

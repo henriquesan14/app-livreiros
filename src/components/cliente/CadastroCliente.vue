@@ -32,7 +32,6 @@ export default {
         } else if (cliente.tipoPessoa == "juridica") {
           cliente.clientePf = null;
         }
-        console.log(cliente);
         await Cliente.saveCliente(cliente);
         this.$toasted.global.defaultSuccess();
         this.$router.push("/dashboard/clientes");
