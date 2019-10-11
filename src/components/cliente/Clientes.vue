@@ -39,7 +39,7 @@
       >
         <template slot="tipoPessoa" slot-scope="data">{{data.item.tipoPessoa | toTitle}}</template>
         <template slot="actions" slot-scope="data">
-          <b-button @click="editCliente(data.item.idCliente)" v-b-tooltip.hover title="Editar" size="sm" variant="warning" class="mr-2">
+          <b-button @click="navigate(data.item.idCliente)" v-b-tooltip.hover title="Editar" size="sm" variant="warning" class="mr-2">
             <i class="fa fa-pencil"></i>
           </b-button>
         </template>
@@ -128,8 +128,8 @@ export default {
         this.loader = false;
       }
     },
-    editCliente(idCliente){
-      window.console.log(idCliente);
+    navigate(id) {
+      this.$router.push({ name: "edicao-cliente", params: { id } });
     }
   }
 };

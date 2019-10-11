@@ -1,6 +1,7 @@
 <template>
   <div class="form-cliente">
-    <b-form @submit.prevent="submitCliente">
+    <Loading :loader="loader" />
+    <b-form @submit.prevent="submitCliente" v-if="!loader">
       <b-row>
         <b-col>
           <b-form-group label="Nome*" :invalid-feedback="invalidFeedBack($v.cliente.nomeCliente)">
@@ -28,7 +29,7 @@
       <b-row>
         <b-col>
           <b-form-group label="Tipo Pessoa*">
-            <b-form-radio-group v-model="cliente.tipoPessoa">
+            <b-form-radio-group :disabled="!!cliente.idCliente" v-model="cliente.tipoPessoa">
               <b-form-radio size="sm" value="fisica">Física</b-form-radio>
               <b-form-radio size="sm" value="juridica">Jurídica</b-form-radio>
             </b-form-radio-group>
@@ -43,6 +44,7 @@
             :invalid-feedback="invalidFeedBack($v.cliente.clientePf.cpfCliente)"
           >
             <the-mask
+            :disabled="!!cliente.idCliente"
               placeholder="Informe o CPF do cliente"
               :class="{'is-invalid': submitted && $v.cliente.clientePf.cpfCliente.$invalid, 'is-valid': submitted && !$v.cliente.clientePf.cpfCliente.$invalid}"
               mask="###.###.###-##"
@@ -57,6 +59,7 @@
             :invalid-feedback="invalidFeedBack($v.cliente.clientePj.cnpjCliente)"
           >
             <the-mask
+            :disabled="!!cliente.idCliente"
               placeholder="Informe o CNPJ do cliente"
               :class="{'is-invalid': submitted && $v.cliente.clientePj.cnpjCliente.$invalid, 'is-valid': submitted && !$v.cliente.clientePj.cnpjCliente.$invalid}"
               mask="##.###.###/####-##"
@@ -168,16 +171,17 @@ import { showError } from "@/global";
 import { validationMsg } from "../../utils/validation-msgs";
 import { validaCpf } from "../../utils/cpf_validator";
 import { validaCnpj } from "../../utils/cnpj_validator";
+import Cliente from '../../services/clientes';
+import Loading from '../shared/Loading'
 import {
   required,
   minLength,
   email,
-  sameAs,
   requiredIf
 } from "vuelidate/lib/validators";
 export default {
   name: "FormCliente",
-  components: { ModalFormTelefone, ModalFormEndereco },
+  components: { ModalFormTelefone, ModalFormEndereco, Loading },
   data() {
     return {
       fields: [
@@ -190,9 +194,16 @@ export default {
         tipoPessoa: "fisica",
         clientePj: {},
         clientePf: {},
-        enderecos: []
-      }
+        enderecos: [],
+      },
+      loader: false
     };
+  },
+  mounted(){
+    const param = parseInt(this.$route.params.id);
+    if(Number.isInteger(param)){
+      this.getCliente(param);
+    }
   },
   validations() {
     return {
@@ -250,6 +261,17 @@ export default {
     },
     invalidFeedBack(field) {
       return validationMsg(field);
+    },
+    async getCliente(id){
+      this.loader = true;
+      try{
+        const res = await Cliente.getCliente(id);
+        this.cliente = res.data;
+      }catch(err){
+        showError(err);
+      }finally{
+        this.loader = false;
+      }
     }
   }
 };
