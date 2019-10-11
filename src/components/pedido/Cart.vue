@@ -213,7 +213,11 @@
             </b-col>
             <b-col>
               <b-form-group label="Complemento*">
-                <b-form-input v-model="pedidoOnline.complemento" size="sm" placeholder="Complemento"></b-form-input>
+                <b-form-input
+                  v-model="pedidoOnline.complemento"
+                  size="sm"
+                  placeholder="Complemento"
+                ></b-form-input>
               </b-form-group>
             </b-col>
             <b-col>
@@ -336,13 +340,15 @@
             </tbody>
           </table>
 
-          <b-button type="button" size="sm" variant="success" @click="submitPedido()">Finalizar</b-button>
-          <b-button
-            @click="back()"
-            class="btn btn-secondary ml-2 mr-4"
-            size="sm"
-            variant="dark"
-          >Voltar</b-button>
+          <b-button type="button" size="sm" variant="success" @click="submitPedido()">
+            <i class="fa fa-save mr-1"></i>Finalizar
+          </b-button>
+          <b-button @click="back()" class="btn btn-secondary ml-2 mr-2" size="sm" variant="dark">
+            <i class="fa fa-arrow-left mr-1"></i>Voltar
+          </b-button>
+          <b-button @click="zeraCart()" variant="danger" size="sm">
+            <i class="fa fa-times-circle mr-1"></i>Limpar
+          </b-button>
         </div>
       </div>
       <div v-if="!existemItens()">
@@ -476,7 +482,7 @@ export default {
       if (this.pedido.tipoPedido === "on-line") {
         this.pedido.pedidoOnline = this.pedidoOnline;
       }
-      if(this.pedido.tipoPedido === 'balcao'){
+      if (this.pedido.tipoPedido === "balcao") {
         delete this.pedido.valorFrete;
         delete this.pedido.valorTarifa;
       }
@@ -493,14 +499,7 @@ export default {
     async finalizaVenda() {
       try {
         await Pedido.savePedido(this.pedido);
-        let pedido = {
-          tipoPedido: "balcao",
-          nomeCliente: "Selecione um cliente...",
-          livrosDescritos: []
-        };
-        this.$store.dispatch("SET_PEDIDO", pedido);
-        this.$store.dispatch("ZERA_CART");
-        setCart({ livrosDescritos: [] });
+        this.zeraCart();
         this.$toasted.global.defaultSuccess();
         this.$router.push("/dashboard/pedidos");
       } catch (err) {
@@ -549,6 +548,16 @@ export default {
       } catch (err) {
         showError(err);
       }
+    },
+    zeraCart() {
+      let pedido = {
+        tipoPedido: "balcao",
+        nomeCliente: "Selecione um cliente...",
+        livrosDescritos: []
+      };
+      this.$store.dispatch("SET_PEDIDO", pedido);
+      this.$store.dispatch("ZERA_CART");
+      setCart({ livrosDescritos: [] });
     }
   }
 };

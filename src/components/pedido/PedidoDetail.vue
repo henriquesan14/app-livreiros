@@ -40,7 +40,7 @@
                 <div class="card-info">
                   <div class="box-info">
                     <span class="title">Status Pedido</span>
-                    <span>{{pedido.statusPedido}}</span>
+                    <b-badge class="desc-pedido" :variant="pedido.statusPedido == 'pendente' ? 'danger' : 'success'"><span>{{pedido.statusPedido.toUpperCase()}}</span></b-badge>
                     <span class="title">Valor desconto</span>
                     <span>{{pedido.valorDesconto | currency}}</span>
                     <span class="title">Valor Frete</span>
@@ -48,10 +48,10 @@
                     <span class="title">Valor tarifa</span>
                     <span>{{pedido.valorTarifa | currency}}</span>
                     <span class="title">Valor total</span>
-                    <span>
-                      {{pedido.valorTotal | currency
-                      }}
-                    </span>
+                    
+                      <b-badge variant="danger" class="desc-pedido"><span>{{pedido.valorTotal | currency
+                      }}</span></b-badge>
+                  
                   </div>
                 </div>
               </b-card>
@@ -68,7 +68,7 @@
                     <span class="title">Canal de vendas</span>
                     <span>{{pedido.pedidoOnline.canalVendas}}</span>
                     <span class="title">Status pagamento</span>
-                    <span>{{pedido.pedidoOnline.statusPagamento}}</span>
+                    <b-badge class="desc-pedido" :variant="pedido.pedidoOnline.statusPagamento == 'pendente' ? 'danger' : 'success'"><span>{{pedido.pedidoOnline.statusPagamento.toUpperCase()}}</span></b-badge>
                     <span class="title">Data/hora pagamento</span>
                     <span>{{formataData(pedido.pedidoOnline.dataHoraPagamento)}}</span>
                     <span class="title">Tipo Pagamento</span>
@@ -79,7 +79,7 @@
                       }}
                     </span>
                     <span class="title">Status envio</span>
-                    <span>{{pedido.pedidoOnline.statusEnvio}}</span>
+                    <b-badge class="desc-pedido" :variant="pedido.pedidoOnline.statusEnvio == 'pendente' ? 'danger' : 'success'"><span>{{pedido.pedidoOnline.statusEnvio.toUpperCase()}}</span></b-badge>
                   </div>
                 </div>
               </b-card>
@@ -110,12 +110,20 @@
             </b-col>
           </b-row>
 
+          <b-row class="mt-1" v-if="pedido.obsPedido">
+            <b-col>
+              <b-form-group label="Obs. Pedido">
+                <b-form-textarea rows="4" readonly :value="pedido.obsPedido"></b-form-textarea>
+              </b-form-group>
+            </b-col>
+          </b-row>
+
           <br />
           <b-badge>
             <span class="title-badge">Livros descritos</span>
           </b-badge>
-          <table class="table table-sm">
-            <thead>
+          <table class="table table-sm mt-1">
+            <thead class="table-dark">
               <tr>
                 <th>Livro</th>
                 <th>Cód.</th>
@@ -208,6 +216,12 @@ export default {
   span.title {
     font-weight: bold;
     font-size: 1rem;
+  }
+
+  .desc-pedido {
+    width:120px;
+    font-size:1rem;
+    padding:4px 15px;
   }
 }
 </style>

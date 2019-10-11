@@ -225,6 +225,7 @@ export default {
       livro.imagemLivro = this.livro.imagemLivro;
 
       addLivro(livro);
+      livro.qtdLivro -= 1;
       this.$store.dispatch('SET_CART');
       this.$toasted.global.defaultInfo();
     }
