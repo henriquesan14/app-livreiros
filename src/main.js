@@ -19,6 +19,7 @@ import './directives/role-directive';
 import './interceptors/auth-interceptor';
 import './interceptors/not-auth.interceptor';
 import './interceptors/authorization-interceptor';
+import './interceptors/not-found-interceptor';
 
 //filters
 import './filters/filter-totitle'

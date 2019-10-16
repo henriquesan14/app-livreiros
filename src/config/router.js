@@ -38,6 +38,11 @@ export default new Router({
           component: () => import('../views/Error403.vue')
         },
         {
+          path: 'error404',
+          name: 'error404',
+          component: () => import('../views/Error404.vue')
+        },
+        {
           path: 'home',
           name: 'home',
           component: () => import('../components/home/Home.vue')
