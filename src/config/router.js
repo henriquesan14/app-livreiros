@@ -153,6 +153,11 @@ export default new Router({
           component: () => import('../components/pedido/PedidoAtual.vue')
         },
         {
+          path: 'pedidos/export',
+          name: 'export-pedido',
+          component: () => import('../components/pedido/ExportPedido.vue')
+        },
+        {
           path: 'pedidos/:id',
           name: 'pedido-detail',
           component: () => import('../components/pedido/PedidoDetail.vue')

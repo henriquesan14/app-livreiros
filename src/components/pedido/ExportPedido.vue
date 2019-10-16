@@ -1,0 +1,153 @@
+<template>
+  <div class="export-pedido">
+    <PageTitle icon="fa fa-cloud-download" main="Administração de pedidos" sub="Exportar pedidos" />
+
+    <b-card>
+      <template slot="header">
+        <div class="header-card">
+          <h5 class="title-card">Exportação de Pedido</h5>
+          <router-link to="/dashboard/pedidos" tag="button" class="btn-dark btn-sm mb-1">
+            <i class="fa fa-arrow-left mr-1"></i>Voltar
+          </router-link>
+        </div>
+      </template>
+
+      <div>
+        <b-row>
+          <b-col>
+            <b-form>
+              <b-form-group>
+                <b-form-file
+                  v-model="image"
+                  accept=".xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                  browse-text="Procurar"
+                  placeholder="Escolha o arquivo..."
+                ></b-form-file>
+                <b-button class="mt-2" variant="success" size="sm">
+                  <i class="fa fa-cloud-download mr-1"></i>Exportar
+                </b-button>
+              </b-form-group>
+            </b-form>
+          </b-col>
+        </b-row>
+
+        <div class="mb-2">
+          <b-badge>
+            <span class="title-badge">Últimas Importações</span>
+          </b-badge>
+          <b-button @click="getExportacoes" size="sm" variant="dark" class="ml-2">
+            <i class="fa fa-refresh mr-1"></i>Atualizar Exportações
+          </b-button>
+        </div>
+
+        <Loading :loader="loader" />
+        <div v-if="!loader">
+          <b-table class="table-sm" :fields="fields" :items="pageExportacoes.rows" striped hover>
+            <template slot="statusImportacao" slot-scope="data">
+              <b-badge
+                :variant="data.item.statusImportacao == 'CONFIRMADO' ? 'success' : 'danger'"
+              >{{data.item.statusImportacao.toUpperCase()}}</b-badge>
+            </template>
+            <template slot="actions" slot-scope="data">
+              <b-button @click="navigate(data.item.idImportacao)" variant="primary" size="sm">
+                <i class="fa fa-search-plus"></i>
+              </b-button>
+            </template>
+          </b-table>
+          <b-pagination
+        size="sm"
+        v-model="page"
+        :total-rows="pageExportacoes.count"
+        :per-page="pageExportacoes.limite"
+      ></b-pagination>
+        </div>
+      </div>
+    </b-card>
+  </div>
+</template>
+
+<script>
+import PageTitle from "../template/PageTitle";
+import Loading from "../shared/Loading";
+export default {
+  name: "ExportPedido",
+  components: { PageTitle, Loading },
+  watch: {
+    page() {
+      this.getExportacoes();
+    }
+  },
+  mounted() {
+    this.getExportacoes();
+  },
+  data() {
+    return {
+      page: 1,
+      loader: false,
+      pageExportacoes: {
+        count: 30,
+        limite: 10,
+        rows: [
+          {
+            idImportacao: 1,
+            usuario: {
+              loginUsuario: "Vladmir"
+            },
+            createdAt: "16/10/2019 12:00",
+            statusImportacao: "CONFIRMADO"
+          },
+          {
+            idImportacao: 2,
+            usuario: {
+              loginUsuario: "Henrique"
+            },
+            createdAt: "16/10/2019 12:00",
+            statusImportacao: "CANCELADO"
+          },
+          {
+            idImportacao: 3,
+            usuario: {
+              loginUsuario: "Gilberto"
+            },
+            createdAt: "16/10/2019 12:00",
+            statusImportacao: "CONFIRMADO"
+          },
+          {
+            idImportacao: 4,
+            usuario: {
+              loginUsuario: "Chico"
+            },
+            createdAt: "16/10/2019 12:00",
+            statusImportacao: "CANCELADO"
+          }
+        ]
+      },
+      fields: [
+        { key: "idImportacao", label: "Cód.", sortable: true },
+        {
+          key: "createdAt",
+          label: "Data/Hora",
+          sortable: true
+        },
+        { key: "usuario.loginUsuario", label: "Usuário", sortable: true },
+        { key: "statusImportacao", label: "Status", sortable: true },
+        { key: "actions", label: "Ações" }
+      ]
+    };
+  },
+  methods: {
+    navigate(id) {
+      this.$router.push({ name: "edicao-grupo", params: { id } });
+    },
+    getExportacoes() {
+      this.loader = true;
+      setTimeout(() => {
+        this.loader = false;
+      }, 2000);
+    }
+  }
+};
+</script>
+
+<style>
+</style>
