@@ -10,5 +10,8 @@ export default {
     },
     savePedido: (pedido) => {
         return axios.post(`${baseApiUrl}/pedidos`, pedido);
+    },
+    importPedido: (file) => {
+        return axios.post(`${baseApiUrl}/pedidos/importar`, file, {});
     }
 }

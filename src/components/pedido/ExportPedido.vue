@@ -15,15 +15,15 @@
       <div>
         <b-row>
           <b-col>
-            <b-form>
+            <b-form @submit.prevent="importPedido">
               <b-form-group>
                 <b-form-file
-                  v-model="image"
+                  v-model="file"
                   accept=".xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
                   browse-text="Procurar"
                   placeholder="Escolha o arquivo..."
                 ></b-form-file>
-                <b-button class="mt-2" variant="success" size="sm">
+                <b-button :disabled="!file" type="submit" class="mt-2" variant="success" size="sm">
                   <i class="fa fa-cloud-download mr-1"></i>Exportar
                 </b-button>
               </b-form-group>
@@ -70,6 +70,7 @@
 import PageTitle from "../template/PageTitle";
 import Loading from "../shared/Loading";
 import Importacoes from "../../services/importacoes";
+import Pedidos from '../../services/pedidos';
 import { showError } from "@/global";
 import moment from 'moment';
 export default {
@@ -85,7 +86,7 @@ export default {
   },
   data() {
     return {
-      image: null,
+      file: null,
       page: 1,
       loader: false,
       pageExportacoes: {
@@ -120,6 +121,16 @@ export default {
         showError(err);
       }finally{
         this.loader = false;
+      }
+    },
+    async importPedido(){
+      try{
+        const fd = new FormData();
+        fd.append("file", this.file);
+        const res = await Pedidos.importPedido(fd);
+        this.$toasted.global.defaultSuccess();
+      }catch(err){
+        showError(err);
       }
     }
   }
