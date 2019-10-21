@@ -9,6 +9,7 @@
           >{{data.item.status.toUpperCase()}}</b-badge>
         </template>
       </b-table>
+      <b-badge v-if="!results || (results && results.length < 1)"><span class="title-badge">Nenhum resultado.</span></b-badge>
     </div>
     <Loading :loader="loader" />
   </b-modal>

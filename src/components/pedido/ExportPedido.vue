@@ -128,6 +128,7 @@ export default {
         const fd = new FormData();
         fd.append("file", this.file);
         const res = await Pedidos.importPedido(fd);
+        this.getExportacoes();
         this.$toasted.global.defaultSuccess();
       } catch (err) {
         showError(err);
