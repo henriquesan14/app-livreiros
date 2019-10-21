@@ -43,10 +43,10 @@
         <Loading :loader="loader" />
         <div v-if="!loader">
           <b-table class="table-sm" :fields="fields" :items="pageExportacoes.rows" striped hover>
-            <template slot="statusImportacao" slot-scope="data">
+            <template slot="statusImportacaoPEdido" slot-scope="data">
               <b-badge
-                :variant="data.item.statusImportacao == 'CONFIRMADO' ? 'success' : 'danger'"
-              >{{data.item.statusImportacao.toUpperCase()}}</b-badge>
+                :variant="data.item.statusImportacaoPEdido == 'finalizado' ? 'success' : 'danger'"
+              >{{data.item.statusImportacaoPEdido.toUpperCase()}}</b-badge>
             </template>
             <template slot="actions" slot-scope="data">
               <b-button @click="navigate(data.item.idImportacao)" variant="primary" size="sm">
@@ -55,11 +55,11 @@
             </template>
           </b-table>
           <b-pagination
-        size="sm"
-        v-model="page"
-        :total-rows="pageExportacoes.count"
-        :per-page="pageExportacoes.limite"
-      ></b-pagination>
+            size="sm"
+            v-model="page"
+            :total-rows="pageExportacoes.count"
+            :per-page="pageExportacoes.limite"
+          ></b-pagination>
         </div>
       </div>
     </b-card>
@@ -69,6 +69,9 @@
 <script>
 import PageTitle from "../template/PageTitle";
 import Loading from "../shared/Loading";
+import Importacoes from "../../services/importacoes";
+import { showError } from "@/global";
+import moment from 'moment';
 export default {
   name: "ExportPedido",
   components: { PageTitle, Loading },
@@ -82,55 +85,24 @@ export default {
   },
   data() {
     return {
+      image: null,
       page: 1,
       loader: false,
       pageExportacoes: {
-        count: 30,
-        limite: 10,
-        rows: [
-          {
-            idImportacao: 1,
-            usuario: {
-              loginUsuario: "Vladmir"
-            },
-            createdAt: "16/10/2019 12:00",
-            statusImportacao: "CONFIRMADO"
-          },
-          {
-            idImportacao: 2,
-            usuario: {
-              loginUsuario: "Henrique"
-            },
-            createdAt: "16/10/2019 12:00",
-            statusImportacao: "CANCELADO"
-          },
-          {
-            idImportacao: 3,
-            usuario: {
-              loginUsuario: "Gilberto"
-            },
-            createdAt: "16/10/2019 12:00",
-            statusImportacao: "CONFIRMADO"
-          },
-          {
-            idImportacao: 4,
-            usuario: {
-              loginUsuario: "Chico"
-            },
-            createdAt: "16/10/2019 12:00",
-            statusImportacao: "CANCELADO"
-          }
-        ]
+        rows: []
       },
       fields: [
-        { key: "idImportacao", label: "Cód.", sortable: true },
+        { key: "idImportacaoPedido", label: "Cód.", sortable: true },
         {
           key: "createdAt",
           label: "Data/Hora",
-          sortable: true
+          sortable: true,
+          formatter: value => {
+            return moment(String(value)).format("DD/MM/YYYY HH:mm");
+          }
         },
         { key: "usuario.loginUsuario", label: "Usuário", sortable: true },
-        { key: "statusImportacao", label: "Status", sortable: true },
+        { key: "statusImportacaoPEdido", label: "Status", sortable: true },
         { key: "actions", label: "Ações" }
       ]
     };
@@ -139,11 +111,16 @@ export default {
     navigate(id) {
       this.$router.push({ name: "edicao-grupo", params: { id } });
     },
-    getExportacoes() {
+    async getExportacoes() {
       this.loader = true;
-      setTimeout(() => {
+      try {
+        const res = await Importacoes.getImportacoes(this.page - 1);
+        this.pageExportacoes = res.data;
+      } catch (err) {
+        showError(err);
+      }finally{
         this.loader = false;
-      }, 2000);
+      }
     }
   }
 };
