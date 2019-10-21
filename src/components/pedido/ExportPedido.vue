@@ -49,7 +49,7 @@
               >{{data.item.statusImportacaoPEdido.toUpperCase()}}</b-badge>
             </template>
             <template slot="actions" slot-scope="data">
-              <b-button @click="navigate(data.item.idImportacao)" variant="primary" size="sm">
+              <b-button @click="selecionaExportacao(data.item.idImportacaoPedido);$bvModal.show('modal-export-results')" variant="primary" size="sm">
                 <i class="fa fa-search-plus"></i>
               </b-button>
             </template>
@@ -63,6 +63,7 @@
         </div>
       </div>
     </b-card>
+    <ModalResults :idExportacao="idExportacao" />
   </div>
 </template>
 
@@ -70,12 +71,13 @@
 import PageTitle from "../template/PageTitle";
 import Loading from "../shared/Loading";
 import Importacoes from "../../services/importacoes";
-import Pedidos from '../../services/pedidos';
+import Pedidos from "../../services/pedidos";
 import { showError } from "@/global";
-import moment from 'moment';
+import moment from "moment";
+import ModalResults from './ModalResults';
 export default {
   name: "ExportPedido",
-  components: { PageTitle, Loading },
+  components: { PageTitle, Loading,ModalResults },
   watch: {
     page() {
       this.getExportacoes();
@@ -89,6 +91,7 @@ export default {
       file: null,
       page: 1,
       loader: false,
+      idExportacao: null,
       pageExportacoes: {
         rows: []
       },
@@ -109,9 +112,6 @@ export default {
     };
   },
   methods: {
-    navigate(id) {
-      this.$router.push({ name: "edicao-grupo", params: { id } });
-    },
     async getExportacoes() {
       this.loader = true;
       try {
@@ -119,19 +119,22 @@ export default {
         this.pageExportacoes = res.data;
       } catch (err) {
         showError(err);
-      }finally{
+      } finally {
         this.loader = false;
       }
     },
-    async importPedido(){
-      try{
+    async importPedido() {
+      try {
         const fd = new FormData();
         fd.append("file", this.file);
         const res = await Pedidos.importPedido(fd);
         this.$toasted.global.defaultSuccess();
-      }catch(err){
+      } catch (err) {
         showError(err);
       }
+    },
+    selecionaExportacao(id){
+      this.idExportacao = id;
     }
   }
 };
