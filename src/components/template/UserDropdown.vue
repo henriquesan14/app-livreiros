@@ -47,6 +47,8 @@ export default {
 
 <style lang="scss">
 .user-dropdown {
+  border-radius: 3px;
+  position: relative;
   position: relative;
   height: 100%;
   &:hover {
