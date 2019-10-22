@@ -13,7 +13,7 @@ const mutations = {
 
 const actions = {
   async GET_ASSUNTOS({ commit }, params) {
-    const url = `${baseApiUrl}/assuntos?nome=${params.nome}`;
+    const url = `${baseApiUrl}/assuntos?pagina=${params.page}&nome=${params.nome}`;
     try {
       const { data } = await axios.get(url);
       commit('RECEIVE_ASSUNTOS', { pageAssuntos: data });

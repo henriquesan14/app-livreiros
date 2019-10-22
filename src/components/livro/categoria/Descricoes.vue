@@ -15,8 +15,8 @@
         </div>
       </template>
       <template slot="modal-title">Gerenciar Descrições</template>
-      <Loading :loader="loader || loaderDesc" />
-      <div v-if="!loader && !loaderDesc" class="d-block">
+      <Loading :loader="loaderDesc" />
+      <div v-if="!loaderDesc" class="d-block">
         <b-badge>
           <span class="title-badge">Nova Descrição</span>
         </b-badge>

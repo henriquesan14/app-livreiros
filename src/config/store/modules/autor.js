@@ -13,7 +13,7 @@ const mutations = {
 
 const actions = {
   async GET_AUTORES({ commit }, params) {
-    const url = `${baseApiUrl}/autores?nome=${params.nome}`;
+    const url = `${baseApiUrl}/autores?pagina=${params.page}&nome=${params.nome}`;
     try {
       const { data } = await axios.get(url);
       commit('RECEIVE_AUTORES', { pageAutores: data });

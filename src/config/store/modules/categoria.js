@@ -22,7 +22,7 @@ const mutations = {
 
 const actions = {
   async GET_CATEGORIAS({ commit }, params) {
-    const url = `${baseApiUrl}/categorias?nome=${params.nome}`;
+    const url = `${baseApiUrl}/categorias?pagina=${params.page}&nome=${params.nome}`;
     try {
       const { data } = await axios.get(url);
       commit('RECEIVE_CATEGORIAS', { pageCategorias: data });
