@@ -112,20 +112,23 @@
             </router-link>
           </b-col>
         </b-row>
-
-        <div v-for="categoria in categoriasAtivas" :key="categoria.idCategoriaDescricao">
-          <h5 class="title-descricoes">
-            <strong>{{categoria.nomeCategoriaDescricao}}</strong>
-          </h5>
-          <b-table class="table-sm" :items="categoria.descricoes" :fields="fields" striped hover>
-            <template slot="actions" slot-scope="data">
-              <b-form-checkbox-group>
-                <b-form-checkbox checked @change="onChangeDesc(data.item.idDescricao)"></b-form-checkbox>
-              </b-form-checkbox-group>
-            </template>
-          </b-table>
-        </div>
       </b-form>
+    </div>
+    <div>
+      <b-table class="table-sm" :items="descricoes" :fields="fields2" striped hover>
+        <template slot="actions" slot-scope="data">
+          <b-form-checkbox-group v-model="livroDescrito.descricoes">
+            <b-form-checkbox :value="data.item.idDescricao"></b-form-checkbox>
+          </b-form-checkbox-group>
+        </template>
+        <template slot="categoria_descricao.nomeCategoriaDescricao" slot-scope="data">
+          <b-badge
+            :variant="badgesCategorias(data.item.categoria_descricao.nomeCategoriaDescricao)"
+          >
+            <span style="font-weight:bold; font-size:0.8rem;">{{data.item.categoria_descricao.nomeCategoriaDescricao.toUpperCase()}}</span>
+          </b-badge>
+        </template>
+      </b-table>
     </div>
   </div>
 </template>
@@ -160,6 +163,16 @@ export default {
       fields: [
         { key: "actions", label: "Ações" },
         { key: "nomeDescricao", label: "Desc.", sortable: true },
+        { key: "reducaoPreco", label: "( - ) R$", sortable: true }
+      ],
+      fields2: [
+        { key: "actions", label: "Ações" },
+        { key: "nomeDescricao", label: "Desc.", sortable: true },
+        {
+          key: "categoria_descricao.nomeCategoriaDescricao",
+          label: "Nome Categoria",
+          sortable: true
+        },
         { key: "reducaoPreco", label: "( - ) R$", sortable: true }
       ],
       submitted: false,
@@ -209,9 +222,21 @@ export default {
       try {
         const res = await Descricoes.getDescricoes();
         this.descricoes = res.data;
+        this.sortDescricoes();
       } catch (err) {
         showError(err);
       }
+    },
+    sortDescricoes() {
+      this.descricoes.sort((a, b) => {
+        return a.categoria_descricao.nomeCategoriaDescricao >
+          b.categoria_descricao.nomeCategoriaDescricao
+          ? 1
+          : b.categoria_descricao.nomeCategoriaDescricao >
+            a.categoria_descricao.nomeCategoriaDescricao
+          ? -1
+          : 0;
+      });
     },
     submitLivroDesc() {
       this.submitted = true;
@@ -224,12 +249,23 @@ export default {
       this.livroDescrito.idLivro = this.livro.idLivro;
       this.$emit("submit-livro-desc", this.livroDescrito);
     },
-    onChangeDesc(id) {
-      if (this.livroDescrito.descricoes.includes(id)) {
-        let index = this.livroDescrito.descricoes.indexOf(id);
-        this.livroDescrito.descricoes.splice(index, 1);
-      } else {
-        this.livroDescrito.descricoes.push(id);
+    badgesCategorias(nomeCategoria) {
+      switch (nomeCategoria) {
+        case "Capa/Contra Capa":
+          return "danger";
+          break;
+        case "Condição Geral":
+          return "success";
+          break;
+        case "Folha de Rosto":
+          return "warning";
+          break;
+        case "Páginas":
+          return "primary";
+          break;
+        default:
+          return "dark";
+          break;
       }
     },
     invalidFeedBack(field) {
