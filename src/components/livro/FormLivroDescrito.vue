@@ -248,19 +248,14 @@ export default {
       switch (nomeCategoria) {
         case "Capa/Contra Capa":
           return "danger";
-          break;
         case "Condição Geral":
           return "success";
-          break;
         case "Folha de Rosto":
           return "warning";
-          break;
         case "Páginas":
           return "primary";
-          break;
         default:
           return "dark";
-          break;
       }
     },
     invalidFeedBack(field) {
