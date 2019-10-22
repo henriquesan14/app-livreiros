@@ -101,7 +101,6 @@
             </b-form-group>
           </b-col>
         </b-row>
-
         <b-row class="mb-2">
           <b-col>
             <b-button type="submit" class="mr-2" variant="success" size="sm">
@@ -112,6 +111,7 @@
             </router-link>
           </b-col>
         </b-row>
+        <b-badge class="mb-2" variant="danger"><span class="badge-preco">Preço com ajuste: {{precoComAjuste() | currency}}</span></b-badge>
       </b-form>
     </div>
     <div>
@@ -125,7 +125,7 @@
           <b-badge
             :variant="badgesCategorias(data.item.categoria_descricao.nomeCategoriaDescricao)"
           >
-            <span style="font-weight:bold; font-size:0.8rem;">{{data.item.categoria_descricao.nomeCategoriaDescricao.toUpperCase()}}</span>
+            <span class="badge-categoria">{{data.item.categoria_descricao.nomeCategoriaDescricao.toUpperCase()}}</span>
           </b-badge>
         </template>
       </b-table>
@@ -270,6 +270,20 @@ export default {
     },
     invalidFeedBack(field) {
       return validationMsg(field);
+    },
+    precoComAjuste(){
+      let reducaoPreco = 0;
+      
+      this.livroDescrito.descricoes.forEach(
+        (idDesc) => {
+          this.descricoes.forEach((desc) => {
+            if(desc.idDescricao === idDesc){
+              reducaoPreco += parseFloat(desc.reducaoPreco);
+            }
+          });
+        }
+      );
+      return this.livro.precoLivro - reducaoPreco;
     }
   }
 };
@@ -282,5 +296,13 @@ form {
 h5.title-descricoes {
   font-size: 1rem;
   text-align: left;
+}
+
+.badge-preco{
+  font-size:1.2rem;
+}
+
+.badge-categoria{
+  font-size: 0.8rem;
 }
 </style>
