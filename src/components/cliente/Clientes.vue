@@ -37,8 +37,8 @@
         striped
         :items="pageClientes.rows"
       >
-        <template slot="tipoPessoa" slot-scope="data">{{data.item.tipoPessoa | toTitle}}</template>
-        <template slot="actions" slot-scope="data">
+        <template v-slot:cell(tipoPessoa)="data">{{data.item.tipoPessoa | toTitle}}</template>
+        <template v-slot:cell(actions)="data">
           <b-button @click="navigate(data.item.idCliente)" v-b-tooltip.hover title="Editar" size="sm" variant="warning" class="mr-2">
             <i class="fa fa-pencil"></i>
           </b-button>

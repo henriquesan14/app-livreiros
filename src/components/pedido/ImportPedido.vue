@@ -43,12 +43,12 @@
         <Loading :loader="loader" />
         <div v-if="!loader">
           <b-table class="table-sm" :fields="fields" :items="pageExportacoes.rows" striped hover>
-            <template slot="statusImportacaoPEdido" slot-scope="data">
+            <template v-slot:cell(statusImportacaoPEdido)="data">
               <b-badge
                 :variant="data.item.statusImportacaoPEdido == 'finalizado' ? 'success' : 'danger'"
               >{{data.item.statusImportacaoPEdido.toUpperCase()}}</b-badge>
             </template>
-            <template slot="actions" slot-scope="data">
+            <template v-slot:cell(actions)="data">
               <b-button @click="selecionaExportacao(data.item.idImportacaoPedido);$bvModal.show('modal-export-results')" variant="primary" size="sm">
                 <i class="fa fa-search-plus"></i>
               </b-button>
@@ -76,7 +76,7 @@ import { showError } from "@/global";
 import moment from "moment";
 import ModalResults from './ModalResults';
 export default {
-  name: "ExportPedido",
+  name: "ImportPedido",
   components: { PageTitle, Loading,ModalResults },
   watch: {
     page() {
@@ -127,7 +127,7 @@ export default {
       try {
         const fd = new FormData();
         fd.append("file", this.file);
-        const res = await Pedidos.importPedido(fd);
+        await Pedidos.importPedido(fd);
         this.getExportacoes();
         this.$toasted.global.defaultSuccess();
       } catch (err) {

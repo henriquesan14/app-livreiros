@@ -31,7 +31,7 @@ export default {
   methods: {
     async editLivroDescrito(livroDescrito) {
       try {
-        const res = await LivroDescrito.editLivroDescrito(
+          await LivroDescrito.editLivroDescrito(
           livroDescrito.idLivroDescrito,
           livroDescrito
         );

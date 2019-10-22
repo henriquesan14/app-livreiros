@@ -47,12 +47,12 @@
         striped
         :items="pageCategorias.rows"
       >
-        <template slot="statusCategoriaDescricao" slot-scope="data">
+        <template v-slot:cell(statusCategoriaDescricao)="data">
           <b-badge
             :variant="data.item.statusCategoriaDescricao ? 'success' : 'danger'"
           >{{data.item.statusCategoriaDescricao ? 'ATIVA':'DESATIVADA'}}</b-badge>
         </template>
-        <template slot="actions" slot-scope="data">
+        <template v-slot:cell(actions)="data">
           <b-button
             v-b-tooltip.hover
             title="Editar"

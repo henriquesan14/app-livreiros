@@ -43,7 +43,7 @@
         striped
         :items="pageEditoras.rows"
       >
-        <template slot="actions" slot-scope="data">
+        <template v-slot:cell(actions)="data">
           <b-button
             v-b-tooltip.hover
             title="Editar"

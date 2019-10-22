@@ -24,7 +24,6 @@
 import FormLivroDescrito from "./FormLivroDescrito";
 import PageTitle from "../template/PageTitle";
 import LivroDescrito from "../../services/livro-descrito";
-import Loading from "../shared/Loading";
 import { showError } from "@/global";
 export default {
   name: "CadastroLivroDescrito",
@@ -32,7 +31,7 @@ export default {
   methods: {
     async saveLivroDescrito(livroDescrito) {
       try {
-        const res = await LivroDescrito.saveLivroDescrito(livroDescrito);
+        await LivroDescrito.saveLivroDescrito(livroDescrito);
         let loader = this.$loading.show();
         setTimeout(() => {
           loader.hide();

@@ -56,13 +56,13 @@
         striped
         :items="pagePedidos.rows"
       >
-        <template slot="statusPedido" slot-scope="data">
+        <template v-slot:cell(statusPedido)="data">
           <b-badge
             :variant="data.item.statusPedido === 'confirmado' ? 'success' : 'danger'"
           >{{data.item.statusPedido.toUpperCase()}}</b-badge>
         </template>
-        <template slot="valorTotal" slot-scope="data">{{data.item.valorTotal | currency}}</template>
-        <template slot="actions" slot-scope="data">
+        <template v-slot:cell(valorTotal)="data">{{data.item.valorTotal | currency}}</template>
+        <template v-slot:cell(actions)="data">
           <b-button @click="navigate(data.item.idPedido)" v-b-tooltip.hover title="Detalhes" size="sm" variant="primary" class="mr-2">
             <i class="fa fa-search-plus"></i>
           </b-button>

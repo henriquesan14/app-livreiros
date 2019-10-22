@@ -110,10 +110,9 @@
           striped
         >
           <template
-            slot="precoLivroDescrito"
-            slot-scope="data"
+            v-slot:cell(precoLivroDescrito)="data"
           >{{data.item.precoLivroDescrito | currency}}</template>
-          <template slot="actions" slot-scope="data">
+          <template v-slot:cell(actions)="data">
             <b-button
               v-b-tooltip.hover
               title="Editar"

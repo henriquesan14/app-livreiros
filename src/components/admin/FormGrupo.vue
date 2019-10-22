@@ -39,7 +39,7 @@
       >PERMISSÕES CATEGORIA: {{categoriaSelecionada.toUpperCase()}}</span>
     </b-badge>
     <b-table class="table-sm" :fields="fields" :items="permissoes" :responsive="true" hover striped>
-      <template slot="check" slot-scope="data">
+      <template v-slot:cell(check)="data">
         <b-form-checkbox-group v-model="grupo.permissoes">
           <b-form-checkbox :value="data.item.idPermissao" :key="data.item.idPermissao"></b-form-checkbox>
         </b-form-checkbox-group>

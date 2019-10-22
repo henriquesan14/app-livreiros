@@ -160,7 +160,7 @@ export default new Router({
         {
           path: 'pedidos/export',
           name: 'export-pedido',
-          component: () => import('../components/pedido/ExportPedido.vue')
+          component: () => import('../components/pedido/ImportPedido.vue')
         },
         {
           path: 'pedidos/:id',

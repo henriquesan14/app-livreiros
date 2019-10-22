@@ -115,13 +115,13 @@
       </b-form>
     </div>
     <div>
-      <b-table class="table-sm" :items="descricoes" :fields="fields2" striped hover>
-        <template slot="actions" slot-scope="data">
+      <b-table class="table-sm" :items="descricoes" :fields="fields" striped hover>
+        <template v-slot:cell(actions)="data">
           <b-form-checkbox-group v-model="livroDescrito.descricoes">
             <b-form-checkbox :value="data.item.idDescricao"></b-form-checkbox>
           </b-form-checkbox-group>
         </template>
-        <template slot="categoria_descricao.nomeCategoriaDescricao" slot-scope="data">
+        <template v-slot:cell(categoria_descricao.nomeCategoriaDescricao)="data">
           <b-badge
             :variant="badgesCategorias(data.item.categoria_descricao.nomeCategoriaDescricao)"
           >
@@ -161,11 +161,6 @@ export default {
       livroDescrito: { descricoes: [] },
       descricoes: [],
       fields: [
-        { key: "actions", label: "Ações" },
-        { key: "nomeDescricao", label: "Desc.", sortable: true },
-        { key: "reducaoPreco", label: "( - ) R$", sortable: true }
-      ],
-      fields2: [
         { key: "actions", label: "Ações" },
         { key: "nomeDescricao", label: "Desc.", sortable: true },
         {

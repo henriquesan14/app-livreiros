@@ -3,7 +3,7 @@
     <template slot="modal-title">Resultados</template>
     <div v-if="!loader" class="d-block">
       <b-table class="table-sm" :fields="fields" :items="results" striped hover>
-        <template slot="status" slot-scope="data">
+        <template v-slot:cell(status)="data">
           <b-badge
             :variant="data.item.status == 'ok' ? 'success' : 'danger'"
           >{{data.item.status.toUpperCase()}}</b-badge>

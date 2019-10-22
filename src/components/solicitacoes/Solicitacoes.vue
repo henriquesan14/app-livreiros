@@ -48,12 +48,12 @@
         striped
         :items="pageSolicitacoes.rows"
       >
-        <template slot="statusSolicitacao" slot-scope="data">
+        <template v-slot:cell(statusSolicitacao)="data">
           <b-badge
             :variant="data.item.statusSolicitacao === 'confirmado' ? 'success' : 'danger'"
           >{{data.item.statusSolicitacao.toUpperCase()}}</b-badge>
         </template>
-        <template slot="actions" slot-scope="data">
+        <template v-slot:cell(actions)="data">
           <b-button
             :disabled="data.item.statusSolicitacao !== 'pendente'"
             @click="showMsgConfirmacao(data.item)"

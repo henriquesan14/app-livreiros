@@ -142,10 +142,9 @@
         :fields="fields"
       >
         <template
-          slot="endereco"
-          slot-scope="data"
+          v-slot:cell(statusUsuario)="endereco"
         >{{`${data.item.rua}, Nº ${data.item.numero} ${data.item.complemento ? data.item.complemento : ''}, ${data.item.bairro}, ${data.item.nomeCidade}-${data.item.siglaUf} - ${data.item.cepCliente}`}}</template>
-        <template slot="actions" slot-scope="data">
+        <template v-slot:cell(statusUsuario)="actions">
           <b-button @click="removeEndereco(data.index)" variant="danger" size="sm">
             <i class="fas fa-trash"></i>
           </b-button>

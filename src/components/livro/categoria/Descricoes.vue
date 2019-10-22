@@ -29,12 +29,12 @@
           hover
           striped
         >
-          <template slot="statusDescricao" slot-scope="data">
+          <template v-slot:cell(statusDescricao)="data">
             <b-badge
               :variant="data.item.statusDescricao ? 'success' : 'danger'"
             >{{data.item.statusDescricao ? 'ATIVA':'DESATIVADA'}}</b-badge>
           </template>
-          <template slot="actions" slot-scope="data">
+          <template v-slot:cell(actions)="data">
             <b-button
               v-b-tooltip.hover
               title="Editar"
