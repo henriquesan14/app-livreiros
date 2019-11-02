@@ -13,5 +13,8 @@ export default {
     },
     importPedido: (file) => {
         return axios.post(`${baseApiUrl}/pedidos/importar`, file, {});
-    }
+    },
+    relatorios: (page = 0, limite = 10, dataInicio = '', dataFim = '') => {
+        return axios.get(`${baseApiUrl}/pedidos/relatorio/graficos?pagina=${page}&limite=${limite}&dataIni=${dataInicio}&dataFim=${dataFim}`);
+    },
 }

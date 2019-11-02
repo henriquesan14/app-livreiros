@@ -21,7 +21,7 @@ export default {
       type: String
     },
     value: {
-      type: String
+      type: Number | String
     },
     desc: {
       type: String
@@ -35,8 +35,9 @@ export default {
   display: flex;
   align-items: center;
   color: #fff;
-  padding: 15px;
+  padding: 13px;
   width: 260px;
+  height:100px;
   border-radius: 3px;
 
   .card-icon {
@@ -44,6 +45,10 @@ export default {
     i {
       font-size: 50px;
     }
+  }
+
+  .card-desc h5{
+    font-size: 1rem;
   }
 }
 </style>
