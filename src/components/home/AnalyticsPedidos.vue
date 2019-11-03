@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <PageTitle icon="fas fa-chart-line" main="Analytics" sub="Estatisticas Gerais" />
+    <PageTitle icon="fas fa-chart-line" main="Analytics" sub="Estatisticas Gerais últimos 30 dias" />
     <div v-if="loaded" class="box-cards-dashboard">
       <Card cor="#007bff" icon="fas fa-book" :value="pageRelatorios.relatorios.dadosPedioLivros.dadosQtdLivros.sum" desc="Livros vendidos" />
       <Card cor="#28a745" icon="fas fa-dollar-sign" :value="formataValor(pageRelatorios.relatorios.DadosValorTotal.sum)" desc="Ganho total" />
@@ -14,17 +14,21 @@
       </template>
       <b-row>
         <b-col sm="6" md="6">
+            <b-badge><span class="title-badge">Total pedidos/dia</span></b-badge>
             <LineChart :chartdata="configLineChart.chartdata" :options="configLineChart.options" />
         </b-col>
         <b-col sm="6" md="6">
+            <b-badge><span class="title-badge">Total pedidos/status</span></b-badge>
             <Chart :chartdata="configDoughnutChart.chartdata" :options="configDoughnutChart.options" />
         </b-col>
       </b-row>
       <b-row>
-        <b-col sm="6" md="6">
+        <b-col sm="6" md="6" >
+            <b-badge><span class="title-badge">Total pedidos/tipo</span></b-badge>
             <PieChart :chartdata="configPieChart.chartdata" :options="configPieChart.options" />
         </b-col>
         <b-col sm="6" md="6">
+            <b-badge class="mb-2"><span class="title-badge">Total pedidos/usuário</span></b-badge>
             <BarChart :chartdata="configBarChart.chartdata" :options="configBarChart.options" />
         </b-col>
       </b-row>
@@ -104,10 +108,8 @@ export default {
         this.doughnutChart();
         this.pieChart();
         this.barChart();
-        console.log(res.data);
       }catch(err){
         showError(err);
-        console.log(err);
       }
     },
     lineChart(){
@@ -122,8 +124,8 @@ export default {
           labels: listDias,
           datasets: [
             {
-              label: 'Total de vendas/dia',
-              backgroundColor: "#f87979",
+              label: 'Total de pedidos/dia',
+              backgroundColor: "#FF8AA3",
               data: data
             }
           ]
@@ -141,7 +143,7 @@ export default {
           labels: labels,
           datasets: [
             {
-              backgroundColor: ["#36A2EB", "#FF6384"],
+              backgroundColor: ["#69C3FF", "#FFFFFF", "#FF8AA3", "#FFDC84", "#A8D0E4"],
               data: data
             }
           ]
@@ -159,7 +161,7 @@ export default {
           labels: labels,
           datasets: [
             {
-              backgroundColor: ["#36A2EB", "#FF6384"],
+              backgroundColor: ["#FF8AA3", "#69C3FF"],
               data: data
             }
           ]
@@ -177,16 +179,45 @@ export default {
           labels: labels,
           datasets: [
             {
-              label: 'Total de vendas/usuarios',
-              backgroundColor: ["#36A2EB", "#FF6384"],
-              data: data
+              data: data,
+              label: 'Qtd. Pedidos',
+              backgroundColor: ["#32CD32", "#69C3FF"],
+              pointBackgroundColor: 'white',
+              borderWidth: 1,
+              pointBorderColor: '#249EBF',
             }
           ]
         };
         this.configBarChart.options = {
-          responsive: true,
-          maintainAspectRatio: false
-        };
+				scales: {
+					yAxes: [{
+						ticks: {
+							beginAtZero: true
+						},
+						gridLines: {
+							display: true
+						}
+					}],
+					xAxes: [{
+						ticks: {
+							beginAtZero: true
+						},
+						gridLines: {
+							display: false
+						}
+					}]
+				},
+				legend: {
+					display: false
+				},
+				tooltips: {
+					enabled: true,
+					mode: 'single',
+				},
+				responsive: true,
+				maintainAspectRatio: false,
+				height: 200
+}
     },
     formataValor(value){
       return 'R$ ' + value.toFixed(2).replace('.',',');
