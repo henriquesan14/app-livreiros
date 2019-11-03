@@ -1,38 +1,46 @@
 <template>
   <div class="home">
-    <PageTitle icon="fas fa-chart-line" main="Analytics" sub="Estatisticas Gerais últimos 30 dias" />
-    <div v-if="loaded" class="box-cards-dashboard">
+    <PageTitle icon="fas fa-chart-line" main="Estatísticas últimos 30 dias" />
+    <!-- <div v-if="loaded" class="box-cards-dashboard">
       <Card cor="#007bff" icon="fas fa-book" :value="pageRelatorios.relatorios.dadosPedioLivros.dadosQtdLivros.sum" desc="Livros vendidos" />
       <Card cor="#28a745" icon="fas fa-dollar-sign" :value="formataValor(pageRelatorios.relatorios.DadosValorTotal.sum)" desc="Ganho total" />
       <Card cor="#dc3545" icon="fas fa-chart-bar" :value="formataValor(pageRelatorios.relatorios.DadosValorTotal.avg)" desc="Média valor/pedido" />
       <Card cor="#343a40" icon="fas fa-chart-line" :value="formataValor(pageRelatorios.relatorios.dadosPedioLivros.dadosValorUnitLivros.avg)" desc="Média livros vendidos" />
-    </div>
+    </div> -->
 
-    <b-card v-if="loaded">
+    <div v-if="loaded">
       <template slot="header">
         <h5 class="title-card-main">{{infosDia()}}</h5>
       </template>
-      <b-row>
-        <b-col sm="6" md="6">
-            <b-badge><span class="title-badge">Total pedidos/dia</span></b-badge>
-            <LineChart :chartdata="configLineChart.chartdata" :options="configLineChart.options" />
+      <b-row class="mb-1">
+        <b-col md="6">
+          <b-badge><span class="title-badge">Total pedidos/tipo</span></b-badge>
+          <b-card>
+            <PieChart :width="200" :height="200" :chartdata="configPieChart.chartdata" :options="configPieChart.options" />
+          </b-card>
         </b-col>
-        <b-col sm="6" md="6">
-            <b-badge><span class="title-badge">Total pedidos/status</span></b-badge>
-            <Chart :chartdata="configDoughnutChart.chartdata" :options="configDoughnutChart.options" />
-        </b-col>
-      </b-row>
-      <b-row>
-        <b-col sm="6" md="6" >
-            <b-badge><span class="title-badge">Total pedidos/tipo</span></b-badge>
-            <PieChart :chartdata="configPieChart.chartdata" :options="configPieChart.options" />
-        </b-col>
-        <b-col sm="6" md="6">
-            <b-badge class="mb-2"><span class="title-badge">Total pedidos/usuário</span></b-badge>
-            <BarChart :chartdata="configBarChart.chartdata" :options="configBarChart.options" />
+        <b-col md="6">
+          <b-badge><span class="title-badge">Total pedidos/status</span></b-badge>
+          <b-card >
+            <Chart :width="200" :height="200" :chartdata="configDoughnutChart.chartdata" :options="configDoughnutChart.options" />
+          </b-card>
         </b-col>
       </b-row>
-    </b-card>
+      <b-row>
+        <b-col md="7">
+          <b-badge><span class="title-badge">Total pedidos/dia</span></b-badge>
+          <b-card >
+            <LineChart :width="200" :height="220" :chartdata="configLineChart.chartdata" :options="configLineChart.options" />
+          </b-card>
+        </b-col>
+        <b-col md="5">
+          <b-badge><span class="title-badge">Total pedidos/usuário</span></b-badge>
+          <b-card >
+            <BarChart :width="200" :height="220" :chartdata="configBarChart.chartdata" :options="configBarChart.options" />
+          </b-card>
+        </b-col>
+      </b-row>
+    </div>
   </div>
 </template>
 
