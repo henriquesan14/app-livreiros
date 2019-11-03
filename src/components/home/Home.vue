@@ -1,12 +1,12 @@
 <template>
   <div class="home">
-    <PageTitle icon="fa fa-home" main="Home" sub="Analytics" />
-    <div class="box-cards-dashboard">
-      <Card cor="#007bff" icon="fas fa-shopping-cart" value="102" desc="Pedidos diário" />
-      <Card cor="#28a745" icon="fas fa-dollar-sign" value="R$ 1200,00" desc="Ganho diário" />
-      <Card cor="#dc3545" icon="fas fa-chart-bar" value="R$ 20000,00" desc="Média mensal" />
-      <Card cor="#343a40" icon="fas fa-chart-line" value="500" desc="Total clientes" />
-    </div>
+    <PageTitle icon="fa fa-home" main="Home" sub="Home" />
+     <div v-if="loadCards" class="box-cards-dashboard">
+      <Card cor="#007bff" icon="fas fa-book" :value="dadosRelatorio.relatorios.dadosPedioLivros.dadosQtdLivros.sum" desc="Livros vendidos" />
+      <Card cor="#28a745" icon="fas fa-dollar-sign" :value="formataValor(dadosRelatorio.relatorios.DadosValorTotal.sum)" desc="Ganho total" />
+      <Card cor="#dc3545" icon="fas fa-chart-bar" :value="dadosRelatorio.count" desc="Pedidos diário" />
+      <Card cor="#343a40" icon="fas fa-chart-line" :value="formataValor(dadosRelatorio.relatorios.dadosPedioLivros.dadosValorUnitLivros.avg || 0)" desc="Média livros vendidos" />
+      </div>
 
     <b-card>
       <template slot="header">
@@ -42,17 +42,22 @@ import LineChart from "./LineChart";
 import { showError } from "@/global";
 import Stats from "../../services/stats";
 import Card from "./Card";
+import Pedidos from '../../services/pedidos';
+import { formatCurrency } from '../../utils/format_currency';
+import moment from 'moment';
 export default {
   name: "Home",
   components: { PageTitle, Chart, LineChart, Card },
   data() {
     return {
       loaded: false,
+      loadCards: false,
       chartdata: null,
       options: null,
       loaded2: false,
       chartdata2: null,
       options2: null,
+      dadosRelatorio: {relatorios: {dadosPedioLivro: {dadosQtdLivros: {}}}},
       jsonMes: {
         0: "Janeiro",
         1: "Fevereiro",
@@ -81,6 +86,7 @@ export default {
     };
   },
   mounted() {
+    this.getRelatorios();
     this.getStats();
     this.getStats2();
   },
@@ -139,6 +145,20 @@ export default {
       } catch (err) {
         showError(err);
       }
+    },
+    async getRelatorios(){
+      try{
+        let startdate = moment();
+        startdate = startdate.format("YYYY-MM-DD");
+        const res = await Pedidos.relatorios(0, 10, startdate);
+        this.dadosRelatorio = res.data;
+        this.loadCards = true;
+      }catch(err){
+        showError(err);
+      }
+    },
+    formataValor(value){
+      return formatCurrency(value);
     }
   }
 };

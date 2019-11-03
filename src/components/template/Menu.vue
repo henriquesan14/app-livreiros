@@ -4,7 +4,7 @@
       <ul>
         <router-link active-class="active" exact to="/dashboard/home" tag="li">
           <span>
-            <i class="fas fa-chart-line mr-2"></i>Analytics
+            <i class="fas fa-home mr-2"></i>Home
           </span>
         </router-link>
         <router-link
@@ -35,6 +35,12 @@ export default {
     return {
       activeItems: [],
       items: [
+        {
+          text: "Analytics",
+          path: "/dashboard/analytics",
+          icon: "fas fa-chart-line",
+          visible: "BUSCAR_USUARIO"
+        },
         {
           text: "Usuarios",
           path: "/dashboard/usuarios",

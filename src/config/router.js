@@ -45,6 +45,11 @@ export default new Router({
         {
           path: 'home',
           name: 'home',
+          component: () => import('../components/home/Home.vue')
+        },
+        {
+          path: 'analytics',
+          name: 'analytics',
           component: () => import('../components/home/AnalyticsPedidos.vue')
         },
         {

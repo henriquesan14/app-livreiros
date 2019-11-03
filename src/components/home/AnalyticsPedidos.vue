@@ -1,12 +1,28 @@
 <template>
   <div class="home">
-    <PageTitle icon="fas fa-chart-line" main="Estatísticas últimos 30 dias" :sub="infosDia()" />
-    <div v-if="loaded" class="box-cards-dashboard">
-      <Card cor="#007bff" icon="fas fa-book" :value="pageRelatorios.relatorios.dadosPedioLivros.dadosQtdLivros.sum" desc="Livros vendidos" />
-      <Card cor="#28a745" icon="fas fa-dollar-sign" :value="formataValor(pageRelatorios.relatorios.DadosValorTotal.sum)" desc="Ganho total" />
-      <Card cor="#dc3545" icon="fas fa-chart-bar" :value="formataValor(pageRelatorios.relatorios.DadosValorTotal.avg)" desc="Média valor/pedido" />
-      <Card cor="#343a40" icon="fas fa-chart-line" :value="formataValor(pageRelatorios.relatorios.dadosPedioLivros.dadosValorUnitLivros.avg)" desc="Média livros vendidos" />
-    </div>
+    <PageTitle icon="fas fa-chart-line" main="Analytics" sub="Estatísticas de pedidos dos últimos 30 dias" />
+    <b-row>
+      <b-col md="4">
+        <b-form-group label="Data inicio:">
+          <b-form-input
+            @change="getRelatorios"
+            size="sm"
+            type="date"
+            v-model="dataInicio"
+          />
+        </b-form-group>
+      </b-col>
+      <b-col md="4">
+        <b-form-group label="Data Fim:">
+          <b-form-input @change="getRelatorios" size="sm" type="date" v-model="dataFim" />
+        </b-form-group>
+      </b-col>
+    </b-row>
+    <b-row class="mb-1">
+      <b-col>
+        <b-button @click="ultimosTrintaDias();getRelatorios();" size="sm" variant="dark"><i class="fa fa-refresh mr-1"></i>Últimos 30 dias</b-button>
+      </b-col>
+    </b-row>
     <b-card no-body>
       <b-tabs card>
       <b-tab title="Gráficos" active>
@@ -47,30 +63,6 @@
       <b-tab title="Relatórios" >
         <Loading :loader="loader" />
         <div v-if="!loader && loaded">
-          <b-row>
-            <b-col md="4">
-            <b-form-group label="Data inicio:">
-              <b-form-input
-                @change="getRelatorios"
-                size="sm"
-                type="date"
-                v-model="dataInicio"
-              />
-            </b-form-group>
-          </b-col>
-          <b-col md="4">
-            <b-form-group label="Data Fim:">
-              <b-form-input @change="getRelatorios" size="sm" type="date" v-model="dataFim" />
-            </b-form-group>
-          </b-col>
-          </b-row>
-
-          <b-row class="mb-1">
-            <b-col>
-              <b-button @click="ultimosTrintaDias();getRelatorios();" size="sm" variant="dark"><i class="fa fa-refresh mr-1"></i>Últimos 30 dias</b-button>
-            </b-col>
-          </b-row>
-            
           <b-table class="table-sm"
         :responsive="true"
         v-if="!loader && pageRelatorios.rows.length > 0"
@@ -84,6 +76,11 @@
             >{{data.item.statusPedido.toUpperCase()}}</b-badge>
           </template>
           <template v-slot:cell(valorTotal)="data">{{data.item.valorTotal | currency}}</template>
+          <template v-slot:cell(actions)="data">
+          <b-button @click="navigate(data.item.idPedido)" v-b-tooltip.hover title="Detalhes" size="sm" variant="primary" class="mr-2">
+            <i class="fa fa-search-plus"></i>
+          </b-button>
+        </template>
           </b-table>
           <b-pagination
           size="sm"
@@ -91,16 +88,16 @@
           :total-rows="pageRelatorios.count"
           :per-page="pageRelatorios.limite"
         ></b-pagination>
-
-        <div style="text-align:center;">
-          <b-badge><span class="title-badge">RESUMO</span></b-badge>
-          <h5>Qtd. Pedidos: {{pageRelatorios.count}}</h5>
-          <h5>Valor total descontos:{{formataValor(pageRelatorios.relatorios.DadosDescontos.sum)}}</h5>
-          <h5>Valor total tarifas:{{formataValor(pageRelatorios.relatorios.DadosTarifas.sum)}}</h5>
-          <h5>Valor total pedidos:{{formataValor(pageRelatorios.relatorios.DadosValorTotal.sum)}}</h5>
-          <h5>Valor médio por pedido:{{formataValor(pageRelatorios.relatorios.DadosValorTotal.avg)}}</h5>
-          <h5>Qtd. livros vendidos:{{pageRelatorios.relatorios.dadosPedioLivros.dadosQtdLivros.sum}}</h5>
-          <h5>Valor médio livros vendidos:{{formataValor(pageRelatorios.relatorios.dadosPedioLivros.dadosValorUnitLivros.avg)}}</h5>
+        <div>
+          <b-card header="Resumo dos pedidos">
+            <h5>Qtd. Pedidos: {{pageRelatorios.count}}</h5>
+            <h5>Valor total descontos:{{formataValor(pageRelatorios.relatorios.DadosDescontos.sum)}}</h5>
+            <h5>Valor total tarifas:{{formataValor(pageRelatorios.relatorios.DadosTarifas.sum)}}</h5>
+            <h5>Valor total pedidos:{{formataValor(pageRelatorios.relatorios.DadosValorTotal.sum)}}</h5>
+            <h5>Valor médio por pedido:{{formataValor(pageRelatorios.relatorios.DadosValorTotal.avg)}}</h5>
+            <h5>Qtd. livros vendidos:{{pageRelatorios.relatorios.dadosPedioLivros.dadosQtdLivros.sum}}</h5>
+            <h5>Valor médio livros vendidos:{{formataValor(pageRelatorios.relatorios.dadosPedioLivros.dadosValorUnitLivros.avg)}}</h5>
+          </b-card>
         </div>
       </div>
       </b-tab>
@@ -120,6 +117,7 @@ import Card from "./Card";
 import Pedidos from '../../services/pedidos';
 import Loading from '../shared/Loading';
 import moment from 'moment';
+import { formatCurrency } from '../../utils/format_currency';
 export default {
   name: "AnalyticsPedidos",
   components: { PageTitle, Chart, LineChart, PieChart, BarChart, Card, Loading },
@@ -189,16 +187,10 @@ export default {
     }
   },
   methods: {
-    infosDia() {
-      return `${this.dataAtual.getDate()} de ${
-        this.jsonMes[this.dataAtual.getMonth()]
-      } ${this.dataAtual.getFullYear()} - ${
-        this.jsonDia[this.dataAtual.getDay()]
-      }`;
-    },
     async getRelatorios(){
       this.loader = true;
       try{
+        console.log(this.dataInicio);
         const res = await Pedidos.relatorios(this.page -1, 100, this.dataInicio, this.dataFim);
         this.pageRelatorios = res.data;
         this.loaded = true;
@@ -319,14 +311,17 @@ export default {
 				height: 200
 }
     },
-    formataValor(value){
-      return 'R$ ' + value.toFixed(2).replace('.',',');
-    },
     ultimosTrintaDias(){
       let startdate = moment();
       startdate = startdate.subtract(1, "months");
       startdate = startdate.format("YYYY-MM-DD");
       this.dataInicio = startdate;
+    },
+    formataValor(value){
+      return formatCurrency(value);
+    },
+    navigate(id) {
+      this.$router.push({ name: "pedido-detail", params: { id } });
     }
   }
 };
