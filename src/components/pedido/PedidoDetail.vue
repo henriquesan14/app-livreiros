@@ -5,9 +5,9 @@
       <template slot="header">
         <div class="header-card">
           <h5 class="title-card">Detalhes Pedido Atual</h5>
-          <router-link tag="button" to="/dashboard/pedidos" class="btn-dark btn-sm mb-1">
+          <b-button variant="dark" size="sm" @click="back()" class="mb-1">
             <i class="fa fa-arrow-left mr-1"></i>Voltar
-          </router-link>
+          </b-button>
         </div>
       </template>
       <div v-if="!loader">
@@ -188,6 +188,9 @@ export default {
     },
     formataData(value) {
       return moment(String(value)).format("DD/MM/YYYY HH:mm");
+    },
+    back(){
+      history.back();
     }
   }
 };

@@ -36,7 +36,6 @@
               size="sm"
               type="date"
               v-model="dataInicio"
-              placeholder="Pesquise o nome do livro..."
             />
           </b-form-group>
         </b-col>

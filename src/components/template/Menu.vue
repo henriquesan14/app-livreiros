@@ -36,6 +36,12 @@ export default {
       activeItems: [],
       items: [
         {
+          text: "Analytics",
+          path: "/dashboard/analytics",
+          icon: "fas fa-chart-line",
+          visible: "BUSCAR_USUARIO"
+        },
+        {
           text: "Usuarios",
           path: "/dashboard/usuarios",
           icon: "fa fa-cogs",

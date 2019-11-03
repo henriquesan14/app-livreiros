@@ -48,6 +48,11 @@ export default new Router({
           component: () => import('../components/home/Home.vue')
         },
         {
+          path: 'analytics',
+          name: 'analytics',
+          component: () => import('../components/home/AnalyticsPedidos.vue')
+        },
+        {
           path: 'usuarios',
           name: 'admin',
           component: () => import('../components/admin/AdminPages.vue'),
