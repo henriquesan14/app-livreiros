@@ -4,7 +4,7 @@
       <ul>
         <router-link active-class="active" exact to="/dashboard/home" tag="li">
           <span>
-            <i class="fas fa-home mr-2"></i>Home
+            <i class="fas fa-chart-line mr-2"></i>Analytics
           </span>
         </router-link>
         <router-link

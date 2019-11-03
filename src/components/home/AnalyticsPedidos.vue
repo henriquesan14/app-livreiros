@@ -1,16 +1,18 @@
 <template>
   <div class="home">
-    <PageTitle icon="fas fa-chart-line" main="Estatísticas últimos 30 dias" />
-    <!-- <div v-if="loaded" class="box-cards-dashboard">
+    <PageTitle icon="fas fa-chart-line" main="Estatísticas últimos 30 dias" :sub="infosDia()" />
+    <div v-if="loaded" class="box-cards-dashboard">
       <Card cor="#007bff" icon="fas fa-book" :value="pageRelatorios.relatorios.dadosPedioLivros.dadosQtdLivros.sum" desc="Livros vendidos" />
       <Card cor="#28a745" icon="fas fa-dollar-sign" :value="formataValor(pageRelatorios.relatorios.DadosValorTotal.sum)" desc="Ganho total" />
       <Card cor="#dc3545" icon="fas fa-chart-bar" :value="formataValor(pageRelatorios.relatorios.DadosValorTotal.avg)" desc="Média valor/pedido" />
       <Card cor="#343a40" icon="fas fa-chart-line" :value="formataValor(pageRelatorios.relatorios.dadosPedioLivros.dadosValorUnitLivros.avg)" desc="Média livros vendidos" />
-    </div> -->
-
-    <div v-if="loaded">
+    </div>
+    <b-card no-body>
+      <b-tabs card>
+      <b-tab title="Gráficos" active>
+        <div v-if="loaded">
       <template slot="header">
-        <h5 class="title-card-main">{{infosDia()}}</h5>
+        <h5 class="title-card-main"></h5>
       </template>
       <b-row class="mb-1">
         <b-col md="6">
@@ -41,6 +43,69 @@
         </b-col>
       </b-row>
     </div>
+      </b-tab>
+      <b-tab title="Relatórios" >
+        <Loading :loader="loader" />
+        <div v-if="!loader && loaded">
+          <b-row>
+            <b-col md="4">
+            <b-form-group label="Data inicio:">
+              <b-form-input
+                @change="getRelatorios"
+                size="sm"
+                type="date"
+                v-model="dataInicio"
+              />
+            </b-form-group>
+          </b-col>
+          <b-col md="4">
+            <b-form-group label="Data Fim:">
+              <b-form-input @change="getRelatorios" size="sm" type="date" v-model="dataFim" />
+            </b-form-group>
+          </b-col>
+          </b-row>
+
+          <b-row class="mb-1">
+            <b-col>
+              <b-button @click="ultimosTrintaDias();getRelatorios();" size="sm" variant="dark"><i class="fa fa-refresh mr-1"></i>Últimos 30 dias</b-button>
+            </b-col>
+          </b-row>
+            
+          <b-table class="table-sm"
+        :responsive="true"
+        v-if="!loader && pageRelatorios.rows.length > 0"
+        hover
+        striped
+        :items="pageRelatorios.rows"
+        :fields="fields">
+        <template v-slot:cell(statusPedido)="data">
+            <b-badge
+              :variant="data.item.statusPedido === 'confirmado' ? 'success' : 'danger'"
+            >{{data.item.statusPedido.toUpperCase()}}</b-badge>
+          </template>
+          <template v-slot:cell(valorTotal)="data">{{data.item.valorTotal | currency}}</template>
+          </b-table>
+          <b-pagination
+          size="sm"
+          v-model="page"
+          :total-rows="pageRelatorios.count"
+          :per-page="pageRelatorios.limite"
+        ></b-pagination>
+
+        <div style="text-align:center;">
+          <b-badge><span class="title-badge">RESUMO</span></b-badge>
+          <h5>Qtd. Pedidos: {{pageRelatorios.count}}</h5>
+          <h5>Valor total descontos:{{formataValor(pageRelatorios.relatorios.DadosDescontos.sum)}}</h5>
+          <h5>Valor total tarifas:{{formataValor(pageRelatorios.relatorios.DadosTarifas.sum)}}</h5>
+          <h5>Valor total pedidos:{{formataValor(pageRelatorios.relatorios.DadosValorTotal.sum)}}</h5>
+          <h5>Valor médio por pedido:{{formataValor(pageRelatorios.relatorios.DadosValorTotal.avg)}}</h5>
+          <h5>Qtd. livros vendidos:{{pageRelatorios.relatorios.dadosPedioLivros.dadosQtdLivros.sum}}</h5>
+          <h5>Valor médio livros vendidos:{{formataValor(pageRelatorios.relatorios.dadosPedioLivros.dadosValorUnitLivros.avg)}}</h5>
+        </div>
+      </div>
+      </b-tab>
+    </b-tabs>
+    </b-card>
   </div>
 </template>
 
@@ -51,21 +116,40 @@ import LineChart from "./LineChart";
 import PieChart from "./PieChart";
 import BarChart from './BarChart';
 import { showError } from "@/global";
-import Stats from "../../services/stats";
 import Card from "./Card";
 import Pedidos from '../../services/pedidos';
+import Loading from '../shared/Loading';
 import moment from 'moment';
 export default {
   name: "AnalyticsPedidos",
-  components: { PageTitle, Chart, LineChart, PieChart, BarChart, Card },
+  components: { PageTitle, Chart, LineChart, PieChart, BarChart, Card, Loading },
   data() {
     return {
       configLineChart: {},
       configDoughnutChart: {},
       configPieChart: {},
       configBarChart: {},
-      pageRelatorios: {},
+      pageRelatorios: { rows: [], relatorios: []},
       loaded: false,
+      loader: false,
+      page: 1,
+      fields: [
+        { key: "idPedido", label: "Cód.", sortable: true },
+        {
+          key: "createdAt",
+          label: "Data/Hora",
+          sortable: true,
+          formatter: value => {
+            return moment(String(value)).format("DD/MM/YYYY HH:mm");
+          }
+        },
+        { key: "cliente.nomeCliente", label: "Cliente", sortable: true },
+        { key: "usuario.loginUsuario", label: "Usuário", sortable: true },
+        { key: "tipoPedido", label: "Tipo pedido", sortable: true },
+        { key: "valorTotal", label: "Total", sortable: true },
+        { key: "statusPedido", label: "Status", sortable: true },
+        { key: "actions", label: "Ações" }
+      ],
       jsonMes: {
         0: "Janeiro",
         1: "Fevereiro",
@@ -90,11 +174,19 @@ export default {
         6: "Sábado"
       },
       dataAtual: new Date(),
-      dataExtenso: ""
+      dataExtenso: "",
+      dataInicio: '',
+      dataFim: ''
     };
   },
   mounted() {
+    this.ultimosTrintaDias();
     this.getRelatorios();
+  },
+  watch: {
+    page() {
+      this.getRelatorios();
+    }
   },
   methods: {
     infosDia() {
@@ -105,11 +197,9 @@ export default {
       }`;
     },
     async getRelatorios(){
+      this.loader = true;
       try{
-        let startdate = moment();
-        startdate = startdate.subtract(30, "days");
-        startdate = startdate.format("YYYY-MM-DD");
-        const res = await Pedidos.relatorios(0, 100, startdate);
+        const res = await Pedidos.relatorios(this.page -1, 100, this.dataInicio, this.dataFim);
         this.pageRelatorios = res.data;
         this.loaded = true;
         this.lineChart();
@@ -118,6 +208,8 @@ export default {
         this.barChart();
       }catch(err){
         showError(err);
+      }finally{
+        this.loader = false;
       }
     },
     lineChart(){
@@ -229,6 +321,12 @@ export default {
     },
     formataValor(value){
       return 'R$ ' + value.toFixed(2).replace('.',',');
+    },
+    ultimosTrintaDias(){
+      let startdate = moment();
+      startdate = startdate.subtract(1, "months");
+      startdate = startdate.format("YYYY-MM-DD");
+      this.dataInicio = startdate;
     }
   }
 };
