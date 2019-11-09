@@ -102,7 +102,7 @@
                     <span class="title">Bairro</span>
                     <span>{{pedido.pedidoOnline.bairro}}</span>
                     <span class="title">Cidade</span>
-                    <span>{{pedido.pedidoOnline.idCidade}}</span>
+                    <span>{{pedido.pedidoOnline.nomeCidade}}</span>
                     
                   </div>
                 </div>
@@ -162,6 +162,7 @@ import PageTitle from "../template/PageTitle";
 import Loading from "../shared/Loading";
 import moment from "moment";
 import { showError } from "@/global";
+import WsCep from '../../services/ws-cep';
 export default {
   name: "PedidoDetail",
   components: { PageTitle, Loading },
@@ -180,6 +181,10 @@ export default {
       try {
         const res = await Pedido.getPedido(id);
         this.pedido = res.data;
+        if(this.pedido.tipoPedido === "on-line"){
+          const res = await WsCep.buscaCep(this.pedido.pedidoOnline.cep);
+          this.pedido.pedidoOnline.nomeCidade = res.data.localidade + "-" + res.data.uf;
+        }
       } catch (err) {
         showError(err);
       } finally {
