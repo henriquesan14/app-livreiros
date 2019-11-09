@@ -94,7 +94,7 @@
               <i class="fa fa-plus-circle mr-1"></i>Adicionar novo telefone
             </b-button>
             <b-row class="mt-1">
-              <b-col md="2" v-for="(telefone, index) in cliente.telefones" :key="index">
+              <b-col md="4" v-for="(telefone, index) in cliente.telefones" :key="index">
                 <span>Telefone {{index + 1}}</span>
                 <div class="mb-2 box-telefone">
                   <the-mask
@@ -103,7 +103,7 @@
                     readonly
                     :value="telefone.telefoneCliente"
                   ></the-mask>
-                  <button type="button" @click="removeTelefone(index)" class="ml-1 btn-remove">
+                  <button :disabled="cliente.telefones.length === 1" type="button" @click="removeTelefone(index)" class="ml-1 btn-remove">
                     <i class="fas fa-minus"></i>
                   </button>
                 </div>
@@ -144,8 +144,8 @@
         <template
           v-slot:cell(endereco)="data"
         >{{`${data.item.rua}, Nº ${data.item.numero} ${data.item.complemento ? data.item.complemento : ''}, ${data.item.bairro}, ${data.item.nomeCidade}-${data.item.siglaUf} - ${data.item.cepCliente}`}}</template>
-        <template v-slot:cell(actions)="actions">
-          <b-button @click="removeEndereco(data.index)" variant="danger" size="sm">
+        <template v-slot:cell(actions)="data">
+          <b-button :disabled="cliente.enderecos.length === 1" @click="removeEndereco(data.index)" variant="danger" size="sm">
             <i class="fas fa-trash"></i>
           </b-button>
         </template>

@@ -11,7 +11,7 @@
           </router-link>
         </div>
       </template>
-      <FormCliente />
+      <FormCliente @submit-cliente="editCliente" />
     </b-card>
   </div>
 </template>
@@ -19,9 +19,22 @@
 <script>
 import FormCliente from "./FormCliente";
 import PageTitle from "../template/PageTitle";
+import Cliente from "../../services/clientes";
+import { showError } from "@/global";
 export default {
   name: "EdicaoCliente",
-  components: { FormCliente, PageTitle }
+  components: { FormCliente, PageTitle },
+  methods: {
+    async editCliente(cliente){
+      try {
+        await Cliente.editCliente(cliente.idCliente, cliente);
+        this.$toasted.global.defaultSuccess();
+        this.$router.push("/dashboard/clientes");
+      } catch (err) {
+        showError(err);
+      }
+    }
+  }
 };
 </script>
 

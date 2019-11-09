@@ -6,13 +6,13 @@
         <Loading :loader="loader || loaderMovimentos" />
         <div v-if="!loader && !loaderMovimentos" class="d-block">
           <b-row>
-            <b-col md="2" sm="2">
+            <b-col md="4">
               <img
                 class="img-livro"
                 :src="'https://imagens-capas-1.s3.amazonaws.com/'+ (livro.imagemLivro == null ? '1557681051638': livro.imagemLivro)"
               />
             </b-col>
-            <b-col class="header-livro" md="10" sm="10">
+            <b-col class="header-livro" md="8">
               <div>
                 <h6>{{livro.tituloLivro | toTitle}}</h6>
               </div>
