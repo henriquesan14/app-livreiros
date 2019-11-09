@@ -445,7 +445,11 @@ export default {
         let loader = this.$loading.show();
         try {
           const res = await Livro.searchIsbn(this.livro.isbn);
-          this.importToInput(res);
+          if(res.data != ""){
+            this.importToInput(res);
+            return;
+          }
+          showError('ISBN inválido/não encontrado');
         } catch (err) {
           showError(err);
         } finally {
@@ -501,21 +505,21 @@ export default {
     },
     async getAutores(nome) {
       try {
-        await this.$store.dispatch("GET_AUTORES", { nome });
+        await this.$store.dispatch("GET_AUTORES", { page: 0, nome });
       } catch (err) {
         showError(err);
       }
     },
     async getEditoras(nome) {
       try {
-        await this.$store.dispatch("GET_EDITORAS", { nome });
+        await this.$store.dispatch("GET_EDITORAS", { page: 0, nome });
       } catch (err) {
         showError(err);
       }
     },
     async getAssuntos(nome) {
       try {
-        await this.$store.dispatch("GET_ASSUNTOS", { nome });
+        await this.$store.dispatch("GET_ASSUNTOS", { page: 0, nome });
       } catch (err) {
         showError(err);
       }

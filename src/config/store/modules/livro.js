@@ -26,8 +26,12 @@ const actions = {
   async GET_LIVROS({ commit }, params) {
     const url = `${baseApiUrl}/livros?busca=${params.busca}&pagina=${params.pagina}`;
     try {
-      const { data } = await axios.get(url);
-      commit('RECEIVE_LIVROS', { pageLivros: data });
+      const res = await axios.get(url);
+      if(res.data != ""){
+        commit('RECEIVE_LIVROS', { pageLivros: res.data });
+        return;
+      }
+      showError('Busca não encontrada!');
     } catch (err) {
       showError(err);
     }
