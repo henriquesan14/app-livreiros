@@ -19,5 +19,11 @@ export default {
     },
     getMovimentos: (idLivro, page = 0, limite = 10) => {
         return axios.get(`${baseApiUrl}/livros/${idLivro}/movimentos?pagina=${page}&limite=${limite}`);
+    },
+    getExportacoesLivros: (page = 0, limite = 10) => {
+        return axios.get(`${baseApiUrl}/exportacaolivros?pagina=${page}&limite=${limite}`);
+    },
+    exportLivros: () => {
+        return axios.post(`${baseApiUrl}/livros/exportacao`, {});
     }
 }

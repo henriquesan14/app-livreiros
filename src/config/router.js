@@ -88,6 +88,11 @@ export default new Router({
           component: () => import('../components/livro/CadastroLivro.vue')
         },
         {
+          path: 'livros/export',
+          name: 'export-livros',
+          component: () => import('../components/livro/ExportLivros.vue')
+        },
+        {
           path: 'livros/edit/:id',
           name: 'edit-livro',
           component: () => import('../components/livro/EdicaoLivro.vue')
@@ -163,8 +168,8 @@ export default new Router({
           component: () => import('../components/pedido/PedidoAtual.vue')
         },
         {
-          path: 'pedidos/export',
-          name: 'export-pedido',
+          path: 'pedidos/import',
+          name: 'import-pedidos',
           component: () => import('../components/pedido/ImportPedido.vue')
         },
         {

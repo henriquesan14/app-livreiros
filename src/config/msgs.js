@@ -13,7 +13,13 @@ Vue.toasted.register(
 )
 
 Vue.toasted.register(
-    'defaultInfo',
+    'exportLivros',
+    payload => !payload.msg ? 'Exportação de livros iniciada!' : payload.msg,
+    { type: 'success', icon: 'check' }
+)
+
+Vue.toasted.register(
+    'livroAdicionado',
     payload => !payload.msg ? 'Livro adicionado!' : payload.msg,
     {type: 'info', icon: 'info-circle'}
 )

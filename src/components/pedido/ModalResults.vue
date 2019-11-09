@@ -1,5 +1,5 @@
 <template>
-  <b-modal size="lg" id="modal-export-results" hide-footer>
+  <b-modal size="lg" id="modal-import-results" hide-footer>
     <template slot="modal-title">Resultados</template>
     <div v-if="!loader" class="d-block">
       <b-table class="table-sm" :fields="fields" :items="results" striped hover>
@@ -23,12 +23,12 @@ export default {
   name: "ModalResults",
   components: { Loading },
   props: {
-    idExportacao: {
+    idImportacao: {
       type: Number
     }
   },
   watch: {
-    idExportacao() {
+    idImportacao() {
       this.getResults();
     }
   },
@@ -51,7 +51,7 @@ export default {
     async getResults() {
       this.loader = true;
       try {
-        const res = await Importacoes.getResults(this.idExportacao);
+        const res = await Importacoes.getResults(this.idImportacao);
         this.results = res.data.result;
       } catch (err) {
         showError(err);

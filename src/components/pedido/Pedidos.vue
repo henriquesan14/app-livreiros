@@ -6,7 +6,7 @@
       <template slot="header">
         <h5 class="card-title">Pedidos</h5>
       </template>
-      <router-link to="/dashboard/pedidos/export" class="btn btn-dark btn-sm mb-2"><i class="fa fa-cloud-download mr-1"></i>Importar pedidos</router-link>
+      <router-link to="/dashboard/pedidos/import" class="btn btn-dark btn-sm mb-2"><i class="fa fa-cloud-download mr-1"></i>Importar pedidos</router-link>
       <b-row>
         <b-col>
           <b-form-group label="Tipo">

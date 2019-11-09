@@ -226,7 +226,7 @@ export default {
       addLivro(livro);
       livro.qtdLivro -= 1;
       this.$store.dispatch('SET_CART');
-      this.$toasted.global.defaultInfo();
+      this.$toasted.global.livroAdicionado();
     }
   }
 };

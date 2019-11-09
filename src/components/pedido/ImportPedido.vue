@@ -1,11 +1,11 @@
 <template>
-  <div class="export-pedido">
-    <PageTitle icon="fa fa-cloud-download" main="Administração de pedidos" sub="Exportar pedidos" />
+  <div class="import-pedido">
+    <PageTitle icon="fa fa-cloud-download" main="Administração de pedidos" sub="Importar pedidos" />
 
     <b-card>
       <template slot="header">
         <div class="header-card">
-          <h5 class="title-card">Exportação de Pedido</h5>
+          <h5 class="title-card">Importação de Pedidos</h5>
           <router-link to="/dashboard/pedidos" tag="button" class="btn-dark btn-sm mb-1">
             <i class="fa fa-arrow-left mr-1"></i>Voltar
           </router-link>
@@ -24,7 +24,7 @@
                   placeholder="Escolha o arquivo..."
                 ></b-form-file>
                 <b-button :disabled="!file" type="submit" class="mt-2" variant="success" size="sm">
-                  <i class="fa fa-cloud-download mr-1"></i>Exportar
+                  <i class="fa fa-cloud-download mr-1"></i>Importar
                 </b-button>
               </b-form-group>
             </b-form>
@@ -35,21 +35,24 @@
           <b-badge>
             <span class="title-badge">Últimas Importações</span>
           </b-badge>
-          <b-button @click="getExportacoes" size="sm" variant="dark" class="ml-2">
-            <i class="fa fa-refresh mr-1"></i>Atualizar Exportações
+          <b-button @click="getImportacoes" size="sm" variant="dark" class="ml-2">
+            <i class="fa fa-refresh mr-1"></i>Atualizar Importações
           </b-button>
         </div>
 
         <Loading :loader="loader" />
         <div v-if="!loader">
-          <b-table class="table-sm" :fields="fields" :items="pageExportacoes.rows" striped hover>
+          <b-table class="table-sm" :fields="fields" :items="pageImportacoes.rows" striped hover>
             <template v-slot:cell(statusImportacaoPEdido)="data">
               <b-badge
                 :variant="data.item.statusImportacaoPEdido == 'finalizado' ? 'success' : 'danger'"
               >{{data.item.statusImportacaoPEdido.toUpperCase()}}</b-badge>
             </template>
             <template v-slot:cell(actions)="data">
-              <b-button @click="selecionaExportacao(data.item.idImportacaoPedido);$bvModal.show('modal-export-results')" variant="primary" size="sm">
+              <b-button
+                v-b-tooltip.hover
+                title="Detalhes"
+               @click="selecionaImportacao(data.item.idImportacaoPedido);$bvModal.show('modal-import-results')" variant="primary" size="sm">
                 <i class="fa fa-search-plus"></i>
               </b-button>
             </template>
@@ -57,13 +60,13 @@
           <b-pagination
             size="sm"
             v-model="page"
-            :total-rows="pageExportacoes.count"
-            :per-page="pageExportacoes.limite"
+            :total-rows="pageImportacoes.count"
+            :per-page="pageImportacoes.limite"
           ></b-pagination>
         </div>
       </div>
     </b-card>
-    <ModalResults :idExportacao="idExportacao" />
+    <ModalResults :idImportacao="idImportacao" />
   </div>
 </template>
 
@@ -80,19 +83,19 @@ export default {
   components: { PageTitle, Loading,ModalResults },
   watch: {
     page() {
-      this.getExportacoes();
+      this.getImportacoes();
     }
   },
   mounted() {
-    this.getExportacoes();
+    this.getImportacoes();
   },
   data() {
     return {
       file: null,
       page: 1,
       loader: false,
-      idExportacao: null,
-      pageExportacoes: {
+      idImportacao: null,
+      pageImportacoes: {
         rows: []
       },
       fields: [
@@ -112,11 +115,11 @@ export default {
     };
   },
   methods: {
-    async getExportacoes() {
+    async getImportacoes() {
       this.loader = true;
       try {
         const res = await Importacoes.getImportacoes(this.page - 1);
-        this.pageExportacoes = res.data;
+        this.pageImportacoes = res.data;
       } catch (err) {
         showError(err);
       } finally {
@@ -128,14 +131,14 @@ export default {
         const fd = new FormData();
         fd.append("file", this.file);
         await Pedidos.importPedido(fd);
-        this.getExportacoes();
+        this.getImportacoes();
         this.$toasted.global.defaultSuccess();
       } catch (err) {
         showError(err);
       }
     },
-    selecionaExportacao(id){
-      this.idExportacao = id;
+    selecionaImportacao(id){
+      this.idImportacao = id;
     }
   }
 };

@@ -10,9 +10,17 @@
         v-hasRole="'ESCREVER_LIVRO'"
         to="/dashboard/livros/cadastro"
         tag="b-button"
-        class="mb-2 btn-dark btn-sm"
+        class="mb-2 mr-2 btn-dark btn-sm"
       >
         <i class="fa fa-plus-circle mr-1"></i>Novo Livro
+      </router-link>
+      <router-link
+        v-hasRole="'ESCREVER_LIVRO'"
+        to="/dashboard/livros/export"
+        tag="b-button"
+        class="mb-2 btn btn-success btn-sm"
+      >
+        <i class="fas fa-file-download mr-1"></i>Exportar Livros
       </router-link>
       <b-row>
         <b-col md="12" sm="12" class="mb-3">
