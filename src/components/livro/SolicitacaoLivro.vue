@@ -29,7 +29,7 @@
                   size="sm"
                   maxlength="100"
                   id="obsSolicitacao"
-                  placeholder="Informe a quantidade solicitada"
+                  placeholder="Obs. sobre a solicitação de livro"
                   cols="100"
                   rows="6"
                 ></b-form-textarea>

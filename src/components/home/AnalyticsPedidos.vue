@@ -190,7 +190,6 @@ export default {
     async getRelatorios(){
       this.loader = true;
       try{
-        console.log(this.dataInicio);
         const res = await Pedidos.relatorios(this.page -1, 100, this.dataInicio, this.dataFim);
         this.pageRelatorios = res.data;
         this.loaded = true;
