@@ -4,7 +4,7 @@
       <img src="@/assets/logo.png" width="200" alt="logo" />
       <hr />
       <b-form @submit.prevent="handleSubmit()" class="login-form">
-        <b-row :class="{'mb-2': (!submitted && $v.user.loginUsuario.$invalid) || (submitted && !$v.user.loginUsuario.$invalid)}">
+        <b-row :class="{'mb-2': (!$v.user.loginUsuario.$invalid) || (!submitted && $v.user.loginUsuario.$invalid)}">
           <b-col>
             <b-input-group>
               <b-input-group-prepend is-text>
