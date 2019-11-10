@@ -4,7 +4,7 @@
       <img src="@/assets/logo.png" width="200" alt="logo" />
       <hr />
       <b-form @submit.prevent="handleSubmit()" class="login-form">
-        <b-row class="mb-2">
+        <b-row :class="{'mb-2': (!submitted && $v.user.loginUsuario.$invalid) || (submitted && !$v.user.loginUsuario.$invalid)}">
           <b-col>
             <b-input-group>
               <b-input-group-prepend is-text>
@@ -18,6 +18,11 @@
                 placeholder="Login"
               />
             </b-input-group>
+            <span 
+            v-if="submitted && $v.user.loginUsuario.$invalid"
+             class="msg-error text-danger">
+             O login é obrigatório
+             </span>
           </b-col>
         </b-row>
 
@@ -35,6 +40,11 @@
                 placeholder="Senha"
               />
             </b-input-group>
+            <span 
+            v-if="submitted && $v.user.senhaUsuario.$invalid"
+             class="msg-error text-danger">
+             A senha deve ter no mínimo 6 caracteres
+             </span>
           </b-col>
         </b-row>
 
@@ -122,6 +132,10 @@ export default {
         rgba(120, 120, 120, 075),
         rgba(120, 120, 120, 0)
       );
+    }
+
+    .msg-error{
+      font-size: .800rem;
     }
   }
 }
