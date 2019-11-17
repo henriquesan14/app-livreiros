@@ -65,6 +65,36 @@
           <b-button @click="navigate(data.item.idPedido)" v-b-tooltip.hover title="Detalhes" size="sm" variant="primary" class="mr-2">
             <i class="fa fa-search-plus"></i>
           </b-button>
+          <b-button :disabled="data.item.tipoPedido != 'on-line'" size="sm" @click="data.toggleDetails" class="mr-2">
+          <i class="fa fa-caret-down mr-1 ml-1"></i>
+          </b-button>
+        </template>
+
+        <template v-slot:row-details="data">
+          <b-card header="Informações Pedido online">
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"><b>Status Envio:</b></b-col>
+              <b-col>
+                <b-badge :variant="data.item.pedidoOnline.statusEnvio === 'entregue' ? 'success' : 'danger'">
+                  <span class="badge-title">{{data.item.pedidoOnline.statusEnvio.toUpperCase()}}</span>
+                </b-badge>
+              </b-col>
+              <b-col sm="3" class="text-sm-right"><b>Status Pagamento:</b></b-col>
+              <b-col>
+                <b-badge :variant="data.item.pedidoOnline.statusPagamento === 'pago' ? 'success' : 'danger'">
+                  <span class="badge-title">{{data.item.pedidoOnline.statusPagamento.toUpperCase()}}</span>
+                </b-badge>
+              </b-col>
+            </b-row>
+
+            <b-row class="mb-2">
+              <b-col sm="3" class="text-sm-right"><b>Info envio:</b></b-col>
+              <b-col>{{data.item.pedidoOnline.infoEnvio}}</b-col>
+              <b-col sm="3" class="text-sm-right"><b>Data envio:</b></b-col>
+              <b-col>{{formataData(data.item.pedidoOnline.dataHoraEnvio)}}</b-col>
+              
+            </b-row>
+          </b-card>
         </template>
       </b-table>
       <div v-if="!loader && pagePedidos.rows.length < 1" class="mb-2">
@@ -147,6 +177,9 @@ export default {
     },
     navigate(id) {
       this.$router.push({ name: "pedido-detail", params: { id } });
+    },
+    formataData(value){
+      return moment(String(value)).format("DD/MM/YYYY HH:mm");
     }
   }
 };
