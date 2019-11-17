@@ -65,10 +65,6 @@
                   <div class="box-info">
                     <span class="title">ID Externo</span>
                     <span>{{pedido.pedidoOnline.idExterno}}</span>
-                    <span class="title">Canal de vendas</span>
-                    <span>{{pedido.pedidoOnline.canalVendas}}</span>
-                    <span class="title">Status pagamento</span>
-                    <b-badge class="desc-pedido" :variant="pedido.pedidoOnline.statusPagamento == 'pendente' ? 'danger' : 'success'"><span>{{pedido.pedidoOnline.statusPagamento.toUpperCase()}}</span></b-badge>
                     <span class="title">Data/hora pagamento</span>
                     <span>{{formataData(pedido.pedidoOnline.dataHoraPagamento)}}</span>
                     <span class="title">Tipo Pagamento</span>
@@ -79,7 +75,22 @@
                       }}
                     </span>
                     <span class="title">Status envio</span>
-                    <b-badge class="desc-pedido" :variant="pedido.pedidoOnline.statusEnvio == 'pendente' ? 'danger' : 'success'"><span>{{pedido.pedidoOnline.statusEnvio.toUpperCase()}}</span></b-badge>
+                    <b-badge class="desc-pedido" :variant="pedido.pedidoOnline.statusEnvio == 'entregue' ? 'success' : 'danger'"><span>{{pedido.pedidoOnline.statusEnvio.toUpperCase()}}</span></b-badge>
+                    <span class="title">Cód. Rastreamento</span>
+                    <span>
+                      {{pedido.pedidoOnline.idRastreamento
+                      }}
+                    </span>
+                    <span class="title">Data/hora envio</span>
+                    <span>
+                      {{formataData(pedido.pedidoOnline.dataHoraEnvio)
+                      }}
+                    </span>
+                     <span class="title">Info. envio</span>
+                    <span>
+                      {{pedido.pedidoOnline.infoEnvio
+                      }}
+                    </span>
                   </div>
                 </div>
               </b-card>
@@ -89,6 +100,13 @@
               <b-card no-body header="Pedido Online">
                 <div class="card-info">
                   <div class="box-info">
+                    <span class="title">Canal de vendas</span>
+                    <span>{{pedido.pedidoOnline.canalVendas}}</span>
+                    <span class="title">Status pagamento</span>
+                    <b-badge class="desc-pedido" 
+                    :variant="pedido.pedidoOnline.statusPagamento == 'pendente' ? 'danger' : 'success'">
+                      <span>{{pedido.pedidoOnline.statusPagamento.toUpperCase()}}</span>
+                    </b-badge>
                     <span class="title">CEP</span>
                     <span>{{pedido.pedidoOnline.cep}}</span>
                     <span class="title">Destinatário</span>
@@ -103,7 +121,6 @@
                     <span>{{pedido.pedidoOnline.bairro}}</span>
                     <span class="title">Cidade</span>
                     <span>{{pedido.pedidoOnline.nomeCidade}}</span>
-                    
                   </div>
                 </div>
               </b-card>
