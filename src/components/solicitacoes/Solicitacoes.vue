@@ -76,6 +76,23 @@
           >
             <i class="fa fa-times"></i>
           </b-button>
+          <b-button v-b-tooltip.hover title="Info. Solicitação" size="sm" @click="data.toggleDetails" class="mr-2">
+          <i class="fa fa-caret-down mr-1 ml-1"></i>
+          </b-button>
+        </template>
+        <template v-slot:row-details="data">
+          <b-card header="Informações Solicitação">
+            <b-row class="mb-2">
+              <b-col>
+                <strong>Livro: </strong>
+                {{data.item.livroDescrito.livro.tituloLivro}}
+              </b-col>
+              <b-col>
+                <strong>Obs: </strong>
+                {{data.item.obsSolicitacao}}
+              </b-col>           
+            </b-row>
+          </b-card>
         </template>
       </b-table>
       <div v-if="!loader && pageSolicitacoes.rows.length < 1" class="mb-2">
@@ -114,7 +131,6 @@ export default {
             return moment(String(value)).format("DD/MM/YYYY HH:mm");
           }
         },
-        { key: "obsSolicitacao", label: "Obs.", sortable: true },
         { key: "qtdSolicitada", label: "Qtd.", sortable: true },
         { key: "statusSolicitacao", label: "Status", sortable: true },
         { key: "usuario.loginUsuario", label: "Usuário", sortable: true },

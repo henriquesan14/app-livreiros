@@ -143,7 +143,7 @@
       >
         <template
           v-slot:cell(endereco)="data"
-        >{{`${data.item.rua}, Nº ${data.item.numero} ${data.item.complemento ? data.item.complemento : ''}, ${data.item.bairro}, ${data.item.nomeCidade}-${data.item.siglaUf} - ${data.item.cepCliente}`}}</template>
+        >{{`${data.item.rua}, Nº ${data.item.numero} ${data.item.complemento ? data.item.complemento : ''}, ${data.item.bairro}, ${data.item.cidade ? data.item.cidade.nomeCidade : data.item.nomeCidade}-${data.item.cidade ? data.item.cidade.estado.nomeUf : data.item.siglaUf} - ${data.item.cepCliente}`}}</template>
         <template v-slot:cell(actions)="data">
           <b-button :disabled="cliente.enderecos.length === 1" @click="removeEndereco(data.index)" variant="danger" size="sm">
             <i class="fas fa-trash"></i>

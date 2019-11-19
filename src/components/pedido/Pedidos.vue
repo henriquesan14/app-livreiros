@@ -62,10 +62,13 @@
         </template>
         <template v-slot:cell(valorTotal)="data">{{data.item.valorTotal | currency}}</template>
         <template v-slot:cell(actions)="data">
+          <b-button v-b-tooltip.hover title="Editar" variant="warning" size="sm" class="mr-2">
+          <i class="fa fa-pencil"></i>
+          </b-button>
           <b-button @click="navigate(data.item.idPedido)" v-b-tooltip.hover title="Detalhes" size="sm" variant="primary" class="mr-2">
             <i class="fa fa-search-plus"></i>
           </b-button>
-          <b-button :disabled="data.item.tipoPedido != 'on-line'" size="sm" @click="data.toggleDetails" class="mr-2">
+          <b-button v-b-tooltip.hover title="Info. Envio" :disabled="data.item.tipoPedido != 'on-line'" size="sm" @click="data.toggleDetails" class="mr-2">
           <i class="fa fa-caret-down mr-1 ml-1"></i>
           </b-button>
         </template>

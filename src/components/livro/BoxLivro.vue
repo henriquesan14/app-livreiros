@@ -52,7 +52,7 @@
         <div class="btns-livro">
           <b-button
             v-b-tooltip.hover
-            title="Adicionar"
+            title="Adicionar livro descrito"
             size="sm"
             v-hasRole="'ESCREVER_LIVRO'"
             @click="navigateNovoLivroDescrito(livro.idLivro);"
@@ -139,7 +139,7 @@
             <b-button
               :disabled="data.item.qtdLivro < 1"
               v-b-tooltip.hover
-              title="Adicionar"
+              title="Adicionar ao carrinho"
               size="sm"
               v-hasRole="'ESCREVER_LIVRO'"
               variant="primary"

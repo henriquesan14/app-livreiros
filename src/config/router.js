@@ -148,14 +148,14 @@ export default new Router({
           component: () => import('../components/cliente/Clientes.vue')
         },
         {
-          path: 'clientes/:id',
-          name: 'edicao-cliente',
-          component: () => import('../components/cliente/EdicaoCliente.vue')
-        },
-        {
           path: 'clientes/cadastro',
           name: 'cadastro-cliente',
           component: () => import('../components/cliente/CadastroCliente.vue')
+        },
+        {
+          path: 'clientes/:id',
+          name: 'edicao-cliente',
+          component: () => import('../components/cliente/EdicaoCliente.vue')
         },
         {
           path: 'pedidos',

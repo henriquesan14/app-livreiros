@@ -234,7 +234,7 @@ export default {
           labels: labels,
           datasets: [
             {
-              backgroundColor: ["#69C3FF", "#FFFFFF", "#FF8AA3", "#FFDC84", "#A8D0E4"],
+              backgroundColor: ["#69C3FF", "#32CD32", "#FF8AA3", "#A8D0E4"],
               data: data
             }
           ]
@@ -272,7 +272,7 @@ export default {
             {
               data: data,
               label: 'Qtd. Pedidos',
-              backgroundColor: ["#32CD32", "#69C3FF"],
+              backgroundColor: ["#32CD32", "#69C3FF", "#FFDC84", "#FF8AA3", "#A8D0E4"],
               pointBackgroundColor: 'white',
               borderWidth: 1,
               pointBorderColor: '#249EBF',

@@ -1,12 +1,12 @@
 <template>
   <div class="home">
     <PageTitle icon="fa fa-home" main="Home" sub="Home" />
-     <div v-if="loadCards" class="box-cards-dashboard">
+    <div v-if="loadCards" class="box-cards-dashboard">
       <Card cor="#007bff" icon="fas fa-book" :value="dadosRelatorio.relatorios.dadosPedioLivros.dadosQtdLivros.sum" desc="Livros vendidos" />
       <Card cor="#28a745" icon="fas fa-dollar-sign" :value="formataValor(dadosRelatorio.relatorios.DadosValorTotal.sum)" desc="Ganho total" />
       <Card cor="#dc3545" icon="fas fa-chart-bar" :value="dadosRelatorio.count" desc="Pedidos diário" />
       <Card cor="#343a40" icon="fas fa-chart-line" :value="formataValor(dadosRelatorio.relatorios.dadosPedioLivros.dadosValorUnitLivros.avg || 0)" desc="Média livros vendidos" />
-      </div>
+    </div>
 
     <b-card>
       <template slot="header">

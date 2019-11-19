@@ -66,7 +66,7 @@
           </b-button>
           <b-button
             v-b-tooltip.hover
-            title="Adicionar"
+            title="Adicionar descrição"
             size="sm"
             v-hasRole="'ESCREVER_DESCRICAO'"
             variant="primary"
