@@ -6,7 +6,12 @@
       <template slot="header">
         <h5 class="card-title">Pedidos</h5>
       </template>
-      <router-link to="/dashboard/pedidos/import" class="btn btn-dark btn-sm mb-2"><i class="fa fa-cloud-download mr-1"></i>Importar pedidos</router-link>
+      <router-link to="/dashboard/pedidos/import" class="btn btn-dark btn-sm mb-2 mr-2">
+      <i class="fa fa-cloud-download mr-1"></i>
+      Importar pedidos</router-link>
+      <b-button @click="updateRastreamentos" class="mb-2" size="sm" variant="success">
+        <i class="fa fa-refresh mr-1"></i>
+        Atualizar rastreamentos</b-button>
       <b-row>
         <b-col>
           <b-form-group label="Tipo">
@@ -92,9 +97,9 @@
 
             <b-row class="mb-2">
               <b-col sm="3" class="text-sm-right"><b>Info envio:</b></b-col>
-              <b-col>{{data.item.pedidoOnline.infoEnvio}}</b-col>
+              <b-col>{{data.item.pedidoOnline.infoEnvio || "N/A"}}</b-col>
               <b-col sm="3" class="text-sm-right"><b>Data envio:</b></b-col>
-              <b-col>{{formataData(data.item.pedidoOnline.dataHoraEnvio)}}</b-col>
+              <b-col>{{formataData(data.item.pedidoOnline.dataHoraEnvio) || "N/A"}}</b-col>
               
             </b-row>
           </b-card>
@@ -178,11 +183,21 @@ export default {
         this.loader = false;
       }
     },
+    async updateRastreamentos(){
+      try{
+        await Pedidos.updateRastreamentos();
+        this.getPedidos();
+      }catch(err){
+        showError(err);
+      }
+    },
     navigate(id) {
       this.$router.push({ name: "pedido-detail", params: { id } });
     },
     formataData(value){
-      return moment(String(value)).format("DD/MM/YYYY HH:mm");
+      if(value){
+        return moment(String(value)).format("DD/MM/YYYY HH:mm");
+      }   
     }
   }
 };

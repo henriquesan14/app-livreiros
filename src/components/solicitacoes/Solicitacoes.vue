@@ -122,7 +122,7 @@ export default {
     return {
       page: 1,
       fields: [
-        { key: "idSolicitacao", label: "Cód.", sortable: true },
+        { key: "livroDescrito.livro.idLivro", label: "Cód. Livro", sortable: true },
         {
           key: "createdAt",
           label: "Data/hora",

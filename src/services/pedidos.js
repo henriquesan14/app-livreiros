@@ -17,4 +17,7 @@ export default {
     relatorios: (page = 0, limite = 10, dataInicio = '', dataFim = '') => {
         return axios.get(`${baseApiUrl}/pedidos/relatorio/graficos?pagina=${page}&limite=${limite}&dataIni=${dataInicio}&dataFim=${dataFim}`);
     },
+    updateRastreamentos(){
+        return axios.put(`${baseApiUrl}/pedidos/rastreamentos`, {});
+    }
 }
