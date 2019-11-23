@@ -1,362 +1,354 @@
 <template>
   <div class="cart-pedidos">
-    <div class="d-block">
-      <div v-if="existemItens()">
-        <b-row>
-          <b-col>
-            <b-form-group label="Cliente">
-              <Autocomplete
-                :valorInicial="pedido.nomeCliente"
-                :idAutocomplete="1"
-                :shouldReset="false"
-                title="Selecione um cliente..."
-                :items="clientes"
-                filterby="nomeCliente"
-                @selected="clienteSelected"
-                @change="onChangeCliente"
-              />
-              <div>
-                <span
-                  class="text-danger mt-2 font-menor"
-                  v-if="submitted && $v.pedido.idCliente.$invalid"
-                >Selecione um cliente</span>
-              </div>
-            </b-form-group>
-          </b-col>
-          <b-col>
-            <b-form-group label="Tipo">
-              <b-form-select size="sm" v-model="pedido.tipoPedido">
-                <option value="balcao">Balcão</option>
-                <option value="on-line">Online</option>
-              </b-form-select>
-            </b-form-group>
-          </b-col>
-        </b-row>
-
-        <b-row>
-          <b-col md="3">
-            <b-form-group label="Desconto (R$)">
-              <the-mask
-                mask="FFFFFFF"
-                :tokens="hexTokens"
-                @keyup.native="changeAjusteValor()"
-                maxlength="10"
-                v-model.number="ajusteValor"
-                class="form-control form-control-sm"
-              ></the-mask>
-            </b-form-group>
-          </b-col>
-          <b-col md="3">
-            <b-form-group label="Desconto (%)">
-              <the-mask
-                mask="FFFFFFF"
-                :tokens="hexTokens"
-                @keyup.native="changeAjustePorcento()"
-                v-model.number="ajustePorcento"
-                class="form-control form-control-sm"
-              ></the-mask>
-            </b-form-group>
-          </b-col>
-        </b-row>
-
-        <b-badge class="mb-2" variant="danger">
-          <span id="total">Total: {{total | currency}}</span>
-        </b-badge>
-        <br />
-        <b-badge class="mb-2" variant="danger">
-          <span id="total">Total com desconto: {{totalComAjuste | currency}}</span>
-        </b-badge>
-
-        <b-row>
-          <b-col>
-            <b-form-group label="Obs.">
-              <b-form-textarea v-model="pedido.obsPedido"></b-form-textarea>
-            </b-form-group>
-          </b-col>
-        </b-row>
-
-        <div v-if="pedido.tipoPedido === 'on-line'">
-          <b-badge>
-            <span class="title-badge">Pedido Online</span>
-          </b-badge>
+    <PageTitle
+      icon="fas fa-cart-arrow-down"
+      main="Administração de pedidos"
+      sub="Alteração de pedido"
+    />
+    <b-card>
+      <template slot="header">
+        <div class="header-card">
+          <h5 class="title-card">Alteração de pedido</h5>
+          <span>Os campos marcados com (*) são obrigatórios.</span>
+          <b-button @click="back()" class="btn-dark btn-sm mb-1">
+            <i class="fa fa-arrow-left mr-1"></i>Voltar
+          </b-button>
+        </div>
+      </template>
+      <Loading :loader="loader"/>
+      <div class="d-block" v-if="!loader">
+        <div>
           <b-row>
             <b-col>
-              <b-form-group label="Valor Frete*">
-                <b-form-input
-                  v-model.number="pedido.valorFrete"
-                  maxlength="6"
-                  v-money="money"
-                  placeholder="Valor do frete"
-                  size="sm"
-                ></b-form-input>
+              <b-form-group label="Cliente">
+                <Autocomplete
+                  :valorInicial="pedido.cliente.nomeCliente"
+                  :idAutocomplete="1"
+                  :shouldReset="false"
+                  title="Selecione um cliente..."
+                  :items="clientes"
+                  filterby="nomeCliente"
+                  @selected="clienteSelected"
+                  @change="onChangeCliente"
+                />
+                <div>
+                  <span
+                    class="text-danger mt-2 font-menor"
+                    v-if="submitted && $v.pedido.idCliente.$invalid"
+                  >Selecione um cliente</span>
+                </div>
               </b-form-group>
             </b-col>
             <b-col>
-              <b-form-group label="Valor Tarifa">
-                <b-form-input
-                  v-model.number="pedido.valorTarifa"
-                  maxlength="6"
-                  v-money="money"
-                  placeholder="Valor da tarifa"
-                  size="sm"
-                ></b-form-input>
-              </b-form-group>
-            </b-col>
-            <b-col>
-              <b-form-group label="ID Externo*">
-                <b-form-input
-                  v-model="pedidoOnline.idExterno"
-                  maxlength="30"
-                  placeholder="ID externo"
-                  size="sm"
-                ></b-form-input>
-              </b-form-group>
-            </b-col>
-            <b-col>
-              <b-form-group label="Canal de venda*">
-                <b-form-select size="sm" v-model="pedidoOnline.canalVendas">
-                  <option value="site">Site</option>
-                  <option value="amazon">Amazon</option>
-                  <option value="estante-virtual">Estante Virtual</option>
+              <b-form-group label="Tipo">
+                <b-form-select disabled size="sm" v-model="pedido.tipoPedido">
+                  <option value="balcao">Balcão</option>
+                  <option value="on-line">Online</option>
                 </b-form-select>
-              </b-form-group>
-            </b-col>
-            <b-col>
-              <b-form-group label="Data do Pagamento*">
-                <b-form-input
-                  v-model="pedidoOnline.dataHoraPagamento"
-                  type="date"
-                  placeholder="Data do pagamento"
-                  size="sm"
-                ></b-form-input>
               </b-form-group>
             </b-col>
           </b-row>
+
+
           <b-row>
-            <b-col>
-              <b-form-group label="Status Pagamento">
-                <b-form-select size="sm" v-model="pedidoOnline.statusPagamento">
-                  <option value="pendente">Pendente</option>
-                  <option value="pago">Pago</option>
-                </b-form-select>
+            <b-col md="4">
+              <b-form-group label="Status Pedido">
+                  <b-form-select size="sm" v-model="pedido.statusPedido">
+                    <option value="pendente">Pendente</option>
+                    <option value="finalizado">Finalizado</option>
+                  </b-form-select>
               </b-form-group>
             </b-col>
-            <b-col>
-              <b-form-group label="Tipo do Pagamento*">
-                <b-form-select size="sm" v-model="pedidoOnline.tipoPagamento">
-                  <option value="cartao">Cartão</option>
-                  <option value="deposito">Depósito</option>
-                </b-form-select>
-              </b-form-group>
-            </b-col>
-            <b-col>
-              <b-form-group label="Status do Envio*">
-                <b-form-select size="sm" v-model="pedidoOnline.statusEnvio">
-                  <option value="pendente">Pendente</option>
-                  <option value="confirmado">Confirmado</option>
-                </b-form-select>
-              </b-form-group>
-            </b-col>
-            <b-col>
-              <b-form-group label="Tipo Envio*">
-                <b-form-select size="sm" v-model="pedidoOnline.tipoEnvio">
-                  <option value="normal">Normal</option>
-                  <option value="sedex">SEDEX</option>
-                </b-form-select>
-              </b-form-group>
-            </b-col>
-            <b-col>
-              <b-form-group label="CEP*">
+          </b-row>
+
+          <!-- <b-row>
+            <b-col md="3">
+              <b-form-group label="Desconto (R$)">
                 <the-mask
-                  v-model="pedidoOnline.cep"
+                  mask="FFFFFFF"
+                  :tokens="hexTokens"
+                  @keyup.native="changeAjusteValor()"
+                  maxlength="10"
+                  v-model.number="ajusteValor"
                   class="form-control form-control-sm"
-                  mask="######-###"
-                  placeholder="CEP"
-                  size="sm"
                 ></the-mask>
               </b-form-group>
             </b-col>
-          </b-row>
-          <b-row>
-            <b-col md="5">
-              <b-form-group label="Destinatário*">
-                <b-form-input
-                  v-model="pedidoOnline.destinatario"
-                  maxlength="50"
-                  placeholder="Destinatário"
-                  size="sm"
-                ></b-form-input>
+            <b-col md="3">
+              <b-form-group label="Desconto (%)">
+                <the-mask
+                  mask="FFFFFFF"
+                  :tokens="hexTokens"
+                  @keyup.native="changeAjustePorcento()"
+                  v-model.number="ajustePorcento"
+                  class="form-control form-control-sm"
+                ></the-mask>
               </b-form-group>
             </b-col>
-            <b-col md="6">
-              <b-form-group label="Logradouro*">
-                <b-form-input
-                  v-model="pedidoOnline.rua"
-                  maxlength="100"
-                  placeholder="Logradouro"
-                  size="sm"
-                ></b-form-input>
-              </b-form-group>
-            </b-col>
-            <b-col md="1">
-              <b-form-group label="Nº*">
-                <b-form-input v-model="pedidoOnline.numero" placeholder="Nº" size="sm"></b-form-input>
-              </b-form-group>
-            </b-col>
-          </b-row>
+          </b-row> -->
 
-          <b-row>
-            <b-col>
-              <b-form-group label="Bairro*">
-                <b-form-input v-model="pedidoOnline.bairro" size="sm" placeholder="Bairro"></b-form-input>
-              </b-form-group>
-            </b-col>
-            <b-col>
-              <b-form-group label="Complemento*">
-                <b-form-input
-                  v-model="pedidoOnline.complemento"
-                  size="sm"
-                  placeholder="Complemento"
-                ></b-form-input>
-              </b-form-group>
-            </b-col>
-            <b-col>
-              <b-form-group label="Estado: *" label-for="estado">
-                <b-form-select
-                  size="sm"
-                  v-model="pedidoOnline.idUf"
-                  @change="loadCidades(pedidoOnline.idUf)"
-                >
-                  <option :value="null" disabled>Selecione o estado</option>
-                  <option
-                    v-for="estado in estados"
-                    :value="estado.idUf"
-                    :key="estado.idUf"
-                  >{{estado.nomeUf}}</option>
-                </b-form-select>
-              </b-form-group>
-            </b-col>
-            <b-col>
-              <b-form-group label="Cidade: *" label-for="cidade">
-                <b-form-select size="sm" v-model="pedidoOnline.idCidade">
-                  <option :value="null" disabled>Selecione a cidade</option>
-                  <option
-                    v-for="cidade in cidades"
-                    :value="cidade.idCidade"
-                    :key="cidade.idCidade"
-                  >{{cidade.nomeCidade}}</option>
-                </b-form-select>
-              </b-form-group>
-            </b-col>
-          </b-row>
-        </div>
-
-        <div class="table-responsive">
-          <b-badge class="mb-1">
-            <span class="title-badge">Livros Descritos</span>
+          <b-badge class="mb-2" variant="danger">
+            <span id="total">Total: {{pedido.valorTotal | currency}}</span>
           </b-badge>
-          <table class="table table-sm">
-            <thead>
-              <tr>
-                <th>Livro</th>
-                <th>Cód.</th>
-                <th>Nome</th>
-                <th>Qtd.</th>
-                <th>Valor Unitário</th>
-                <th>Valor total</th>
-                <th>Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="item in cart.livrosDescritos" :key="item.id">
-                <td>
-                  <img
-                    class="img-cart"
-                    :src="'https://imagens-capas-1.s3.amazonaws.com/'+ (item.livro.imagemLivro == null ? '1570218265559': item.livro.imagemLivro)"
-                  />
-                </td>
-                <td>{{item.idLivroDescrito}}</td>
-                <td>{{item.livro.tituloLivro}}</td>
-                <td>
-                  <b-button
-                    type="button"
-                    @click="aumentaQuantidade(item)"
-                    variant="primary"
-                    size="sm"
-                  >
-                    <i class="fas fa-plus-circle"></i>
-                  </b-button>
-                  <b-dropdown
-                    dropright
-                    variant="outline-primary"
-                    size="sm"
-                    id="dropdown-1"
-                    :text="item.qtdLivroDescrito.toString()"
-                    class="m-md-2"
-                  >
-                    <b-dropdown-form>
-                      <b-form @submit.prevent>
-                        <b-row>
-                          <b-col>
-                            <b-form-group label="Qtd.">
-                              <the-mask
-                                class="form-control form-control-sm mb-1"
-                                v-model.number="qtdSelecionada"
-                                mask="####"
-                              ></the-mask>
-                            </b-form-group>
-                          </b-col>
-                        </b-row>
+          <br />
+          <!-- <b-badge class="mb-2" variant="danger">
+            <span id="total">Total com desconto: {{totalComAjuste | currency}}</span>
+          </b-badge> -->
 
-                        <b-dropdown-item-button id="btn-form">
-                          <b-button
-                            type="button"
-                            size="sm"
-                            @click="ajusteQuantidade(item)"
-                            variant="success"
-                            block
-                          >Ok</b-button>
-                        </b-dropdown-item-button>
-                      </b-form>
-                    </b-dropdown-form>
-                  </b-dropdown>
-                  <b-button
-                    type="button"
-                    @click="diminuiQuantidade(item)"
-                    variant="primary"
-                    size="sm"
-                  >
-                    <i class="fas fa-minus-circle"></i>
-                  </b-button>
-                </td>
-                <td>{{item.livro.precoLivroDescrito | currency}}</td>
-                <td>{{item.livro.precoLivroDescrito * item.qtdLivroDescrito | currency}}</td>
-                <td>
-                  <b-button type="button" @click="removeProduto(item)" size="sm" variant="danger">
-                    <i class="fas fa-trash"></i>
-                  </b-button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <b-row>
+            <b-col>
+              <b-form-group label="Obs.">
+                <b-form-textarea v-model="pedido.obsPedido"></b-form-textarea>
+              </b-form-group>
+            </b-col>
+          </b-row>
 
-          <b-button type="button" size="sm" variant="success" @click="submitPedido()">
-            <i class="fa fa-save mr-1"></i>Finalizar
-          </b-button>
-          <b-button @click="back()" class="btn btn-secondary ml-2 mr-2" size="sm" variant="dark">
-            <i class="fa fa-arrow-left mr-1"></i>Voltar
-          </b-button>
-          <b-button @click="zeraCart()" variant="danger" size="sm">
-            <i class="fa fa-times-circle mr-1"></i>Limpar
-          </b-button>
+          <div v-if="pedido.tipoPedido === 'on-line'">
+            <b-badge>
+              <span class="title-badge">Pedido Online</span>
+            </b-badge>
+            <b-row>
+              <b-col>
+                <b-form-group label="Valor Frete*">
+                  <b-form-input
+                    v-model="pedido.valorFrete"
+                    maxlength="6"
+                    v-money="money"
+                    placeholder="Valor do frete"
+                    size="sm"
+                  ></b-form-input>
+                </b-form-group>
+              </b-col>
+              <b-col>
+                <b-form-group label="Valor Tarifa">
+                  <b-form-input
+                    v-model="pedido.valorTarifa"
+                    maxlength="6"
+                    v-money="money"
+                    placeholder="Valor da tarifa"
+                    size="sm"
+                  ></b-form-input>
+                </b-form-group>
+              </b-col>
+              <b-col>
+                <b-form-group label="ID Externo*">
+                  <b-form-input
+                    v-model="pedido.pedidoOnline.idExterno"
+                    maxlength="30"
+                    placeholder="ID externo"
+                    size="sm"
+                  ></b-form-input>
+                </b-form-group>
+              </b-col>
+              <b-col>
+                <b-form-group label="Canal de venda*">
+                  <b-form-select size="sm" v-model="pedido.pedidoOnline.canalVendas">
+                    <option value="site">Site</option>
+                    <option value="amazon">Amazon</option>
+                    <option value="estante-virtual">Estante Virtual</option>
+                  </b-form-select>
+                </b-form-group>
+              </b-col>
+              <b-col>
+                <b-form-group label="Data do Pagamento*">
+                  <b-form-input
+                    disabled
+                    :value="formataData(pedido.pedidoOnline.dataHoraPagamento)"
+                    placeholder="Data do pagamento"
+                    size="sm"
+                  ></b-form-input>
+                </b-form-group>
+              </b-col>
+            </b-row>
+            <b-row>
+              <b-col>
+                <b-form-group label="Status Pagamento">
+                  <b-form-select size="sm" v-model="pedido.pedidoOnline.statusPagamento">
+                    <option value="pendente">Pendente</option>
+                    <option value="pago">Pago</option>
+                  </b-form-select>
+                </b-form-group>
+              </b-col>
+              <b-col>
+                <b-form-group label="Tipo do Pagamento*">
+                  <b-form-select size="sm" v-model="pedido.pedidoOnline.tipoPagamento">
+                    <option value="cartao">Cartão</option>
+                    <option value="deposito">Depósito</option>
+                  </b-form-select>
+                </b-form-group>
+              </b-col>
+              <b-col>
+                <b-form-group label="Status do Envio*">
+                  <b-form-select size="sm" v-model="pedido.pedidoOnline.statusEnvio">
+                    <option value="pendente">Pendente</option>
+                    <option value="confirmado">Confirmado</option>
+                  </b-form-select>
+                </b-form-group>
+              </b-col>
+              <b-col>
+                <b-form-group label="Tipo Envio*">
+                  <b-form-select size="sm" v-model="pedido.pedidoOnline.tipoEnvio">
+                    <option value="normal">Normal</option>
+                    <option value="sedex">SEDEX</option>
+                  </b-form-select>
+                </b-form-group>
+              </b-col>
+              <b-col>
+                <b-form-group label="CEP*">
+                  <the-mask
+                    v-model="pedido.pedidoOnline.cep"
+                    :value="'ekapoekpa'"
+                    class="form-control form-control-sm"
+                    mask="#####-###"
+                    placeholder="CEP"
+                    size="sm"
+                  ></the-mask>
+                </b-form-group>
+              </b-col>
+            </b-row>
+
+            <b-row>
+              <b-col md="4">
+                <b-form-group label="Cód. Rastreamento">
+                  <b-form-input size="sm" v-model="pedido.pedidoOnline.idRastreamento">
+
+                  </b-form-input>
+                </b-form-group>
+              </b-col>
+              <b-col md="3">
+                <b-form-group label="Data/Hora Envio">
+                  <b-form-input disabled size="sm" :value="formataData(pedido.pedidoOnline.dataHoraEnvio)">
+
+                  </b-form-input>
+                </b-form-group>
+              </b-col>
+              <b-col>
+                <b-form-group label="Info. Envio">
+                  <b-form-textarea v-model="pedido.pedidoOnline.infoEnvio"></b-form-textarea>
+                </b-form-group>
+              </b-col>
+
+            </b-row>
+
+            <b-row>
+              <b-col md="5">
+                <b-form-group label="Destinatário*">
+                  <b-form-input
+                    v-model="pedido.pedidoOnline.destinatario"
+                    maxlength="50"
+                    placeholder="Destinatário"
+                    size="sm"
+                  ></b-form-input>
+                </b-form-group>
+              </b-col>
+              <b-col md="6">
+                <b-form-group label="Logradouro*">
+                  <b-form-input
+                    v-model="pedido.pedidoOnline.rua"
+                    maxlength="100"
+                    placeholder="Logradouro"
+                    size="sm"
+                  ></b-form-input>
+                </b-form-group>
+              </b-col>
+              <b-col md="1">
+                <b-form-group label="Nº*">
+                  <b-form-input v-model="pedido.pedidoOnline.numero" placeholder="Nº" size="sm"></b-form-input>
+                </b-form-group>
+              </b-col>
+            </b-row>
+
+            <b-row>
+              <b-col>
+                <b-form-group label="Bairro*">
+                  <b-form-input v-model="pedido.pedidoOnline.bairro" size="sm" placeholder="Bairro"></b-form-input>
+                </b-form-group>
+              </b-col>
+              <b-col>
+                <b-form-group label="Complemento*">
+                  <b-form-input
+                    v-model="pedido.pedidoOnline.complemento"
+                    size="sm"
+                    placeholder="Complemento"
+                  ></b-form-input>
+                </b-form-group>
+              </b-col>
+              <b-col>
+                <b-form-group label="Estado: *" label-for="estado">
+                  <b-form-select
+                    size="sm"
+                    v-model="pedido.pedidoOnline.idUf"
+                    @change="loadCidades(pedido.pedidoOnline.idUf)"
+                  >
+                    <option :value="null" disabled>Selecione o estado</option>
+                    <option
+                      v-for="estado in estados"
+                      :value="estado.idUf"
+                      :key="estado.idUf"
+                    >{{estado.nomeUf}}</option>
+                  </b-form-select>
+                </b-form-group>
+              </b-col>
+              <b-col>
+                <b-form-group label="Cidade: *" label-for="cidade">
+                  <b-form-select size="sm" v-model="pedido.pedidoOnline.idCidade">
+                    <option :value="null" disabled>Selecione a cidade</option>
+                    <option
+                      v-for="cidade in cidades"
+                      :value="cidade.idCidade"
+                      :key="cidade.idCidade"
+                    >{{cidade.nomeCidade}}</option>
+                  </b-form-select>
+                </b-form-group>
+              </b-col>
+            </b-row>
+          </div>
+
+          <div class="table-responsive">
+            <b-badge class="mb-1">
+              <span class="title-badge">Livros Descritos</span>
+            </b-badge>
+            <table class="table table-sm">
+              <thead>
+                <tr>
+                  <th>Livro</th>
+                  <th>Cód.</th>
+                  <th>Nome</th>
+                  <th>Qtd.</th>
+                  <th>Valor Unitário</th>
+                  <th>Valor total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="item in pedido.pedidoLivros" :key="item.id">
+                  <td>
+                    <img
+                      class="img-cart"
+                      :src="'https://imagens-capas-1.s3.amazonaws.com/'+ (item.livroDescrito.livro.imagemLivro == null ? '1570218265559': item.livroDescrito.livro.imagemLivro)"
+                    />
+                  </td>
+                  <td>{{item.idLivroDescrito}}</td>
+                  <td>{{item.livroDescrito.livro.tituloLivro}}</td>
+                  <td>
+                    {{item.qtdLivroDescrito}}
+                  </td>
+                  <td>{{item.valorUnitLivroDescrito | currency}}</td>
+                  <td>{{item.valorTotalLivroDescrito * item.qtdLivroDescrito | currency}}</td>
+                  
+                </tr>
+              </tbody>
+            </table>
+
+            <b-button type="button" size="sm" variant="success" @click="submitPedido()">
+              <i class="fa fa-save mr-1"></i>Atualizar
+            </b-button>
+            <b-button @click="back()" class="btn btn-secondary ml-2 mr-2" size="sm" variant="dark">
+              <i class="fa fa-arrow-left mr-1"></i>Voltar
+            </b-button>
+          </div>
         </div>
       </div>
-      <div v-if="!existemItens()">
-        <b-badge variant="info">
-          <span>Sem itens a venda.</span>
-        </b-badge>
-      </div>
-    </div>
+    </b-card>
   </div>
 </template>
 
@@ -377,12 +369,20 @@ import Pedido from "../../services/pedidos";
 import { required } from "vuelidate/lib/validators";
 import { VMoney } from "v-money";
 import Estado from "../../services/estados";
+import PageTitle from '../template/PageTitle';
+import Loading from '../shared/Loading';
+import moment from 'moment';
 export default {
   name: "EdicaoPedido",
-  components: { Autocomplete },
+  components: { Autocomplete, PageTitle, Loading },
   directives: { money: VMoney },
   data() {
     return {
+      pedido: {
+        cliente: {},
+        pedidoOnline: {}
+      },
+      loader: false,
       cidades: [],
       estados: [],
       pedidoOnline: {
@@ -418,11 +418,11 @@ export default {
     return {
       pedido: {
         idCliente: { required },
-        livrosDescritos: { required }
       }
     };
   },
   mounted() {
+    this.getPedido(this.$route.params.id);
     this.loadEstados();
     this.total = this.calculaTotal();
   },
@@ -433,30 +433,22 @@ export default {
       this.totalAjustado();
     }
   },
-  computed: mapGetters(["cart", "pedido"]),
   methods: {
-    diminuiQuantidade(item) {
-      decreaseQuantity(item);
-      this.$store.dispatch("SET_CART");
-      this.total = this.calculaTotal();
-    },
-    aumentaQuantidade(item) {
-      increaseQuantity(item);
-      this.$store.dispatch("SET_CART");
-      this.total = this.calculaTotal();
-    },
-    removeProduto(item) {
-      removeLivro(item);
-      this.$store.dispatch("SET_CART");
-      this.total = this.calculaTotal();
-    },
-    existemItens() {
-      return this.cart.livrosDescritos && this.cart.livrosDescritos.length > 0;
-    },
-    ajusteQuantidade(item) {
-      setQuantity(item, this.qtdSelecionada);
-      this.$store.dispatch("SET_CART");
-      this.total = this.calculaTotal();
+    async getPedido(idPedido){
+      this.loader = true;
+      try{
+        const res = await Pedido.getPedido(idPedido);
+        this.pedido = res.data;
+        console.log(this.pedido)
+        if(this.pedido.tipoPedido == 'on-line'){
+          this.pedido.pedidoOnline.idUf = res.data.pedidoOnline.cidade.estado.idUf;
+          this.loadCidades(this.pedido.pedidoOnline.idUf);
+        }
+      }catch(err){
+        showError(err);
+      }finally{
+        this.loader = false;
+      }
     },
     async getClientes(nomeCliente) {
       try {
@@ -467,17 +459,17 @@ export default {
       }
     },
     clienteSelected(cliente) {
-      this.pedido.livrosDescritos = this.cart.livrosDescritos;
+      // this.pedido.livrosDescritos = this.cart.livrosDescritos;
       this.pedido.idCliente = cliente.idCliente;
       this.pedido.nomeCliente = cliente.nomeCliente;
-      let pedido = { ...this.pedido };
-      this.$store.dispatch("SET_PEDIDO", pedido);
+      // let pedido = { ...this.pedido };
+      // this.$store.dispatch("SET_PEDIDO", pedido);
     },
     onChangeCliente(nomeCliente) {
       this.getClientes(nomeCliente);
     },
     submitPedido() {
-      this.pedido.livrosDescritos = this.cart.livrosDescritos;
+      // this.pedido.livrosDescritos = this.cart.livrosDescritos;
       this.pedido.valorDesconto = this.ajusteValor;
       if (this.pedido.tipoPedido === "on-line") {
         this.pedido.pedidoOnline = this.pedidoOnline;
@@ -520,14 +512,15 @@ export default {
       this.totalAjustado();
     },
     calculaTotal() {
-      let cart = getCart();
-      let sum = 0;
-      for (var i = 0; i < cart.livrosDescritos.length; i++) {
-        sum +=
-          cart.livrosDescritos[i].livro.precoLivroDescrito *
-          cart.livrosDescritos[i].qtdLivroDescrito;
-      }
-      return sum;
+      // let cart = getCart();
+      // let sum = 0;
+      // for (var i = 0; i < cart.livrosDescritos.length; i++) {
+      //   sum +=
+      //     cart.livrosDescritos[i].livro.precoLivroDescrito *
+      //     cart.livrosDescritos[i].qtdLivroDescrito;
+      // }
+      // return sum;
+      return 0;
     },
     totalAjustado() {
       this.totalComAjuste = this.total - this.ajusteValor;
@@ -549,15 +542,10 @@ export default {
         showError(err);
       }
     },
-    zeraCart() {
-      let pedido = {
-        tipoPedido: "balcao",
-        nomeCliente: "Selecione um cliente...",
-        livrosDescritos: []
-      };
-      this.$store.dispatch("SET_PEDIDO", pedido);
-      this.$store.dispatch("ZERA_CART");
-      setCart({ livrosDescritos: [] });
+    formataData(value){
+      if(value){
+        return moment(String(value)).format("DD/MM/YYYY HH:mm");
+      }   
     }
   }
 };

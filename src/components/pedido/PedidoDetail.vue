@@ -78,17 +78,17 @@
                     <b-badge class="desc-pedido" :variant="pedido.pedidoOnline.statusEnvio == 'entregue' ? 'success' : 'danger'"><span>{{pedido.pedidoOnline.statusEnvio.toUpperCase()}}</span></b-badge>
                     <span class="title">Cód. Rastreamento</span>
                     <span>
-                      {{pedido.pedidoOnline.idRastreamento
+                      {{pedido.pedidoOnline.idRastreamento || "N/A"
                       }}
                     </span>
                     <span class="title">Data/hora envio</span>
                     <span>
-                      {{formataData(pedido.pedidoOnline.dataHoraEnvio)
+                      {{formataData(pedido.pedidoOnline.dataHoraEnvio) || "N/A"
                       }}
                     </span>
                      <span class="title">Info. envio</span>
                     <span>
-                      {{pedido.pedidoOnline.infoEnvio
+                      {{pedido.pedidoOnline.infoEnvio || "N/A"
                       }}
                     </span>
                   </div>
@@ -209,7 +209,9 @@ export default {
       }
     },
     formataData(value) {
-      return moment(String(value)).format("DD/MM/YYYY HH:mm");
+      if(value){
+        return moment(String(value)).format("DD/MM/YYYY HH:mm");
+      }
     },
     back(){
       history.back();

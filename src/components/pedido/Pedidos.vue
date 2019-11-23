@@ -67,7 +67,7 @@
         </template>
         <template v-slot:cell(valorTotal)="data">{{data.item.valorTotal | currency}}</template>
         <template v-slot:cell(actions)="data">
-          <b-button v-b-tooltip.hover title="Editar" variant="warning" size="sm" class="mr-2">
+          <b-button @click="navigateEditPedido(data.item.idPedido)" v-b-tooltip.hover title="Editar" variant="warning" size="sm" class="mr-2">
           <i class="fa fa-pencil"></i>
           </b-button>
           <b-button @click="navigate(data.item.idPedido)" v-b-tooltip.hover title="Detalhes" size="sm" variant="primary" class="mr-2">
@@ -193,6 +193,9 @@ export default {
     },
     navigate(id) {
       this.$router.push({ name: "pedido-detail", params: { id } });
+    },
+    navigateEditPedido(id) {
+      this.$router.push({ name: "edicao-pedido", params: { id } });
     },
     formataData(value){
       if(value){

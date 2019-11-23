@@ -178,6 +178,11 @@ export default new Router({
           component: () => import('../components/pedido/PedidoDetail.vue')
         },
         {
+          path: 'pedidos/edit/:id',
+          name: 'edicao-pedido',
+          component: () => import('../components/pedido/EdicaoPedido.vue')
+        },
+        {
           path: '',
           redirect: '/dashboard/home'
         },
