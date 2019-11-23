@@ -63,6 +63,7 @@
       <b-tab title="Relatórios" >
         <Loading :loader="loader" />
         <div v-if="!loader && loaded">
+          <b-badge v-if="pageRelatorios.rows.length < 1"><span class="title-badge">Nenhum pedido encontrado nesse período</span></b-badge>
           <b-table class="table-sm"
         :responsive="true"
         v-if="!loader && pageRelatorios.rows.length > 0"
@@ -113,14 +114,13 @@ import LineChart from "./LineChart";
 import PieChart from "./PieChart";
 import BarChart from './BarChart';
 import { showError } from "@/global";
-import Card from "./Card";
 import Pedidos from '../../services/pedidos';
 import Loading from '../shared/Loading';
 import moment from 'moment';
 import { formatCurrency } from '../../utils/format_currency';
 export default {
   name: "AnalyticsPedidos",
-  components: { PageTitle, Chart, LineChart, PieChart, BarChart, Card, Loading },
+  components: { PageTitle, Chart, LineChart, PieChart, BarChart, Loading },
   data() {
     return {
       configLineChart: {},

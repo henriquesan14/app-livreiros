@@ -83,7 +83,7 @@
             <b-col>
               <b-form-group label="Valor Frete*">
                 <b-form-input
-                  v-model.number="pedido.valorFrete"
+                  v-model="pedido.valorFrete"
                   maxlength="6"
                   v-money="money"
                   placeholder="Valor do frete"
@@ -94,7 +94,7 @@
             <b-col>
               <b-form-group label="Valor Tarifa">
                 <b-form-input
-                  v-model.number="pedido.valorTarifa"
+                  v-model="pedido.valorTarifa"
                   maxlength="6"
                   v-money="money"
                   placeholder="Valor da tarifa"
@@ -401,7 +401,6 @@ export default {
       submitted: false,
       money: {
         decimal: ".",
-
         precision: 2,
         masked: false
       },
