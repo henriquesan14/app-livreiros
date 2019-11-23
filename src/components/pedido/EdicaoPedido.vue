@@ -61,7 +61,7 @@
             </b-col>
           </b-row>
 
-          <!-- <b-row>
+          <b-row>
             <b-col md="3">
               <b-form-group label="Desconto (R$)">
                 <the-mask
@@ -85,15 +85,19 @@
                 ></the-mask>
               </b-form-group>
             </b-col>
-          </b-row> -->
+          </b-row>
 
           <b-badge class="mb-2" variant="danger">
-            <span id="total">Total: {{pedido.valorTotal | currency}}</span>
+            <span id="total">Total sem desconto: {{pedido.valorProdutos | currency}}</span>
           </b-badge>
           <br />
-          <!-- <b-badge class="mb-2" variant="danger">
-            <span id="total">Total com desconto: {{totalComAjuste | currency}}</span>
-          </b-badge> -->
+          <b-badge class="mb-2" variant="danger">
+            <span id="total">Total com desconto: {{pedido.valorTotal | currency}}</span>
+          </b-badge>
+          <br />
+          <b-badge class="mb-2" variant="danger">
+            <span id="total">Total com desconto atual: {{totalAjustado() | currency}}</span>
+          </b-badge>
 
           <b-row>
             <b-col>
@@ -181,7 +185,10 @@
                 <b-form-group label="Status do Envio*">
                   <b-form-select size="sm" v-model="pedido.pedidoOnline.statusEnvio">
                     <option value="pendente">Pendente</option>
-                    <option value="confirmado">Confirmado</option>
+                    <option value="enviado">Enviado</option>
+                    <option value="entregue">Entregue</option>
+                    <option value="atrasado">Atrasado</option>
+                    <option value="devolvido">Devolvido</option>
                   </b-form-select>
                 </b-form-group>
               </b-col>
@@ -385,18 +392,8 @@ export default {
       loader: false,
       cidades: [],
       estados: [],
-      pedidoOnline: {
-        canalVendas: "site",
-        statusPagamento: "pendente",
-        tipoPagamento: "cartao",
-        statusEnvio: "pendente",
-        tipoEnvio: "normal",
-        idUf: null,
-        idCidade: null
-      },
       ajustePorcento: 0,
-      ajusteValor: 0,
-      qtdSelecionada: null,
+      ajusteValor: null,
       clientes: [],
       submitted: false,
       money: {
@@ -406,7 +403,6 @@ export default {
         masked: false
       },
       totalComAjuste: 0,
-      total: 0,
       hexTokens: {
         F: {
           pattern: /^[\d,.?!]+$/
@@ -424,14 +420,6 @@ export default {
   mounted() {
     this.getPedido(this.$route.params.id);
     this.loadEstados();
-    this.total = this.calculaTotal();
-  },
-  watch: {
-    total() {
-      this.changeAjustePorcento();
-      this.changeAjusteValor();
-      this.totalAjustado();
-    }
   },
   methods: {
     async getPedido(idPedido){
@@ -439,7 +427,6 @@ export default {
       try{
         const res = await Pedido.getPedido(idPedido);
         this.pedido = res.data;
-        console.log(this.pedido)
         if(this.pedido.tipoPedido == 'on-line'){
           this.pedido.pedidoOnline.idUf = res.data.pedidoOnline.cidade.estado.idUf;
           this.loadCidades(this.pedido.pedidoOnline.idUf);
@@ -459,39 +446,31 @@ export default {
       }
     },
     clienteSelected(cliente) {
-      // this.pedido.livrosDescritos = this.cart.livrosDescritos;
       this.pedido.idCliente = cliente.idCliente;
-      this.pedido.nomeCliente = cliente.nomeCliente;
-      // let pedido = { ...this.pedido };
-      // this.$store.dispatch("SET_PEDIDO", pedido);
+      this.pedido.cliente.nomeCliente = cliente.nomeCliente;
     },
     onChangeCliente(nomeCliente) {
       this.getClientes(nomeCliente);
     },
     submitPedido() {
-      // this.pedido.livrosDescritos = this.cart.livrosDescritos;
-      this.pedido.valorDesconto = this.ajusteValor;
-      if (this.pedido.tipoPedido === "on-line") {
-        this.pedido.pedidoOnline = this.pedidoOnline;
-      }
       if (this.pedido.tipoPedido === "balcao") {
         delete this.pedido.valorFrete;
         delete this.pedido.valorTarifa;
       }
-      let pedido = { ...this.pedido };
-      this.$store.dispatch("SET_PEDIDO", pedido);
+      if(this.ajusteValor){
+        this.pedido.valorDesconto = this.ajusteValor;
+      }
       this.submitted = true;
       this.$v.$touch();
       if (this.$v.$invalid) {
         return;
       }
       this.submitted = false;
-      this.finalizaVenda();
+      this.updatePedido();
     },
-    async finalizaVenda() {
+    async updatePedido() {
       try {
-        await Pedido.savePedido(this.pedido);
-        this.zeraCart();
+        await Pedido.updatePedido(this.pedido);
         this.$toasted.global.defaultSuccess();
         this.$router.push("/dashboard/pedidos");
       } catch (err) {
@@ -502,31 +481,19 @@ export default {
       history.back();
     },
     changeAjustePorcento() {
-      let a = this.ajustePorcento * this.total;
+      let a = this.ajustePorcento * this.pedido.valorProdutos;
       this.ajusteValor = a / 100;
       this.totalAjustado();
     },
     changeAjusteValor() {
       let a = this.ajusteValor * 100;
-      this.ajustePorcento = a / this.total;
+      this.ajustePorcento = a / this.pedido.valorProdutos;
       this.totalAjustado();
     },
-    calculaTotal() {
-      // let cart = getCart();
-      // let sum = 0;
-      // for (var i = 0; i < cart.livrosDescritos.length; i++) {
-      //   sum +=
-      //     cart.livrosDescritos[i].livro.precoLivroDescrito *
-      //     cart.livrosDescritos[i].qtdLivroDescrito;
-      // }
-      // return sum;
-      return 0;
-    },
     totalAjustado() {
-      this.totalComAjuste = this.total - this.ajusteValor;
+      return this.pedido.valorProdutos - this.ajusteValor;
     },
     async loadCidades(idUf) {
-      this.pedidoOnline.idCidade = null;
       try {
         const res = await Estado.getCidades(idUf);
         this.cidades = res.data;
