@@ -30,7 +30,10 @@
       <template slot="header">
         <h5 class="title-card-main"></h5>
       </template>
-      <b-row class="mb-1">
+
+      <Loading :loader="loader"/>
+
+      <b-row class="mb-1" v-if="!loader">
         <b-col md="6">
           <b-badge><span class="title-badge">Total pedidos/tipo</span></b-badge>
           <b-card>
@@ -44,7 +47,8 @@
           </b-card>
         </b-col>
       </b-row>
-      <b-row>
+      
+      <b-row v-if="!loader">
         <b-col md="7">
           <b-badge><span class="title-badge">Total pedidos/dia</span></b-badge>
           <b-card >
