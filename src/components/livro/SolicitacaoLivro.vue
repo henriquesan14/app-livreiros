@@ -87,6 +87,10 @@ export default {
         this.$toasted.global.defaultSuccess();
         this.$bvModal.hide("modal-solicitacao");
         this.reset();
+        this.$socket.emit('sendSolicitacao', {
+          message: 'Nova solicitação de livro realizada',
+          idLivro: this.solicitacao.idLivroDescrito
+        });
       } catch (err) {
         showError(err);
       }

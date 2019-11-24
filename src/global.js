@@ -1,7 +1,7 @@
 import Vue from 'vue'
 export const userKey = '__sgsl_user'
-export const baseApiUrl = 'http://3.218.79.22/sgsl-api'
-// export const baseApiUrl = 'http://localhost:3000'
+// export const baseApiUrl = 'http://3.218.79.22/sgsl-api'
+export const baseApiUrl = 'http://localhost:3000'
 
 export function showError(e) {
     if (e && e.response && e.response.data) {

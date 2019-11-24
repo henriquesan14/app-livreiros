@@ -24,6 +24,12 @@ Vue.toasted.register(
     {type: 'info', icon: 'info-circle'}
 )
 
+Vue.toasted.register(
+    'newSolicitacao',
+    payload => !payload.message ? 'Nova solicitação de livro' : payload.msg,
+    {type: 'info', icon: 'info-circle'}
+)
+
 
 Vue.toasted.register(
     'defaultError',

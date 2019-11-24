@@ -152,6 +152,12 @@ export default {
       this.getSolicitacoes();
     }
   },
+  sockets: {
+    newSolicitacao: function(data){
+      this.getSolicitacoes();
+      this.$toasted.global.newSolicitacao(data.message);
+    }
+  },
   methods: {
     async getSolicitacoes() {
       this.loader = true;

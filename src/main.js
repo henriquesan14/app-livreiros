@@ -11,6 +11,7 @@ import './config/bootstrap'
 import './config/msgs'
 import './config/mq'
 import './config/loader'
+import './config/websocket'
 
 //directives
 import './directives/role-directive';
