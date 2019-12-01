@@ -224,7 +224,7 @@
               </b-col>
               <b-col md="3">
                 <b-form-group label="Data/Hora Envio">
-                  <b-form-input disabled size="sm" :value="formataData(pedido.pedidoOnline.dataHoraEnvio)">
+                  <b-form-input size="sm" type="date" v-model="pedido.pedidoOnline.dataHoraEnvio">
 
                   </b-form-input>
                 </b-form-group>
@@ -430,6 +430,10 @@ export default {
         if(this.pedido.tipoPedido == 'on-line'){
           this.pedido.pedidoOnline.idUf = res.data.pedidoOnline.cidade.estado.idUf;
           this.loadCidades(this.pedido.pedidoOnline.idUf);
+          this.pedido.pedidoOnline.dataHoraEnvio ? 
+          this.pedido.pedidoOnline.dataHoraEnvio = this.formataDataInput(this.pedido.pedidoOnline.dataHoraEnvio)
+          :
+          null;
         }
       }catch(err){
         showError(err);
@@ -513,7 +517,13 @@ export default {
       if(value){
         return moment(String(value)).format("DD/MM/YYYY HH:mm");
       }   
-    }
+    },
+    formataDataInput(value){
+      if(value){
+        return moment(String(value)).format("YYYY-MM-DD");
+      }   
+    },
+
   }
 };
 </script>
